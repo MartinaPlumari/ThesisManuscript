@@ -564,9 +564,16 @@ INPUT C:\Users\marti\AppData\Local\Programs\MiKTeX\tex\latex\lm\ts1lmr.fd
 INPUT C:\Users\marti\AppData\Local\Programs\MiKTeX\tex\latex\lm\ts1lmr.fd
 INPUT C:\Users\marti\AppData\Local\Programs\MiKTeX\tex\latex\lm\ts1lmr.fd
 INPUT C:\Users\marti\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ts1-lmr12.tfm
+INPUT .\content\chapters\chapter2.tex
+INPUT .\content\chapters\chapter2.tex
+INPUT .\content\chapters\chapter2.tex
+INPUT .\content\chapters\chapter2.tex
+INPUT content\chapters\chapter2.tex
 INPUT C:\Users\marti\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr10.tfm
 INPUT C:\Users\marti\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmro10.tfm
 INPUT C:\Users\marti\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\lm\lm-ts1.enc
+INPUT C:\Users\marti\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr12.tfm
+INPUT C:\Users\marti\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmbx12.tfm
 INPUT thesis.aux
 INPUT .\thesis.out
 INPUT .\thesis.out
