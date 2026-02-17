@@ -1,0 +1,94 @@
+\chapter{Ureal Engine Mass}
+\label{sec:introduction}
+
+While the Entity Component System is a theoretical pattern, Mass is Unreal Engine’s specific framework for data-oriented calculations and high-performance simulations. It does not replace the traditional Actor-based system; instead, it provides a parallel infrastructure capable of processing a large number of entities with minimal CPU overhead.
+
+In this chapter we are going to explore the declination of the ECS pattern in the Mass System via the core plugin MassEntity and the additional features available through the addition of standalone plugins offerd by Epic Games. 
+
+% use [] to set name for ToC
+\section[Goal]{MassEntity} % ok with fontsize=12pt
+
+At the heart of Mass system lies MassEntity, the core module responsible for the framework’s low-level heavy lifting. It manages the execution pipeline, entity lifecycle and the specialized memory layouts required for high-performance computing. MassEntity was firstly introduced as a plugin, but has been moved into the core engine as of UE5.5 and is now deprecated as standalone. 
+
+In the following sections we analyse the data structures, memory organization as well as the logic execution of the Mass framework.
+
+\subsection{Data Structures: Fragments and Tags}
+
+MassEntity redefines the standard ECS Component into more specialized structures to optimize memory and filtering.
+
+\begin{itemize}
+    \item Fragments: they are the primary data structure in MassEntity. A Fragment represents an atomic unit of data (e.g. Transform, Velocity, LOD index). In alignment with the ECS paradigm, Fragments are logic-less and exist only to store state.
+    \item Shared Fragments: 
+    \item Chunk Fragments: unlike standard Fragments associated with a specific Entity, a ChunkFragment is associated with a Memory Chunk. These are used to store data shared by all entities within that chunk, such as communal Level of Detail (LOD) calculation, reducing redundant data processing.
+    \item Tags: these are trivial Fragments that contain no data. Their presence or absence on an Entity serves as a high-performance filter for the queries.
+\end{itemize}
+
+\subsection{Memory Organization: Archetypes and Chunks}
+
+The performance of MassEntity is largely a result of its Archetype-based storage system, which organizes data to maximize CPU cache efficiency.
+
+\begin{itemize}
+    \item Entities and Composition: an Entity in Mass is a unique ID associated with a collection of Fragments. Mirroring the composition pattern, an Entity’s makeup is dynamic and Fragments can be added or removed at runtime to change the Entity’s behavior or state.
+    \item Archetypes: when multiple Entities share an identical Fragment composition, they are grouped into an Archetype. If one Entity has `[Transform, Velocity]` and another has `[Transform, Velocity, Health]`, they belong to two different Archetypes. This categorization allows the engine to predict exactly how data is laid out in memory.
+    \item Memory Chunks: within an Archetype, Entities are stored in contiguous memory blocks called Chunks, optimized for current cache sizes. By grouping similarly composed entities together, Mass ensures that the CPU can retrieve and process batches of data in a single linear pass, significantly reducing the time spent waiting for RAM fetches.
+\end{itemize}
+
+\subsection{Logic Execution: Processors and Queries}
+
+The System element of the ECS pattern is represented in Unreal Engine by Processors.
+
+Processors are stateless classes that house the simulation logic. They are designed to be data-agnostic, meaning they do not operate on individual entities one by one, but rather on streams of data.
+
+They use EntityQueries to define their data requirements (e.g. “Provide all entities that have a Velocity Fragment but do not have and Enemy Tag”). The query fetches the data in batches from the Chunks, allowing the Processor to execute logic across thousands of entities with maximum efficiency and high potential for parallelization.
+
+Accordingly to the memory organization articulated in the previous section, processors cover a chunk of entities in an archetype. The execution flow of Mass Processors follows this steps:
+
+\begin{enumerate}
+    \item Each processor starts by configuring an entity query which adds requirements that will be used for filtering entities. Requirements can be put on tags, fragments, shared fragments, chunk fragments and even subsystems.
+    \item Processors then batch the updates for the chunk of entities by calling ForEachEntityChunk. This is where Chunk Fragments are use, since a single chunk fragment can be used across all the entities in the chunk.
+    \item The MassEntityQuery matches the requirements with the archetypes and can filter out chunks of matching archetypes based on chunk fragment filters. Requirements are usually put on the presence of a given tag or fragment in the archetype, but they can be also used to filter based on the absence of them.
+    \item After filtering, the MassEntityQuery triggers a function on each chunk of entities, and the individual entities of the chunk can be accessed via the FMassExecutionContext. Most of the plugin code makes use of lambda expressions when executing ForEachentityChunk.
+\end{enumerate}
+
+\section{Additional Mass Plugins}
+On top of the MassEntity core, Epic has developed several plugins that enable useful processors and traits for given known tasks. All these plugins in Unreal Engine 5.6 are marked as experimental, meaning that they could be subject to changes in the next future and should be used with care for projects ment for shipping.
+
+These plugins are the result of the work done on the CitySample tech demo, where Mass was used to create massive crowd and vehicle simulations. 
+
+From here follows a brief exposition of the features provided by each of them in UE 5.6.
+
+\subsection{MassGameplay}
+
+Provides gameplay integration such as spawning entities in the world, replication support, level-of-detail (LOD) management, movement basics and visualization of entities spatially. It supports representing Mass entities as Actors if needed.
+
+The plugin contains the following subsystems that build directly on top of MassEntity functionalities:
+
+\begin{itemize}
+    \item Mass Representation Subsystem: responsible for managing the different visual aspects of the Mass Entities. It can recycle and pool spawned Actors automatically
+    \item Mass Spawner Subsystem: spawns and manages the Entities based on the MassSpawner objects and procedural calls
+    \item Mass LOD Subsystem: calculates the Level Of Detail (LOD) necessary for each Mass Entity. It outputs four LOD values: High, Medium, Low and Off
+    \item Mass Replication Subsystem: replicates entities over the network in a client-server manner. It performs one-way replication from the server to its clients. This subsystem is considered experimental for Unreal Engine 5.1 and requires a C++ implementation to replicate custom values
+    \item Mass StateTree Subsystem: used to integrate the StateTree system, a general-purpose hierarchical state machine, with Mass Entity. It allows us to configure StateTrees for each entity, and update each entity’s StateTree based on signals sent from other Mass systems
+    \item Mass Signals Subsystem: provides a way to send a named signal to tell an entity that it has some processing to do. This subsystem is currently used in Mass Statetree to wake it up when it has to perform some processing
+    \item Mass Movement Subsystem: defines a simple movement model for Mass agents. The Fragments and Processors are set up so that other Traits can modify the velocity or force directly. For example, when steering the agent, the system may set the initial steering force and avoidance can alter it to avoid collisions during movement
+    \item Mass SmartObject Subsystem: used to integrate the SmartObject system with MassEntity. SmartObjects are objects placed in a level that AI Agnets and Players can interact with: they are part of a global  database and use a splatial partitioning structure. At a high level, Smart Objects represent a set of activities in the lecel that can be used through a reservation system. Mass SmartObject subsystem provides the requires Traits, Fragments and Processors to perform Smart Object queries and execute simple behaviors on agents represented by Mass Entities.
+\end{itemize}
+
+\subsection{MassAI}
+
+This plugin adds AI-specific logic such as behavior tree integration via StateTree, navigation via ZoneGraph, agent avoidance and AI replication in order to enable autonomous agents.
+
+It is composed by the following modules:
+
+\begin{itemize}
+    \item MassAIBehavior: implements core AI logic including behavior execution, State Trees integration, decision making processes, behavior fragments and processors managing AI state and actions
+    \item MassAIDebug: provides debugging tools and integrations, such as gameplay debugger support, visualization of AI internal states, and diagnostics specific to MassAI entities to assist development and troubleshooting
+    \item MassAIReplication: manages network replication of MassAI entities, handling entity state synchronization between server and clients with relevancy and LOD systems to optimize bandwidth usage for large AI populations
+    \item MassAITestSuite: contains automated tests and validation tools ensuring the correctness and stability of MassAI functionalities during development and continuous integration
+\end{itemize}
+
+\subsection{MassCrowd}
+
+Specializes in crowd simulation with custom visualization and navigation processors, built on top of previous plugins. This was used in projects like City Sample and The Matrix Awakens demo.
+
+The module contains processors that handle crowd movement, avoidance and visualization tailored for large groups of Mass Entities.

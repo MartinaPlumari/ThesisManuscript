@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.1) (preloaded format=pdflatex 2026.2.8)  10 FEB 2026 20:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.1) (preloaded format=pdflatex 2026.2.8)  16 FEB 2026 17:03
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1267,7 +1267,11 @@ File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 LaTeX Warning: Unused global option(s):
     [corpo=12pt,stile=standard,tipotesi=magistrale,cucitura=7mm].
 
-(thesis.aux)
+(thesis.aux
+
+LaTeX Warning: Label `sec:introduction' multiply defined.
+
+)
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
@@ -1452,7 +1456,7 @@ Package translations Info: loading dictionary `translations-basic-dictionary' fo
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<images/logo/polito_logo_2021_blu-2-2.jpg, id=46, 845.3181pt x 326.4195pt>
+<images/logo/polito_logo_2021_blu-2-2.jpg, id=74, 845.3181pt x 326.4195pt>
 File: images/logo/polito_logo_2021_blu-2-2.jpg Graphic file (type jpg)
 <use images/logo/polito_logo_2021_blu-2-2.jpg>
 Package pdftex.def Info: images/logo/polito_logo_2021_blu-2-2.jpg  used on input line 6.
@@ -1557,7 +1561,11 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 Chapter 2.
 [3
 
-] [4]) [5]
+] [4]) (content/chapters/chapter3.tex [5]
+Chapter 3.
+[6
+
+] [7] [8] [9]) [10]
 
 LaTeX Warning: Empty bibliography on input line 125.
 
@@ -1575,24 +1583,27 @@ L3 programming layer <2026-01-19>
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 1BD5D2EA615500C2B1B8944C119BC22C;1352.
+(rerunfilecheck)             Checksum: 195BD8AE0958DA839B88A3F47EBB5EB3;2386.
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 45578 strings out of 467866
- 921117 string characters out of 5418326
- 2008809 words of memory out of 5000000
- 73646 multiletter control sequences out of 15000+600000
- 715449 words of font info for 162 fonts, out of 8000000 for 9000
+ 45621 strings out of 467866
+ 921856 string characters out of 5418326
+ 2009867 words of memory out of 5000000
+ 73662 multiletter control sequences out of 15000+600000
+ 715813 words of font info for 166 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  138i,10n,135p,2618b,2009s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmro10.pfb>
-Output written on thesis.pdf (11 pages, 2407494 bytes).
+Output written on thesis.pdf (16 pages, 2471048 bytes).
 PDF statistics:
- 136 PDF objects out of 1000 (max. 8388607)
- 21 named destinations out of 1000 (max. 500000)
- 53346 words of extra memory for PDF output out of 61914 (max. 10000000)
+ 201 PDF objects out of 1000 (max. 8388607)
+ 37 named destinations out of 1000 (max. 500000)
+ 53402 words of extra memory for PDF output out of 61914 (max. 10000000)
 

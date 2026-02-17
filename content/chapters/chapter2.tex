@@ -1,19 +1,13 @@
-\chapter{Mass System}
+\chapter{Entity Component System}
 \label{sec:secondChapter}
-
-Mass is Unreal Engine's data-oriented Entity-Component-System (ECS) framework designed for large-scale, high-performance simulation.
-It provides an alternative to Unreal's traditional object-oriented Actor model by representing simulation elements as lightweight entities made of plain data components, and by executing behavior through batch-oriented processing systems rather than per-object logic.
-
-This chapter first analyses the Entity–Component–System architectural pattern and the reasons it can offer performance advantages over the traditional object-oriented paradigm. It then examines the structure and functioning of Unreal Engine’s Mass system.
-
-% use [] to set name for ToC
-\section[ECS]{Entity Component System} % ok with fontsize=12pt
 
 The Entity Component system (ECS) is a software architectural pattern specifically engineered to facilitate high-performance simulations. Unlike traditional game development frameworks that rely on deep object hierarchies, ECS is built upon the Data-Oriented Design (DOD) paradigm.
 
 At its core, ECS shifts the focus from "what an object is" to "what data it possesses". By decoupling data from behavior, it enables the construction of complex simulations using granular, reusable modules rather than monolithic, rigid classes. 
 
-\subsection{Object-Oriented vs Data-Oriented Design}
+This chapter first analyses the Entity–Component–System architectural pattern and the reasons it can offer performance advantages over the traditional object-oriented paradigm. It then examins the trade-offs of this type of design compared to the object-oriented one.
+% use [] to set name for ToC
+\section[DOD]{Object-Oriented vs Data-Oriented Design} % ok with fontsize=12pt
 
 To understand why ECS has become the industry standard for mass-scaled simulations, we must compare it to the traditional Object-Oriented Design (OOD).
 
@@ -23,7 +17,7 @@ On the other hand, DOD favors composition; in this case, rather than defining wh
 The primary driver for DOD is data locality. Modern CPU speeds vastly outpace memory access times; consequently, performance is often throttled by "memory latency", the delaay incurred when fetching data from RAM. In Object-Oriented Design, objects are frequently scattered throughout memory. Accessing them requires "pointer-chasing" through class hierarchies, leading to frequent cache misses and significant performance penalties in contemporary CPU architectures.
 On the other hand, in Data-Oriented Design components of an identical type are stored contiguously in memory. When a system processes these components the CPU can accurately predict the next data address and pre-load it into the cache. This maximizes cache coherency, facilitating rapid, linear iteration over thousands of entities.
 
-\subsection{The Three Pillars of ECS}
+\section[Pillars]{The Three Pillars of ECS}
 
 As the name suggests, the ECS pattern consists of three main functional layers:
 
@@ -42,7 +36,3 @@ While ECS provides the performance requisite for systems like UE Mass, it introd
     \item Decoupling Overhead: the radical separation of data can lead to "component bloat" if the granularity is not managed carefully, potentially resulting in repetitive or trivial data structures.
     \item Mentality Shift: transitioning from an object-centric logic to Data-Oriented paradigm requires a fundamental shift in how developers conceptualize program flow and state management. This shift takes time, and the steep learning curve may not be strategically feasible for all production timelines or team structures.
 \end{itemize}
-
-\section[Struttura della tesi]{Mass Overview} % ok with fontsize=12pt
-
-Lorem ipsum dolor sit amet:
