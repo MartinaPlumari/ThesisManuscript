@@ -7,7 +7,7 @@ At its core, ECS shifts the focus from "what an object is" to "what data it poss
 
 This chapter first analyses the Entity–Component–System architectural pattern and the reasons it can offer performance advantages over the traditional object-oriented paradigm. It then examins the trade-offs of this type of design compared to the object-oriented one.
 % use [] to set name for ToC
-\section[DOD]{Object-Oriented vs Data-Oriented Design} % ok with fontsize=12pt
+\section{Object-Oriented vs Data-Oriented Design} % ok with fontsize=12pt
 
 To understand why ECS has become the industry standard for mass-scaled simulations, we must compare it to the traditional Object-Oriented Design (OOD).
 
@@ -17,7 +17,7 @@ On the other hand, DOD favors composition; in this case, rather than defining wh
 The primary driver for DOD is data locality. Modern CPU speeds vastly outpace memory access times; consequently, performance is often throttled by "memory latency", the delaay incurred when fetching data from RAM. In Object-Oriented Design, objects are frequently scattered throughout memory. Accessing them requires "pointer-chasing" through class hierarchies, leading to frequent cache misses and significant performance penalties in contemporary CPU architectures.
 On the other hand, in Data-Oriented Design components of an identical type are stored contiguously in memory. When a system processes these components the CPU can accurately predict the next data address and pre-load it into the cache. This maximizes cache coherency, facilitating rapid, linear iteration over thousands of entities.
 
-\section[Pillars]{The Three Pillars of ECS}
+\section{The Three Pillars of ECS}
 
 As the name suggests, the ECS pattern consists of three main functional layers:
 
@@ -27,7 +27,7 @@ As the name suggests, the ECS pattern consists of three main functional layers:
     \item System: it represents the logic layer of the architecture. Systems are independent units that operate over filtered collections of components by means of declarative queries. Because systems operate on dense arrays with explicit data dependencies, they are inherently suited for multi-threaded execution, allowing the engine to distribute workloads across CPU cores with minimal synchronization overhead.
 \end{itemize}
 
-\subsection{Trade-offs}
+\subsection{Trade-offs Analysis}
 
 While ECS provides the performance requisite for systems like UE Mass, it introduces specific architectural trade-offs:
 

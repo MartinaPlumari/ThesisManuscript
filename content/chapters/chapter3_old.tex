@@ -1,4 +1,4 @@
-\chapter{Unreal Engine Mass}
+\chapter{Ureal Engine Mass}
 \label{sec:introduction}
 
 While the Entity Component System is a theoretical pattern, Mass is Unreal Engine’s specific framework for data-oriented calculations and high-performance simulations. It does not replace the traditional Actor-based system; instead, it provides a parallel infrastructure capable of processing a large number of entities with minimal CPU overhead.
@@ -8,87 +8,30 @@ In this chapter we are going to explore the declination of the ECS pattern in th
 % use [] to set name for ToC
 \section[MassEntity]{MassEntity} % ok with fontsize=12pt
 
-At the heart of Mass system lies MassEntity, the core module responsible for the framework’s low-level heavy lifting. It manages the execution pipeline, entity lifecycle and the specialized memory layouts required for high-performance computing. Initially introduced as a plugin, MassEntity was integrated into the core engine as of UE5.5, with the standalone plugin version now deprecated.
+At the heart of Mass system lies MassEntity, the core module responsible for the framework’s low-level heavy lifting. It manages the execution pipeline, entity lifecycle and the specialized memory layouts required for high-performance computing. MassEntity was firstly introduced as a plugin, but has been moved into the core engine as of UE5.5 and is now deprecated as standalone. 
 
-Within MassEntity, we find specialized implementation of the three pillars of the ECS pattern:
+In the following sections we analyse the data structures, memory organization as well as the logic execution of the Mass framework.
+
+\subsection{Data Structures: Fragments and Tags}
+
+MassEntity redefines the standard ECS Component into more specialized structures to optimize memory and filtering.
 
 \begin{itemize}
-    \item Entities: Unique identifiers that represent individual simulated objects
-    \item Fragments: Logic-less data structures that serve the role of Components, storing the entity’s data
-    \item Processors: Highly optimized logic units that act as Systems, operating on specific sets of Fragments.
+    \item Fragments: they are the primary data structure in MassEntity. A Fragment represents an atomic unit of data (e.g. Transform, Velocity, LOD index). In alignment with the ECS paradigm, Fragments are logic-less and exist only to store state.
+    \item Shared Fragments: 
+    \item Chunk Fragments: unlike standard Fragments associated with a specific Entity, a ChunkFragment is associated with a Memory Chunk. These are used to store data shared by all entities within that chunk, such as communal Level of Detail (LOD) calculation, reducing redundant data processing.
+    \item Tags: these are trivial Fragments that contain no data. Their presence or absence on an Entity serves as a high-performance filter for the queries.
 \end{itemize}
-
-In the following sections, we will present an overview of the software architecture of Mass Entity, focusing on data structures, memoy organization and logic execution to illustrate how these core ECS concepts are implemented within framework. Following this high-level overview, we will dive deeper in the analysis of each element, providing practical code examples to demonstrate their implementation and interaction.
-
-\subsection{Entities}
-
-In the Mass framework, an Entity is a lightweight, unique identifier rather than a data-carrying object. 
-It serves as a hook to associate various fragments within the Mass database.
-
-When an entity is created, the \texttt{MassEntitySubsystem} assigns it an index and a serial number used to prevent dangling references if the entity is destroyed. This abstraction allows the engine to treat entities as transient, high-performance entries in a table.
 
 \subsection{Memory Organization: Archetypes and Chunks}
 
-In Mass Framework, an Archetype is the logical grouping of entities sharing an identical composition of Fragments and Tags (\texttt{FMassArchetypeData}). As entities dynamically gain or lose fragments at runtime, they are migrated between Archetypes. This structural consistency allows the engine to bypass the pointer-chasing common in Object-Oriented Programming (OOP) in favor of linear memory access.
+The performance of MassEntity is largely a result of its Archetype-based storage system, which organizes data to maximize CPU cache efficiency.
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{images/ArchetypeSchema.png}
-\caption{Logical grouping of entities into Archetypes based on fragment composition.}
-\end{figure}
-
-To optimize for CPU cache coherency, Mass organizes Archetype data into Chunks (\texttt{FMassArchetypeChunk}). A Chunk is a fixed-size memory block that serves as the fundamental unit of both memory allocation and parallel execution. Each Archetype holds an array of Chunks with fragment data and each chunk contains fragments referring to a subset of entities belonging to the archetype.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{images/ChunkSchema.png}
-\caption{Logical organization of Archetype-related data in chunks. Different colors of rows correspond to different fragments while the numbers refer to the Entity ID}
-\end{figure}
-
-To facilitate rapid filtering and query matching, the archetype structure incorporates a bitset representation of its composition. Each bit in this mask corresponds to a specific fragment or tag type. If a bit is set, the archetype contains that component. This bitmasking approach allows the \texttt{MassEntitySubsystem} to perform constant-time validation when determines if an archetype satisfies the requirements of a processor's \texttt{FMassEntityQuery}.
-
-The default size of the memory block is defined in UMassEntitySettings and it is equal to 128 KB. This size has been established based on current generation caches and could change in future versions of the engine.
-
-Rather than storing all fragments of a single type for an entire Archetype in one massive array, Mass partitions the Archetypes into these 128 KB blocks. Within each chunk, data is organized as struct of arrays, assigning a block of memory to each type of Fragment and Tag instances.
-
-By sizing chunks to fit within modern L2 or L3 caches, Mass ensures that when a processor requests multiple fragments for an entity, the entire row of data is likely already in the cache.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=1.0\textwidth]{images/ChunkMemorySchema.png}
-\caption{The image shows why it is convenient to have chunks sized to fit the cache rather than a single array structure for the whole Archetype.}
-\end{figure}
-
-Furthermore, Chunks facilitate safe multi-threading. the MassEntitySubsystem can distribute individual chunks across different CPU cores via the Task Graph, ensuring that no two threads attempt to write to the same memory block simultaneously.
-
-Because the ChunkMemorySize is a fixed constant, the entity density is inversely proportional to the total size of the fragments. Having slim entities means that we can fit more entities in the chunk, improving cache efficiency by reducing the management overhead. When designing fragments, developers should aim for granularity. Large monolithic fragments reduce the number of entities per chunk, potentially dropping the density to a point where the overhead of chunk-level iteration negates the performance gains of the ECS architecture.
-
-
-\subsection{Fragments and Tags}
-
-Fragments constitute the atomic data units of the Mass Framework. Unlike traditional class properties, fragments are implemented as lightweight \texttt{USTRUCTs} inheriting from \texttt{FMassFragment} and contain no logic, serving strictly as data containers. By decoupling data from behavior, Mass allows for highly flexible entity composition and optimal memory alignment.
-
-While generic fragments are unique to each entity, the framework provides specialized fragment types to optimize memory footprint and group-level data management.
-
-\subsubsection{Entity Fragments}
-
-The standard fragment type stored in rows within a chunk. Each entity has its own instance of this data (e.g. \texttt{FTransformFragment}), allowing for unique per-entity state.
-
-\begin{verbatim}
-USTRUCT()
-struct FSimpleMovementFragment : public FMassFragment
-{
-	GENERATED_BODY()
-	FVector InitialTarget;
-	float Velocity;
-};
-\end{verbatim}
-
-\subsubsection{Chunk Fragments}
-
-\subsubsection{Shared Fragments}
-
-\subsubsection{Tags}
+\begin{itemize}
+    \item Entities and Composition: an Entity in Mass is a unique ID associated with a collection of Fragments. Mirroring the composition pattern, an Entity’s makeup is dynamic and Fragments can be added or removed at runtime to change the Entity’s behavior or state.
+    \item Archetypes: when multiple Entities share an identical Fragment composition, they are grouped into an Archetype. If one Entity has `[Transform, Velocity]` and another has `[Transform, Velocity, Health]`, they belong to two different Archetypes. This categorization allows the engine to predict exactly how data is laid out in memory.
+    \item Memory Chunks: within an Archetype, Entities are stored in contiguous memory blocks called Chunks, optimized for current cache sizes. By grouping similarly composed entities together, Mass ensures that the CPU can retrieve and process batches of data in a single linear pass, significantly reducing the time spent waiting for RAM fetches.
+\end{itemize}
 
 \subsection{Logic Execution: Processors and Queries}
 

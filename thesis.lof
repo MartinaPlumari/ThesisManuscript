@@ -5,3 +5,6 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Logical grouping of entities into Archetypes based on fragment composition.}}{7}{figure.caption.2}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Logical organization of Archetype-related data in chunks. Different colors of rows correspond to different fragments while the numbers refer to the Entity ID}}{8}{figure.caption.3}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces The image shows why it is convenient to have chunks sized to fit the cache rather than a single array structure for the whole Archetype.}}{9}{figure.caption.4}%
