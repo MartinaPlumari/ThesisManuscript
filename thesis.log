@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.1) (preloaded format=pdflatex 2026.2.8)  2 MAR 2026 17:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.1) (preloaded format=pdflatex 2026.2.8)  2 MAR 2026 22:59
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1463,7 +1463,7 @@ Package translations Info: loading dictionary `translations-basic-dictionary' fo
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<images/logo/polito_logo_2021_blu-2-2.jpg, id=74, 845.3181pt x 326.4195pt>
+<images/logo/polito_logo_2021_blu-2-2.jpg, id=94, 845.3181pt x 326.4195pt>
 File: images/logo/polito_logo_2021_blu-2-2.jpg Graphic file (type jpg)
 <use images/logo/polito_logo_2021_blu-2-2.jpg>
 Package pdftex.def Info: images/logo/polito_logo_2021_blu-2-2.jpg  used on input line 6.
@@ -1580,12 +1580,12 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<images/ArchetypeSchema.png, id=129, 1404.24625pt x 458.71375pt>
+<images/ArchetypeSchema.png, id=188, 1404.24625pt x 458.71375pt>
 File: images/ArchetypeSchema.png Graphic file (type png)
 <use images/ArchetypeSchema.png>
 Package pdftex.def Info: images/ArchetypeSchema.png  used on input line 36.
 (pdftex.def)             Requested size: 334.60422pt x 109.30261pt.
-<images/ChunkSchema.png, id=130, 1353.055pt x 690.58pt>
+<images/ChunkSchema.png, id=189, 1353.055pt x 690.58pt>
 File: images/ChunkSchema.png Graphic file (type png)
 <use images/ChunkSchema.png>
 Package pdftex.def Info: images/ChunkSchema.png  used on input line 44.
@@ -1595,7 +1595,7 @@ Package pdftex.def Info: images/ChunkSchema.png  used on input line 44.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [7 <./images/ArchetypeSchema.png (PNG copy)>]
-<images/ChunkMemorySchema.png, id=138, 1567.8575pt x 570.13pt>
+<images/ChunkMemorySchema.png, id=196, 1567.8575pt x 570.13pt>
 File: images/ChunkMemorySchema.png Graphic file (type png)
 <use images/ChunkMemorySchema.png>
 Package pdftex.def Info: images/ChunkMemorySchema.png  used on input line 58.
@@ -1625,27 +1625,37 @@ Overfull \hbox (6.76169pt too wide) in paragraph at lines 193--194
  []
 
 [13]
-<images/MassEntityConfig.png, id=236, 1443.14156pt x 487.8225pt>
+<images/MassEntityConfig.png, id=292, 1443.14156pt x 487.8225pt>
 File: images/MassEntityConfig.png Graphic file (type png)
 <use images/MassEntityConfig.png>
-Package pdftex.def Info: images/MassEntityConfig.png  used on input line 199.
+Package pdftex.def Info: images/MassEntityConfig.png  used on input line 214.
 (pdftex.def)             Requested size: 418.25368pt x 141.37558pt.
-<images/AssortedFragments.png, id=238, 1060.71281pt x 109.1578pt>
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<images/AssortedFragments.png, id=294, 1060.71281pt x 109.1578pt>
 File: images/AssortedFragments.png Graphic file (type png)
 <use images/AssortedFragments.png>
-Package pdftex.def Info: images/AssortedFragments.png  used on input line 207.
+Package pdftex.def Info: images/AssortedFragments.png  used on input line 222.
 (pdftex.def)             Requested size: 418.25368pt x 43.04272pt.
- [14 <./images/MassEntityConfig.png> <./images/AssortedFragments.png>]
-Underfull \hbox (badness 2253) in paragraph at lines 233--233
-[]|\T1/lmr/m/n/12 (+20) Logic that runs con-cur-rently with
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[14]
+Underfull \hbox (badness 1033) in paragraph at lines 247--247
+[]|\T1/lmr/m/n/12 (+20) Logic that runs con-cur-rently
  []
 
 
-Overfull \hbox (33.08148pt too wide) in paragraph at lines 228--238
- [][] |
+Underfull \hbox (badness 2608) in paragraph at lines 247--247
+\T1/lmr/m/n/12 (+20) with the physics sim-u-la-tion,
  []
 
-[15] [16] [17]) [18]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[15 <./images/MassEntityConfig.png> <./images/AssortedFragments.png>] [16] [17] [18]) [19] [20]
 
 LaTeX Warning: Empty bibliography on input line 125.
 
@@ -1666,30 +1676,24 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 LaTeX Warning: There were multiply-defined labels.
 
-
-Package rerunfilecheck Warning: File `thesis.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `thesis.out':
-(rerunfilecheck)             Before: F95849D7B40825F120DBA24265A03EA8;2694
-(rerunfilecheck)             After:  14CC874F0EE1071F9F1A3834626332DE;3364.
+Package rerunfilecheck Info: File `thesis.out' has not changed.
+(rerunfilecheck)             Checksum: 14CC874F0EE1071F9F1A3834626332DE;3364.
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 46451 strings out of 467866
- 933169 string characters out of 5418326
- 2226216 words of memory out of 5000000
- 74317 multiletter control sequences out of 15000+600000
- 748024 words of font info for 226 fonts, out of 8000000 for 9000
+ 46504 strings out of 467866
+ 934047 string characters out of 5418326
+ 2227317 words of memory out of 5000000
+ 74347 multiletter control sequences out of 15000+600000
+ 748412 words of font info for 230 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  138i,11n,135p,2618b,2767s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmro10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on thesis.pdf (24 pages, 3010156 bytes).
+Output written on thesis.pdf (26 pages, 3038338 bytes).
 PDF statistics:
- 343 PDF objects out of 1000 (max. 8388607)
- 121 named destinations out of 1000 (max. 500000)
- 70835 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 416 PDF objects out of 1000 (max. 8388607)
+ 136 named destinations out of 1000 (max. 500000)
+ 70875 words of extra memory for PDF output out of 74296 (max. 10000000)
 

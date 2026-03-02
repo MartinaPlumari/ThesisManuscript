@@ -192,6 +192,21 @@ protected:
 
 When the \texttt{MassEntitySubsystem} processes a trait, it executes the \texttt{BuildTemplate} function. During this phase, the trait contributes with its components to the entity template adding necessary fragments and tags to the archetype definition.
 
+Following this construction phase, traits can override \texttt{ValidateTemplate} to provide custom verification logic. \texttt{ValidateTemplate} is a function invoked for all traits once the template composition is complete. It allows native traits to audit the final \texttt{BuildContext}, log configuration errors, or perform last-minute adjustments to ensure structural integrity. By separating construction from validation, the framework ensures that any missing dependencies or invalid parameters are caught in the Editor before the simulation begins, rather than causing runtime failures in the high-performance memory chunks. Here follows an example of template validation function from the \texttt{MassLODTrait.h} file:
+
+\begin{lstlisting}
+    bool UMassLODCollectorTrait::ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext, const UWorld& World, FAdditionalTraitRequirements& OutTraitRequirements) const
+{
+	// if bTestCollectorProcessor is set to true, we require MassLODCollectorProcessor to be enabled.
+	if (bTestCollectorProcessor && !ValidateRequiredProcessor(this, UMassLODCollectorProcessor::StaticClass()))
+	{
+		return false;
+	}
+
+	return Super::ValidateTemplate(BuildContext, World, OutTraitRequirements);
+}
+\end{lstlisting}
+
 Traits are primarily utilized during the construction of an \texttt{FMassEntityTemplate}, which is authored via a \texttt{UMassEntityConfigAsset}. This specialized Data Asset acts as a high-level container where designers can aggregate various traits to define an entity's composition and behavior. They often contain parameters that can be edited in the editor tab which are then used to populate the initial values of the fragments.
 
 \begin{figure}[h]
@@ -220,38 +235,68 @@ By default, any class deriving from \texttt{UMassProcessor}  is automatically re
 
 By default, processors are added to the \texttt{PrePhysics} phase, but developers can redistribute them to optimize parallelization or satisfy data dependencies.
 
-
 \begin{table}[h]
     \centering
     \caption{Unreal Engine 5 Mass Processing Phases and Tick Groups}
     \label{tab:ue5_tick_groups}
-    \begin{tabular}{|l|l|p{7cm}|}
+    \begin{tabular}{|l|l|p{5.7cm}|}
         \hline
         \textbf{Processing Phase} & \textbf{Unreal Tick Group} & \textbf{Description} \\ \hline
         PrePhysics & \texttt{TG\_PrePhysics} & The default phase. Used for logic that sets up movement or state before the physics engine runs. \\ \hline
         StartPhysics & \texttt{TG\_StartPhysics} & A specialized phase that marks the beginning of the physics simulation. \\ \hline
-        DuringPhysics & \texttt{TG\_DuringPhysics} & Logic that runs concurrently with the physics simulation, ideal for non-colliding visual logic or calculations that don't depend on current-frame physics results. \\ \hline
+        DuringPhysics & \texttt{TG\_DuringPhysics} & Logic that runs concurrently with the physics simulation, ideal for calculations that don't depend on current-frame physics results. \\ \hline
         EndPhysics & \texttt{TG\_EndPhysics} & A phase used to finalize physics-related calculations. \\ \hline
         PostPhysics & \texttt{TG\_PostPhysics} & Used for logic that depends on physics results, such as updating transforms based on collision or rigid body movement. \\ \hline
         FrameEnd & \texttt{TG\_LastDemotable} & A catch-all phase for cleanup or low-priority logic that can be deferred to the end of the frame. \\ \hline
     \end{tabular}
 \end{table}
 
-
-The System element of the ECS pattern is represented in Unreal Engine by Processors.
-
-Processors are stateless classes that house the simulation logic. They are designed to be data-agnostic, meaning they do not operate on individual entities one by one, but rather on streams of data.
-
-They use EntityQueries to define their data requirements (e.g. “Provide all entities that have a Velocity Fragment but do not have and Enemy Tag”). The query fetches the data in batches from the Chunks, allowing the Processor to execute logic across thousands of entities with maximum efficiency and high potential for parallelization.
-
-Accordingly to the memory organization articulated in the previous section, processors cover a chunk of entities in an archetype. The execution flow of Mass Processors follows this steps:
+While it may appear that a processor iterates over every entity simultaneously, the execution is actually performed in batches based on the memory organization of Chunks and Archetypes we previously analyzed. The standard execution flow follows these steps:
 
 \begin{enumerate}
-    \item Each processor starts by configuring an entity query which adds requirements that will be used for filtering entities. Requirements can be put on tags, fragments, shared fragments, chunk fragments and even subsystems.
-    \item Processors then batch the updates for the chunk of entities by calling ForEachEntityChunk. This is where Chunk Fragments are use, since a single chunk fragment can be used across all the entities in the chunk.
-    \item The MassEntityQuery matches the requirements with the archetypes and can filter out chunks of matching archetypes based on chunk fragment filters. Requirements are usually put on the presence of a given tag or fragment in the archetype, but they can be also used to filter based on the absence of them.
-    \item After filtering, the MassEntityQuery triggers a function on each chunk of entities, and the individual entities of the chunk can be accessed via the FMassExecutionContext. Most of the plugin code makes use of lambda expressions when executing ForEachentityChunk.
+    \item \textbf{Cofiguration:} in the \texttt{ConfigureQueries} function the processor defines its data requirements using one or more query.
+    \item \textbf{Filtering:} the query matches the requirements against the existing archetypes. Entire chunks are skipped if they do not meet the criteria.
+    \item \textbf{Iteration:} the processor calls \texttt{ForEachEntityChunk}. For every matching chunk, a lambda function is executed.
+    \item \textbf{Contextual Access:} within the lambda, the processor uses the Mass Execution Context to access fragment views (arrays of data) and perform calculations.
 \end{enumerate}
+
+%ESEMPIO DI CODICE + GUARDA MASS SAMPLE PER REFERENCE E CONFRONTA
+
+\subsubsection{Mass Entity Queries}
+
+The \texttt{FMassEntityQuery} is the mechanism used to filter and fetch data. Queries are highly optimized to perform bitwise comparisons against archetype bitsets, ensuring that the processor only touches relevant memory.
+
+To maximize parallelization and cache efficiency, queries define precisely how they intend to interact with data. These are categorized into Access and Presence requirements.
+Access requirements define the lock type on the data:
+
+\begin{itemize}
+    \item \textbf{ReadOnly:} the processor will only read the data, allowing other read-only processors to access it simultaneously.
+    \item \textbf{ReadWrite:} the processor intends to modify the data, requiring exclusive access to prevent race conditions.
+\end{itemize}
+
+% ESEMPIO CODICE + GUARDA MASS SAMPLE E CONFRONTA
+
+Presence requirements define the filtering rules:
+
+\begin{itemize}
+    \item \textbf{All:} it mandates that an entity possess every specified fragments and tags in the query. It acts as a strict logical \texttt{AND} filter.
+    \item \textbf{Any:} it mandates that an entity posses at leas one of the specified fragment and tags. It acts as a logical \texttt{OR} filter.
+    \item \textbf{None:} it excludes archetypes that contain these components. This is ideal for state changes, for example a Movement processor that needs to ignore entities with a \texttt{Dead} tag.
+    \item \textbf{Optional:} it accesses the data if it exists, but does not filter out the entity if it is missing.
+\end{itemize}
+
+\subsubsection{Observer Processor}
+
+%CONTROLLARE. SCRITTO DA GEMINI
+While standard processors run every frame, Observer Processors (inheriting from UMassObserverProcessor) are event-driven. They respond to structural changes in the entity's lifecycle.
+
+Observers are tied to specific Operations on fragments or tags:
+
+OnAdded: Triggered when a component is added to an entity.
+
+OnRemoved: Triggered when a component is removed.
+
+This is critical for initialization and cleanup logic. For example, an observer might listen for the addition of a FTransformFragment to register the entity with a spatial grid, or listen for the removal of a FHealthFragment to trigger a death animation or VFX. By using observers, the system avoids "polling" (checking every entity every frame for a change) and instead reacts only when the change occurs.
 
 \section{Additional Mass Plugins}
 On top of the MassEntity core, Epic has developed several plugins that enable useful processors and traits for given known tasks. All these plugins in Unreal Engine 5.6 are marked as experimental, meaning that they could be subject to changes in the next future and should be used with care for projects ment for shipping.
