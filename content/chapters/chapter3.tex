@@ -63,6 +63,19 @@ Furthermore, Chunks facilitate safe multi-threading. the MassEntitySubsystem can
 
 Because the ChunkMemorySize is a fixed constant, the entity density is inversely proportional to the total size of the fragments. Having slim entities means that we can fit more entities in the chunk, improving cache efficiency by reducing the management overhead. When designing fragments, developers should aim for granularity. Large monolithic fragments reduce the number of entities per chunk, potentially dropping the density to a point where the overhead of chunk-level iteration negates the performance gains of the ECS architecture.
 
+\subsection{Mass Execution Environment}
+
+To coordinate the complex relationship between archetypes, chunks, and entities, Mass utilizes a centralized management layer consisting of the \texttt{UMassEntitySubsystem} and the \texttt{FMassEntityManager}.
+
+The \texttt{FMassEntityManager} acts as the low-level data authority. It maintains the global registry of all active archetypes and provides the logic for structural changes, such as adding or removing fragments and archetype migration. By centralizing these operations, the manager ensures that memory remains contiguous and that entity handles (\texttt{FMassEntityHandle}) remain valid throughout their lifecycle.
+
+Surrounding the manager is the \texttt{UMassEntitySubsystem}, a \texttt{UWorldSubsystem}\footnote{A World Subsystem in Unreal Engine is a singleton-like class that is automatically managed by the engine and tied directly to the lifecycle of a \texttt{UWorld} instance.}. that provides a stable API for the rest of the engine. It facilitates the baking of \texttt{FMassEntityTemplates} and manages the lifecycle of the simulation relative to the \texttt{UWorld}. Together, these components serve as the backbone of the framework, translating high-level commands into the low-level memory operations that define the Mass Framework's performance characteristics.
+
+\subsection{Entity Processing and Interaction}
+
+To maintain the integrity of the linear memory chunks during multi-threaded execution, Mass employs a deferred-mutation pattern via the Mass Command Buffer. Structural changes, such as spawning entities, destroying them, or altering their archetype through the addition or removal of fragments, are not executed immediately by processors. Instead, these requests are queued as Commands. At designated synchronization points in the frame, the \texttt{FMassEntityManager} flushes these buffers, performing the memory-intensive migrations in a batch. This prevents race conditions and ensures that pointers to fragment data remains valid throughout the duration of a processing task.
+
+While processors typically operate on entire batches of entities, individual entity interaction is facilitated through the Entity View (\texttt{FMassEntityView}). Because fragments are stored in raw memory buffers, they cannot be accessed through standard pointer dereferencing from an entity handle. The Entity View acts as a transient window into a specific entity's data, resolving the \texttt{FMassEntityHandle} into a structured set of pointers for its constituent fragments. This provides a type-safe interface for logic that must operate outside of the standard batch-processing pipeline without sacrificing the performance benefits of the underlying ECS architecture.
 
 \subsection{Fragments and Tags}
 
@@ -74,7 +87,8 @@ While generic fragments are unique to each entity, the framework provides specia
 
 The standard fragment type stored in rows within a chunk. Each entity has its own instance of this data (e.g. \texttt{FTransformFragment}), allowing for unique per-entity state.
 
-\begin{verbatim}
+\begin{lstlisting}
+
 USTRUCT()
 struct FSimpleMovementFragment : public FMassFragment
 {
@@ -82,15 +96,147 @@ struct FSimpleMovementFragment : public FMassFragment
 	FVector InitialTarget;
 	float Velocity;
 };
-\end{verbatim}
+
+\end{lstlisting}
+
+The design of individual fragments should strictly adhere to the principle of locality, where data is grouped according to its specific access pattern or functional aspect. For instance, a \texttt{FSimpleMovementFragment}, such as the one in the code example above, should ideally only contain variables relevant to spatial translation, such as \texttt{InitialTarget} and \texttt{Velocity}. 
+
+Integrating unrelated variables into a single monolithic fragment introduces several architectural inefficiencies:
+
+\begin{enumerate}
+\item \textbf{Cache Line Pollution:} CPUs fetch data from memory in fixed-size lines. If a movement processor iterates through a fragment that contains many variables to access velocity data, the CPU is forced to load the adjacent, unrelated variables into the cache. This results in polluted cache lines where a significant portion of the high-speed memory is occupied by data that will not be necessary for execution, effectively wasting memory bandwidth.
+
+\item \textbf{Decreased Entity Density:} Because \texttt{ChunkMemorySize} is a fixed constant, the number of entities that can coexist within a single chunk is inversely proportional to the total size of its fragments. Increasing the memory footprint of a fragment directly reduces entity density, necessitating more frequent chunk-switching and increasing the management overhead per entity.
+
+\item \textbf{Parallelization Constraints:} The Mass Framework achieves high performance through concurrent execution, where different processors can operate on different fragments of the same entity simultaneously. If disparate variables, such as \texttt{Health} and \texttt{Velocity}, are defined in a single fragment, a processor modifying health will effectively lock the entire fragment. This creates a data dependency that prevents a movement processor from accessing the velocity data in parallel, forcing sequential execution or requiring complex synchronization overhead that negates the benefits of the ECS architecture.
+
+\item \textbf{Structural Change Overhead:} Entities in Mass are dynamic; adding or removing fragments triggers a migration to a new Archetype. This process involves a memory copy of the entity's existing fragments. Monolithic fragments significantly increase the volume of data that must be shuffled during these structural changes, even if the modification only involves a single, small variable.
+
+\end{enumerate}
 
 \subsubsection{Chunk Fragments}
 
+These fragments (\texttt{FMassChunkFragment}) are stored once per chunk rather than once per entity. They are ideal for data that is identical for every entity within a specific memory block, such as Level-of-Detail (LOD) information or spatial bounds. By updating a single chunk fragment, a processor can effectively update the state of hundreds of entities simultaneously.
+
 \subsubsection{Shared Fragments}
+
+Shared fragments (\texttt{FMassSharedFragment}) represent data that is common across multiple chunks or even multiple archetypes. They are stored in a central registry and referenced via a handle, making them highly efficient for constant data, such as a shared mesh reference or a global movement configuration, that rarely changes. Here is an example of shared fragment that contains the Player’s position:
+
+\begin{lstlisting}
+
+USTRUCT(BlueprintType)
+struct FCurrentPlayerPositionFragment : public FMassSharedFragment
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FVector PlayerPosition;
+};
+
+\end{lstlisting}
 
 \subsubsection{Tags}
 
-\subsection{Logic Execution: Processors and Queries}
+Implemented via \texttt{FMassTag}, tags are zero-sized fragments that carry no data, having no member properties. They exist solely as bits within the archetype's \texttt{FMassTagBitSet}. They are used for high-speed categorization and filtering, allowing processors to include or exclude entities based on boolean-like markers without increasing memory consumption. 
+
+To define a custom tag, a developer simply inherits from \texttt{FMassTag}, ensuring the struct remains empty:
+
+\begin{lstlisting}
+
+USTRUCT()
+struct FDeadTag : public FMassTag
+{
+    GENERATED_BODY()
+};
+
+\end{lstlisting}
+
+\subsection{Traits}
+
+While fragments and tags provide the low-level data structures for the ECS, traits serve as the high-level configuration layer that bridges the gap between the Unreal Editor and the ECS backend. A trait acts as a high-level recipe that specifies which fragments, tags and shared data should be attached to an entity. This abstraction allows designers to compose complex agents behavior, such as crowd movement, avoidance or visualization, without directly interacting with the underlying implementation.
+
+A trait is implemented in C++ by inheriting from \texttt{UMassEntityTrait} and overriding the \texttt{BuildTemplate} function:
+
+\begin{lstlisting}
+
+UCLASS(meta = (DisplayName = "NPC Horde Movement"))
+class NPCHORDE_API UNPCMovementTrait : public UMassEntityTraitBase
+{
+    GENERATED_BODY()
+
+protected:
+    virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override
+    {
+        FMassEntityManager& EntityManager = 
+                UE::Mass::Utils::GetEntityManagerChecked(World);
+
+        // Ensuring another trait provides this fragment
+        BuildContext.RequireFragment<FTransformFragment>();
+
+        // Adding a Fragment
+        BuildContext.AddFragment<FSimpleMovementFragment>();
+
+        // Adding a Tag
+        BuildContext.AddTag<FMovingTag>();
+
+        // Creating and adding a shared fragment
+        const FConstSharedStruct RandomMovementFragment = EntityManager.GetOrCreateConstSharedFragment(RandomMovement);
+        BuildContext.AddConstSharedFragment(RandomMovementFragment);
+    }
+
+    UPROPERTY(Category = "Movement", EditAnywhere, meta = (EditInline))
+    FMassMovementParameters RandomMovement;
+};
+
+\end{lstlisting}
+
+When the \texttt{MassEntitySubsystem} processes a trait, it executes the \texttt{BuildTemplate} function. During this phase, the trait contributes with its components to the entity template adding necessary fragments and tags to the archetype definition.
+
+Traits are primarily utilized during the construction of an \texttt{FMassEntityTemplate}, which is authored via a \texttt{UMassEntityConfigAsset}. This specialized Data Asset acts as a high-level container where designers can aggregate various traits to define an entity's composition and behavior. They often contain parameters that can be edited in the editor tab which are then used to populate the initial values of the fragments.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{images/MassEntityConfig.png}
+\caption{Example of Mass Entity Config Asset defining an Entity via editor. It is possible to create one by clicking on the "Add" button in the content drawer, selecting Data Asset and then choosing Mass Entity Config Asset.}
+\end{figure}
+
+While custom C++ traits offer the most control, the Mass Framework provides versatile built-in traits to streamline the development workflow. A notable example is the Assorted Fragments Trait (\texttt{UMassAssortedFragmentsTrait}). This trait utilizes an array of \texttt{FInstancedStructs}, allowing designers to add fragments directly within the Unreal Editor.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{images/AssortedFragments.png}
+\caption{Example of Assorted Fragment trait use.}
+\end{figure}
+
+Unlike standard Actor Components, traits do not exist at runtime once the entity has been spawned but are Editor-time construction tools. Once the simulation begins, the trait’s responsibility ends, and the entity exists purely as a collection of fragments and tags. This ensures that the high-level flexibility of the Unreal Editor does not compromise the efficiency of the simulation.
+
+\subsection{Processors and Queries}
+
+The System element of the ECS pattern is represented in Unreal Engine by Processors. 
+
+Processors are stateless classes (inheriting from \texttt{UMassProcessor}) that house the simulation logic. They are designed to be data-agnostic, meaning they do not operate on individual entities one by one, but rather on streams of data provided by the Entity Manager.
+
+By default, any class deriving from \texttt{UMassProcessor}  is automatically registered with the Mass Framework. To ensure synchronization with the rest of the Unreal Engine ecosystem (such as Physics, Animation, and Networking), the Mass Framework organizes processors into Processing Phases. Each phase is mapped to a specific \texttt{ETickingGroup}, which dictates when the Mass logic will execute relative to the rest of the engine's frame logic.
+
+By default, processors are added to the \texttt{PrePhysics} phase, but developers can redistribute them to optimize parallelization or satisfy data dependencies.
+
+
+\begin{table}[h]
+    \centering
+    \caption{Unreal Engine 5 Mass Processing Phases and Tick Groups}
+    \label{tab:ue5_tick_groups}
+    \begin{tabular}{|l|l|p{7cm}|}
+        \hline
+        \textbf{Processing Phase} & \textbf{Unreal Tick Group} & \textbf{Description} \\ \hline
+        PrePhysics & \texttt{TG\_PrePhysics} & The default phase. Used for logic that sets up movement or state before the physics engine runs. \\ \hline
+        StartPhysics & \texttt{TG\_StartPhysics} & A specialized phase that marks the beginning of the physics simulation. \\ \hline
+        DuringPhysics & \texttt{TG\_DuringPhysics} & Logic that runs concurrently with the physics simulation, ideal for non-colliding visual logic or calculations that don't depend on current-frame physics results. \\ \hline
+        EndPhysics & \texttt{TG\_EndPhysics} & A phase used to finalize physics-related calculations. \\ \hline
+        PostPhysics & \texttt{TG\_PostPhysics} & Used for logic that depends on physics results, such as updating transforms based on collision or rigid body movement. \\ \hline
+        FrameEnd & \texttt{TG\_LastDemotable} & A catch-all phase for cleanup or low-priority logic that can be deferred to the end of the frame. \\ \hline
+    \end{tabular}
+\end{table}
+
 
 The System element of the ECS pattern is represented in Unreal Engine by Processors.
 
