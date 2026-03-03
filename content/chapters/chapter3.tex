@@ -229,7 +229,7 @@ Unlike standard Actor Components, traits do not exist at runtime once the entity
 
 The System element of the ECS pattern is represented in Unreal Engine by Processors. 
 
-Processors are stateless classes (inheriting from \texttt{UMassProcessor}) that house the simulation logic. They are designed to be data-agnostic, meaning they do not operate on individual entities one by one, but rather on streams of data provided by the Entity Manager.
+Processors are stateless classes (inheriting from \texttt{UMassProcessor}) that house the simulation logic. They are designed to be data-agnostic, meaning they do not operate on individual entities through isolated function calls, but rather on contiguous fragments provided by the Entity Manager. By utilizing one or more user-defined Queries, processors filter the global entity population into optimized batches, allowing for high-throughput execution across matching memory chunks.
 
 By default, any class deriving from \texttt{UMassProcessor}  is automatically registered with the Mass Framework. To ensure synchronization with the rest of the Unreal Engine ecosystem (such as Physics, Animation, and Networking), the Mass Framework organizes processors into Processing Phases. Each phase is mapped to a specific \texttt{ETickingGroup}, which dictates when the Mass logic will execute relative to the rest of the engine's frame logic.
 
@@ -251,22 +251,48 @@ By default, processors are added to the \texttt{PrePhysics} phase, but developer
     \end{tabular}
 \end{table}
 
-While it may appear that a processor iterates over every entity simultaneously, the execution is actually performed in batches based on the memory organization of Chunks and Archetypes we previously analyzed. The standard execution flow follows these steps:
+In their constructor, processors define the execution topology by specifying their processing phase and establishing relative execution rules (e.g., \texttt{ExecuteBefore} or \texttt{ExecuteAfter}). Furthermore, they utilize \textbf{Execution Flags} to restrict logic to specific environment types, such as dedicated servers, local clients, or standalone instances. 
+
+\begin{lstlisting}
+    UMyProcessor::UMyProcessor() : 
+        MyQuery(*this) // Link the query to this processor
+    {
+        // Enables automatic discovery and registration by the MassEntitySubsystem
+        bAutoRegisterWithProcessingPhases = true;
+        // Assigns execution to a specific engine tick group
+        ProcessingPhase = EMassProcessingPhase::PrePhysics;
+        // Organizes the processor within a specific functional simulation block
+        ExecutionOrder.ExecuteInGroup = UE::Mass::ProcessorGroupNames::Movement;
+        // Establishes an execution dependency on another processor
+        ExecutionOrder.ExecuteAfter.Add(TEXT("MyMovementProcessor"));
+        // Limits execution to specific network roles (Client or Standalone)
+        ExecutionFlags = (int32)(EProcessorExecutionFlags::Client | EProcessorExecutionFlags::Standalone);
+        // Disables multithreading to allow safe access to Game Thread-only APIs
+        bRequiresGameThreadExecution = true;
+    }
+\end{lstlisting}
+
+While the Mass Framework executes processors in parallel across multiple worker threads by default, they can be constrained to a single-threaded execution on the Game Thread by setting \texttt{bRequiresGameThreadExecution} to \texttt{true}. This configuration is essential for tasks that must interact with non-thread-safe Unreal Engine systems, such as spawning Actors or modifying UI components, which require a stable execution environment on the main thread.
+
+Users can aggregate processors into logical blocks called Processor Groups. Groups allow for a modular organization of the simulation logic. For example, a Movement group might contain separate processors for path following, steering, and avoidance. By assigning a processor to a group via \texttt{ExecuteInGroup}, developers can manage high-level simulation goals rather than individual class dependencies.
+The exact sequence of logic across these groups is enforced through the \texttt{ExecuteBefore} and \texttt{ExecuteAfter} constraints. These rules allow the framework to build a dependency graph during initialization. A Visualization Processor should always be set to \texttt{ExecuteAfter} the movement processor, to ensure that entities are rendered at their updated location.
+\newline
+
+Even if it may appear that a processor iterates over every entity simultaneously, the execution is actually performed in batches based on the memory organization of Chunks and Archetypes we previously analyzed. The standard execution flow follows these steps:
 
 \begin{enumerate}
-    \item \textbf{Cofiguration:} in the \texttt{ConfigureQueries} function the processor defines its data requirements using one or more query.
+    \item \textbf{Configuration:} in the \texttt{ConfigureQueries} function the processor defines its data requirements using one or more query.
     \item \textbf{Filtering:} the query matches the requirements against the existing archetypes. Entire chunks are skipped if they do not meet the criteria.
     \item \textbf{Iteration:} the processor calls \texttt{ForEachEntityChunk}. For every matching chunk, a lambda function is executed.
     \item \textbf{Contextual Access:} within the lambda, the processor uses the Mass Execution Context to access fragment views (arrays of data) and perform calculations.
 \end{enumerate}
 
-%ESEMPIO DI CODICE + GUARDA MASS SAMPLE PER REFERENCE E CONFRONTA
 
 \subsubsection{Mass Entity Queries}
 
-The \texttt{FMassEntityQuery} is the mechanism used to filter and fetch data. Queries are highly optimized to perform bitwise comparisons against archetype bitsets, ensuring that the processor only touches relevant memory.
+The \texttt{FMassEntityQuery} is the mechanism used to filter and fetch data based on the presence or absence of fragments and tags. Queries are highly optimized to perform bitwise comparisons against archetype bitsets, ensuring that the processor only touches relevant memory.
 
-To maximize parallelization and cache efficiency, queries define precisely how they intend to interact with data. These are categorized into Access and Presence requirements.
+To maximize parallelization and cache efficiency, queries define precisely how they intend to interact with data. These rules are categorized into Access and Presence requirements.
 Access requirements define the lock type on the data:
 
 \begin{itemize}
@@ -274,69 +300,131 @@ Access requirements define the lock type on the data:
     \item \textbf{ReadWrite:} the processor intends to modify the data, requiring exclusive access to prevent race conditions.
 \end{itemize}
 
-% ESEMPIO CODICE + GUARDA MASS SAMPLE E CONFRONTA
-
 Presence requirements define the filtering rules:
 
 \begin{itemize}
-    \item \textbf{All:} it mandates that an entity possess every specified fragments and tags in the query. It acts as a strict logical \texttt{AND} filter.
-    \item \textbf{Any:} it mandates that an entity posses at leas one of the specified fragment and tags. It acts as a logical \texttt{OR} filter.
-    \item \textbf{None:} it excludes archetypes that contain these components. This is ideal for state changes, for example a Movement processor that needs to ignore entities with a \texttt{Dead} tag.
+    \item \textbf{All:} it mandates that an entity possess every specified fragment and tag in the query. It acts as a strict logical \texttt{AND} filter. This is the default presence requirement.
+    \item \textbf{Any:} it mandates that an entity posses at least one of the specified fragment and tags. It acts as a logical \texttt{OR} filter.
+    \item \textbf{None:} it excludes archetypes that contain these components. This is ideal for state changes, for example a Movement processor that needs to ignore entities with a \texttt{DeadTag}.
     \item \textbf{Optional:} it accesses the data if it exists, but does not filter out the entity if it is missing.
 \end{itemize}
 
+To apply these filters and access rules, processors must override the \texttt{ConfigureQueries} function. This is where the \texttt{FMassEntityQuery} is structured before the execution phase begins.
+
+\begin{lstlisting}
+void UCheckPlayerProximityProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
+{
+	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite);
+	EntityQuery.AddRequirement<FMassMoveTargetFragment>(EMassFragmentAccess::ReadWrite);
+	EntityQuery.AddRequirement<FNPCEntityState>(EMassFragmentAccess::ReadWrite);
+	EntityQuery.AddRequirement<FMassRepresentationLODFragment>(EMassFragmentAccess::ReadOnly);
+	EntityQuery.AddSharedRequirement<FCurrentPlayerPositionFragment>(EMassFragmentAccess::ReadWrite);
+	EntityQuery.AddTagRequirement<FDeadTag>(EMassFragmentPresence::None);
+
+    //EntityQuery.RegisterWithProcessor(*this);
+}
+\end{lstlisting}
+
+Queries must be registered with the processor to be tracked by the execution pipeline. While the most common pattern is to initialize the \texttt{FMassEntityQuery} in the processor's constructor, passing \texttt{*this} as the owner, it is also possible to register it explicitly within the \texttt{ConfigureQueries} function. The syntax to use is the one commented in the last line of the previous code example.
+
+To process the filtered entities, the \texttt{Execute} function calls the query's \\ \texttt{ForEachEntityChunk} method. This function takes the execution context and a lambda expression, which defines the logic to be applied to each chunk matching the query's requirements.
+
+\begin{lstlisting}
+    
+void MyProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
+{
+	EntityQuery.ForEachEntityChunk(Context, 
+                [this](FMassExecutionContext& Context)
+		{
+            // Obtain view for the fragments
+			TArrayView<FTransformFragment> TransformList = Context.GetMutableFragmentView<FTransformFragment>();
+			TArrayView<FSimpleMovementFragment> SimpleMovementList = Context.GetMutableFragmentView<FSimpleMovementFragment>();
+
+            // Obtain the shared parameters from the shared fragment
+			const FSimpleRandomMovementParameters MovementParams = Context.GetConstSharedFragment<FSimpleRandomMovementParameters>();
+
+			for (int32 EntityIndex = 0; EntityIndex < Context.GetNumEntities(); EntityIndex++)
+			{
+				FTransform& Transform = TransformList[EntityIndex].GetMutableTransform();
+				FVector& MoveTarget = SimpleMovementList[EntityIndex].InitialTarget;
+
+				// ...Computation using fragment data
+			}
+		});
+}
+
+\end{lstlisting}
+
+\begin{table}[h]
+\centering
+\caption{Mass Execution Context Access Functions}
+\begin{tabular}{|l|l|p{4.7cm}|}
+\hline
+\textbf{Requirement} & \textbf{Function} & \textbf{Description} \\ \hline
+ReadOnly Fragment & \texttt{GetFragmentView} & Returns a \texttt{TConstArrayView} containing read-only fragment data. \\ \hline
+ReadWrite Fragment & \texttt{GetMutableFragmentView} & Returns a \texttt{TArrayView} for modifying fragment data. \\ \hline
+ReadOnly Shared & \texttt{GetConstSharedFragment} & Returns a constant reference to a shared fragment. \\ \hline
+ReadWrite Shared & \texttt{GetMutableSharedFragment} & Returns a mutable reference to a shared fragment. \\ \hline
+ReadOnly Subsystem & \texttt{GetSubsystemChecked} & Returns a constant reference to a world subsystem. \\ \hline
+ReadWrite Subsystem & \texttt{GetMutableSubsystemChecked} & Returns a mutable reference to a world subsystem. \\ \hline
+\end{tabular}
+\label{tab:AccessFunctions}
+\end{table}
+
+Inside the lambda, the \texttt{FMassExecutionContext} provides specific functions to access data based on the requirements defined in \texttt{ConfigureQueries} (See Table \ref{tab:AccessFunctions}).
+
+To scale processing for thousands of entities, the framework provides \\ \texttt{ParallelForEachEntityChunk}. This method is functionally similar to the serial \texttt{ForEachEntityChunk} but leverages the Unreal Engine Task Graph to distribute the workload across all available CPU cores. For example, this means that while one thread is calculating movement for a batch of entities in Chunk A, another thread can simultaneously process Chunk B (chunk-level parallelization).
+
+However, shifting to parallel execution introduces strict thread-safety requirements: the logic inside the lambda must be re-entrant and avoid writing to shared variables or class members without synchronization. Furthermore, any structural changes, such as adding fragments or destroying entities, cannot be performed immediately. Instead, these operations must be queued through the \texttt{FMassExecutionContext} command buffer, which Mass flushes safely on the main thread once the parallel tasks conclude. This approach ensures maximum hardware utilization while maintaining the integrity of the underlying memory archetypes.
+
 \subsubsection{Observer Processor}
 
-%CONTROLLARE. SCRITTO DA GEMINI
-While standard processors run every frame, Observer Processors (inheriting from UMassObserverProcessor) are event-driven. They respond to structural changes in the entity's lifecycle.
+While standard processors run every frame, Observer Processors (inheriting from \texttt{UMassObserverProcessor}) are event-driven. They respond to structural changes in the entity's lifecycle.
 
-Observers are tied to specific Operations on fragments or tags:
+Observers are tied to specific operations on fragments or tags:
 
-OnAdded: Triggered when a component is added to an entity.
+\begin{itemize}
+    \item \textbf{OnAdded}: Triggered when a component is added to an entity.
+    \item \textbf{OnRemoved}: Triggered when a component is removed.
+\end{itemize}
 
-OnRemoved: Triggered when a component is removed.
+This is critical for initialization and cleanup logic. For example, an observer might listen for the addition of a \texttt{FTransformFragment} to register the entity with a spatial grid, or listen for the removal of a \texttt{FHealthFragment} to trigger a death animation or VFX. By using observers, the system avoids polling and instead reacts only when the change occurs.
 
-This is critical for initialization and cleanup logic. For example, an observer might listen for the addition of a FTransformFragment to register the entity with a spatial grid, or listen for the removal of a FHealthFragment to trigger a death animation or VFX. By using observers, the system avoids "polling" (checking every entity every frame for a change) and instead reacts only when the change occurs.
+%aggiungere codice?
 
 \section{Additional Mass Plugins}
-On top of the MassEntity core, Epic has developed several plugins that enable useful processors and traits for given known tasks. All these plugins in Unreal Engine 5.6 are marked as experimental, meaning that they could be subject to changes in the next future and should be used with care for projects ment for shipping.
 
-These plugins are the result of the work done on the CitySample tech demo, where Mass was used to create massive crowd and vehicle simulations. 
-
-From here follows a brief exposition of the features provided by each of them in UE 5.6.
+While MassEntity provides the foundational memory architecture and processing pipeline, Unreal Engine extends its capabilities through a suite of specialized plugins. These modules, developed and tested during the creation of the City Sample technical demo, provide the high-level logic required to transform raw entities into complex, autonomous agents. As of Unreal Engine 5.6, these systems remain marked as Experimental, signaling that while they are architecturally robust, their APIs continue to evolve to meet the needs of large-scale open-world simulations, constituing a production risk.
 
 \subsection{MassGameplay}
 
-Provides gameplay integration such as spawning entities in the world, replication support, level-of-detail (LOD) management, movement basics and visualization of entities spatially. It supports representing Mass entities as Actors if needed.
-
-The plugin contains the following subsystems that build directly on top of MassEntity functionalities:
+The MassGameplay plugin acts as the primary bridge between the data-oriented ECS and the traditional Actor-based environment of Unreal Engine. It provides the essential gateway for world interaction, representation, and lifecycle management.
 
 \begin{itemize}
-    \item Mass Representation Subsystem: responsible for managing the different visual aspects of the Mass Entities. It can recycle and pool spawned Actors automatically
-    \item Mass Spawner Subsystem: spawns and manages the Entities based on the MassSpawner objects and procedural calls
-    \item Mass LOD Subsystem: calculates the Level Of Detail (LOD) necessary for each Mass Entity. It outputs four LOD values: High, Medium, Low and Off
-    \item Mass Replication Subsystem: replicates entities over the network in a client-server manner. It performs one-way replication from the server to its clients. This subsystem is considered experimental for Unreal Engine 5.1 and requires a C++ implementation to replicate custom values
-    \item Mass StateTree Subsystem: used to integrate the StateTree system, a general-purpose hierarchical state machine, with Mass Entity. It allows us to configure StateTrees for each entity, and update each entity’s StateTree based on signals sent from other Mass systems
-    \item Mass Signals Subsystem: provides a way to send a named signal to tell an entity that it has some processing to do. This subsystem is currently used in Mass Statetree to wake it up when it has to perform some processing
-    \item Mass Movement Subsystem: defines a simple movement model for Mass agents. The Fragments and Processors are set up so that other Traits can modify the velocity or force directly. For example, when steering the agent, the system may set the initial steering force and avoidance can alter it to avoid collisions during movement
-    \item Mass SmartObject Subsystem: used to integrate the SmartObject system with MassEntity. SmartObjects are objects placed in a level that AI Agnets and Players can interact with: they are part of a global  database and use a splatial partitioning structure. At a high level, Smart Objects represent a set of activities in the lecel that can be used through a reservation system. Mass SmartObject subsystem provides the requires Traits, Fragments and Processors to perform Smart Object queries and execute simple behaviors on agents represented by Mass Entities.
+    \item \textbf{Mass Representation Subsystem:} responsible for the visual lifecycle of entities. It utilizes an intelligent Actor Pooling system to switch between high-fidelity Actors for nearby agents and lightweight Instanced Static Meshes (ISM) for distant crowds, maintaining visual density without the overhead of thousands of ticking Actors.
+    \item \textbf{Mass LOD Subsystem:} a high-performance spatial query system that calculates the Level of Detail (High, Medium, Low, Off) for every entity. This LOD state is then utilized by other subsystems (Representation, Replication, and Movement) to scale computational costs based on viewer proximity.
+    \item \textbf{Mass Replication Subsystem:} implements a specialized one-way (Server-to-Client) replication pipeline. By operating directly on memory fragments rather than Actor properties, it enables the synchronization of massive entity populations across the network.
+    \item \textbf{Mass Signals and StateTree:} these subsystem integrate hierarchical state machines with the ECS. Mass Signals provides a lightweight notification system to wake up entities for processing, while the StateTree Subsystem allows agents to execute complex, multi-state behaviors driven by a unified, signal-based logic flow.
+    \item \textbf{Mass SmartObject Subsystem:} links entities to the SmartObject database. This allows agents to query, reserve, and interact with environmental objects (e.g., chairs, doors, or vending machines) via spatial partitioning, enabling rich environmental interactions at scale.
 \end{itemize}
 
 \subsection{MassAI}
 
-This plugin adds AI-specific logic such as behavior tree integration via StateTree, navigation via ZoneGraph, agent avoidance and AI replication in order to enable autonomous agents.
-
-It is composed by the following modules:
+The MassAI plugin provides the structural framework for agent intelligence by defining standardized data interfaces and execution pipelines. Architecturally, it does not implement specific behaviors. Instead, it provides the abstractions and execution schemas required to bridge the Mass ECS with decision-making systems like StateTree.
 
 \begin{itemize}
-    \item MassAIBehavior: implements core AI logic including behavior execution, State Trees integration, decision making processes, behavior fragments and processors managing AI state and actions
-    \item MassAIDebug: provides debugging tools and integrations, such as gameplay debugger support, visualization of AI internal states, and diagnostics specific to MassAI entities to assist development and troubleshooting
-    \item MassAIReplication: manages network replication of MassAI entities, handling entity state synchronization between server and clients with relevancy and LOD systems to optimize bandwidth usage for large AI populations
-    \item MassAITestSuite: contains automated tests and validation tools ensuring the correctness and stability of MassAI functionalities during development and continuous integration
+    \item \textbf{MassAIBehavior:} defines the foundational slots for AI logic. It provides the fragments and processors necessary to manage an entity's internal thought state, acting as the host for StateTree execution and goal-oriented transitions.
+    \item \textbf{MassAIDebug:} offers a diagnostic layer that peeks into the abstract containers. It provides visualization for internal AI states and diagnostic tools that are essential for troubleshooting the non-deterministic behaviors of large-scale agent populations.
+    \item \textbf{MassAIReplication:} specialized for the AI domain, this module ensures that the results of the AI’s decision-making are synchronized across the network. It prioritizes the replication of high-level state changes, utilizing the LOD system to ensure that bandwidth is only spent on AI logic that is currently relevant to the client.
 \end{itemize}
 
 \subsection{MassCrowd}
 
-Specializes in crowd simulation with custom visualization and navigation processors, built on top of previous plugins. This was used in projects like City Sample and The Matrix Awakens demo.
+While the previous plugins provide the generic tools for AI and gameplay, MassCrowd is the specialized layer designed for the high-density simulation of pedestrian populations. It was the primary vehicle for the crowd logic seen in the City Sample, focusing on the transition from individual agent navigation to collective flow.
+The plugin's high-level responsibilities include:
 
-The module contains processors that handle crowd movement, avoidance and visualization tailored for large groups of Mass Entities.
+\begin{itemize}
+    \item \textbf{Crowd Visualization and Animation:} it provides specialized processors that allow the crowd to have varied, vertex-animated appearances that are synchronized with their movement speed, enabling thousands of unique animations without the skeletal mesh overhead.
+    \item \textbf{Navigation Specialization (ZoneGraph Integration):} MassCrowd implements the specific logic required for agents to follow ZoneGraphs, the lightweight, lane-based navigation paths that replace traditional NavMesh. It handles lane-switching and intersection logic, allowing entities to respect the rules of a structured urban environment.
+    \item \textbf{Proximity and Avoidance Tuning:} building upon the base avoidance systems, this plugin includes specific tuning for pedestrian dynamics. It manages how agents wait at crosswalks or navigate around obstacles, ensuring that high-density groups do not result in clumping or collision-based artifacts.
+\end{itemize}

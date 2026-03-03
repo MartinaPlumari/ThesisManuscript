@@ -49,30 +49,36 @@
 \definecolor{stringcolor}{rgb}{0.58,0,0.82}
 
 % setup for lstlisting
-\lstset{ %
-	backgroundcolor=\color{backcolor},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
-	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
-	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
-	breaklines=true,                 % sets automatic line breaking
-	captionpos=t,                    % sets the caption-position to bottom
-	commentstyle=\color{commentcolor},    % comment style
-	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
-	frame=single,	                   % adds a frame around the code
-	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
-	keywordstyle=\color{keywordcolor},       % keyword style
-	language=C++,                 % the language of the code
-	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
-	numbersep=5pt,                   % how far the line-numbers are from the code
-	numberstyle=\tiny\color{linenumbercolor}, % the style that is used for the line-numbers
-	rulecolor=\color{rulecolor},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
-	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
-	showstringspaces=false,          % underline spaces within strings only
-	showtabs=false,                  % show tabs within strings adding particular underscores
-	stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
-	stringstyle=\color{stringcolor},     % string literal style
-	tabsize=4,	                   % sets default tabsize to 2 spaces
-	title=\lstname,                   % show the filename of files included with \lstinputlisting; also try caption instead of title
-	inputencoding=utf8,
+\lstset{
+    backgroundcolor=\color{backcolor},   
+    basicstyle=\ttfamily\footnotesize\color{black}, % Using ttfamily for proper code alignment
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=t,                    
+    commentstyle=\color{commentcolor}\itshape, % Italicized comments look better
+    extendedchars=true,              
+    frame=lines,                      % "lines" looks cleaner than "single" box
+    framerule=0.5pt,
+    rulecolor=\color{rulecolor},
+    keepspaces=true,                 
+    keywordstyle=\color{keywordcolor}\bfseries, % Bold keywords for emphasis
+    language=C++,                 
+    numbers=left,                    
+    numbersep=10pt,                  % More space between numbers and code
+    numberstyle=\tiny\color{linenumbercolor}, 
+    showspaces=false,                
+    showstringspaces=false,          
+    showtabs=false,                  
+    stepnumber=1,                    
+    stringstyle=\color{stringcolor},     
+    tabsize=4,                       
+    title=\lstname,
+    inputencoding=utf8,
+    % Visual improvements
+    abovecaptionskip=10pt,
+    belowcaptionskip=10pt,
+    xleftmargin=20pt,                % Indent the whole block slightly
+    framexleftmargin=15pt,
 	literate=
 	{á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
 	{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
