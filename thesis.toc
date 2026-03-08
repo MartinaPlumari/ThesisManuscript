@@ -2,7 +2,7 @@
 \babel@toc {italian}{}\relax 
 \babel@toc {italian}{}\relax 
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{List of Figures}{v}{section*.1}%
+\contentsline {chapter}{List of Figures}{vi}{section*.1}%
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Goal}{1}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Target Platform Definition}{1}{section.1.2}%
@@ -30,3 +30,12 @@
 \contentsline {subsection}{\numberline {3.2.1}MassGameplay}{22}{subsection.3.2.1}%
 \contentsline {subsection}{\numberline {3.2.2}MassAI}{22}{subsection.3.2.2}%
 \contentsline {subsection}{\numberline {3.2.3}MassCrowd}{23}{subsection.3.2.3}%
+\contentsline {chapter}{\numberline {4}Large-Scale Entity Representation}{24}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Actor-based Representation Limitations}{25}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}The Mass Solution}{26}{subsection.4.1.1}%
+\contentsline {section}{\numberline {4.2}Mass Level Of Detail}{27}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Mass LOD Overview}{27}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Mass LOD Subsystem}{27}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}Mass Representation}{28}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Vertex Animated ISM}{29}{subsection.4.3.1}%
+\contentsline {section}{\numberline {4.4}Niagara Representation}{30}{section.4.4}%

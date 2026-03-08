@@ -10,3 +10,5 @@
 \contentsline {figure}{\numberline {3.3}{\ignorespaces The image shows why it is convenient to have chunks sized to fit the cache rather than a single array structure for the whole Archetype.}}{9}{figure.caption.4}%
 \contentsline {figure}{\numberline {3.4}{\ignorespaces Example of Mass Entity Config Asset defining an Entity via editor. It is possible to create one by clicking on the "Add" button in the content drawer, selecting Data Asset and then choosing Mass Entity Config Asset.}}{15}{figure.caption.9}%
 \contentsline {figure}{\numberline {3.5}{\ignorespaces Example of Assorted Fragment trait use.}}{15}{figure.caption.10}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces CPU performance tanking when a grid of actors is instanced in an empty scene. The Game Thread took 44ms to process this frame, hence lowering the FPS.}}{25}{figure.caption.15}%
