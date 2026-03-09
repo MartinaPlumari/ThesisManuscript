@@ -73,11 +73,58 @@ This centralized array acts as the source of truth for all downstream LOD client
 
 %add image of the traits added in the editor (?) OR image of the difference (è difficile da fare perchè non si vede tanto)
 
-% manca una parte dove parlo dei tag che esistono per i vari livelli di LOD e come usarli per filtrare le entità e una parte dove parlo degli if che si possono usare per applicare comportamenti diversi a livelli di lod diversi nello stesso processore
-
 Rather than entities pulling data from the world, these processors push the subsystem's cached viewer data into the entity fragments. This is facilitated by the \texttt{TMassLODCollector} processor, which performs high-speed comparisons between the global \texttt{FViewerInfo} array and the local \texttt{FTransformFragment} of each entity.
 
 The output of this process is the population of the \texttt{FMassViewerInfoFragment}. By storing the \texttt{ClosestViewerDistanceSq} and \texttt{ClosestDistanceToFrustum} directly on the entity, Mass allows other systems, such as the Simulation and Representation processors, to perform constant-time checks on an entity's relevance. This architecture effectively decouples the complexity of the world’s viewing conditions from the per-entity logic, ensuring that even with a large number of agents, the overhead of determining visibility remains a linear, cache-friendly operation.
+
+The final state of an entity's relevance is represented by a set of mutually exclusive tags defined in \texttt{MassLODFragments.h}: 
+\begin{itemize}
+    \item \texttt{FMassHighLODTag}
+    \item \texttt{FMassMediumLODTag}
+    \item \texttt{FMassLowLODTag}
+    \item \texttt{FMassOffLODTag}
+\end{itemize}
+These tags are updated by the collector processors and serve as the primary mechanism for structural filtering. By including one of these tags in a \texttt{FMassEntityQuery} requirement, a processor can be restricted to execute only on entities within a specific proximity or visibility range, effectively pruning thousands of distant agents from the execution set at the archetype level. In the following example, the \texttt{EntityQuery} will only contain entities with the \texttt{FMassHighLODTag}:
+
+\begin{lstlisting}
+void UMyProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
+{
+	EntityQuery.AddTagRequirement<FMassMediumLODTag>(EMassFragmentPresence::None);
+	EntityQuery.AddTagRequirement<FMassLowLODTag>(EMassFragmentPresence::None);
+	EntityQuery.AddTagRequirement<FMassOffLODTag>(EMassFragmentPresence::None);
+}
+
+\end{lstlisting}
+
+Beyond archetype filtering, the system allows for more granular, logic-based branching within a single processor. The \texttt{FMassRepresentationLODFragment} contains a \texttt{LOD} property of the \texttt{EMassLOD} enumeration type. This allows a single query, which might include all entities from High to Low LOD, to differentiate behavior through standard conditional checks. For example, a movement processor might update an agent's avoidance steering at \texttt{EMassLOD::High}, but switch to a simplified linear interpolation at \texttt{EMassLOD::Low}. This dual-layered approach, combining tag-based query filtering for performance with enum-based branching for behavioral variety, provides the developer with total control over the simulation's performance over fidelity.
+
+\begin{lstlisting}
+void UMyProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)   
+{
+    EntityQuery.ForEachEntityChunk(Context, ([&](FMassExecutionContext& Context)
+    {
+        const TConstArrayView<FMassRepresentationLODFragment> LODRepresentationList = 
+                    Context.GetFragmentView<FMassRepresentationLODFragment>();
+        
+        const int32 NumEntities = Context.GetNumEntities();
+        for (int32 i = 0; i < NumEntities; ++i)
+        {
+            const EMassLOD::Type CurrentLOD = LODRepresentationList[i].LOD;
+
+            if (CurrentLOD == EMassLOD::High)
+            {
+                // Execute high-fidelity simulation logic
+                // e.g., Full obstacle avoidance steering
+            }
+            else if (CurrentLOD == EMassLOD::Low)
+            {
+                // Execute simplified simulation logic
+                // e.g., Simple forward velocity
+            }
+        }
+    }));
+}
+\end{lstlisting}
 
 \section{Mass Representation}
 
@@ -92,21 +139,52 @@ The \texttt{UMassRepresentationProcessor} is the execution engine that synchroni
 
 The transition between these states is managed through the \newline\texttt{FMassRepresentationFragment}, which tracks both the \texttt{CurrentRepresentation} and \texttt{PrevRepresentation}. This allows the system to handle the "setup and teardown" of visual assets, such as calling the \texttt{UMassActorSpawnerSubsystem} to spawn an Actor or clearing an index from a HISM, only when a state change occurs, preventing expensive per-frame logic.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{images/LODLevels.png}
+\caption{Different entity representation based on the distance from the viewer. The red entities are Static Mesh Instances, the yellow ones are LowResSpawnedActors and the white ones are HighResSpawnedActors}
+\end{figure}
+
+
 \subsection{Vertex Animated ISM}
 
 For large crowds of entities, traditional skeletal mesh skinning (calculating bone offsets on the CPU) is a primary bottleneck. A way to bypass this is found by leveraging AnimToTexture (Vertex Animation Texture).
 
-In this workflow, animation data is baked into a 2D HDR texture where rows represent bones and columns represent time frames. During the \texttt{StaticMeshInstance} representation phase, the HISM vertex shader samples this texture to offset vertices directly on the GPU. This transforms the computational cost of an animated character into that of a static mesh with a specialized material. To ensure the crowd does not appear synchronized, it is possible to push Per-Instance Custom Data (PICD) via Mass to the HISM. In the standard AnimToTexture shader at scale, the two critical floats are typically: 
+In this workflow, skeletal animation data is baked into a 2D HDR texture where rows represent bones and columns represent time frames. This allows the engine to bypass the skeletal mesh pipeline entirely. During the \texttt{StaticMeshInstance} representation phase, the HISM vertex shader samples this texture to offset vertices directly on the GPU. This transforms the computational cost of an animated character into that of a static mesh with a specialized material. To ensure the crowd does not appear synchronized, it is possible to push Per-Instance Custom Data (PICD) via Mass to the HISM. In the standard AnimToTexture shader at scale, the two critical floats are typically: 
 
 \begin{itemize}
-    \item \textbf{Animation State / Index}: This tells the shader which row of the baked texture to read, allowing to select the animation among the baked ones. This is often a quantized float derived from the \texttt{FMassCrowdAnimationFragment}.
+    \item \textbf{Animation State}: This tells the shader which row of the baked texture to read, allowing to select the animation among the baked ones. This is often a quantized float derived from the \texttt{FMassCrowdAnimationFragment}.
     \item \textbf{Normalized Animation Phase}: Instead of a global time offset, Mass frequently calculates and pushes the actual playback position (as a value going from 0.0 to 1.0) of the animation loop. This is calculated on the CPU by taking the entity's internal clock, adding a random seed, and modulo-ing it by the animation duration.
 \end{itemize}
+
+Since UE 5.4, VAT supports Nanite-enabled static meshes. While Nanite provides excellent geometric scaling, it should be used judiciously: for low-poly crowd agents, the overhead of Nanite’s cluster management may outweigh the benefits of its level-of-detail scaling.
 
 The practical application of this vertex-driven animation pipeline is most notably demonstrated in Unreal Engine’s City Sample project, where the \newline\texttt{UMassCrowdAnimationProcessor} serves as a specialized extension of the core Mass framework to orchestrate the movement of thousands of simulated pedestrians.
 
 %aggiungere spiegazione su possibili ottimizzazioni delle animazioni per i normali actor?
 
-\section{Niagara Representation}
+\subsection{Niagara-Based Representation}
 
-% non sono super certa che abbia senso parlare di questa cosa, perchè è molto complessa. Vedere come la fanno in mass sample e decidere
+While Hierarchical Instanced Static Meshes (HISMs) are the standard for Mass visualization, the framework is architecturally decoupled enough to allow for a total shift in the rendering pipeline. By setting aside the standard representation processors, a developer can treat Mass entities as a raw data source for Niagara Particle Systems.
+
+This approach represents the massive tier of simulation, moving from a CPU-side push model to a GPU-side pull model. In this setup, a single Niagara Emitter samples the Mass ECS fragments (Transform, Velocity, Animation State) directly from GPU memory to drive tens of thousands of particles that look and behave like complex skeletal agents.
+
+Despite the clear performance benefits for very large scale crowds (100,000+ entities), the current state of Niagara integration is non-trivial. Because the standard Unreal Engine 5.6 toolset lacks a native bridge between Mass and Niagara, a developer must bridge the gap manually. This requires:
+
+\begin{itemize}
+    \item Custom C++ Middleware: creating a specialized Niagara Data Interface (NDI) to map ECS memory chunks to Niagara parameters
+    \item Manual Lifecycle Management: Synchronizing the birth and death of Mass entities with the spawning and reaping of Niagara particles
+    \item Shader Complexity: Re-implementing the VAT (Vertex Animation Texture) logic within the Niagara material graph to ensure visual consistency with the HISM-based agents
+\end{itemize}
+
+The primary precedent for this hybrid architecture is found in Unreal Engine’s City Sample (The Matrix Awakens Demo). To populate the vast streets of the city without overwhelming the CPU, the developers utilized a tiered representation strategy.
+
+While closer pedestrians use Actors and HISMs, the background crowd, the thousands of agents visible in the distance or from high-rise perspectives, is rendered entirely through a specialized Niagara-based system. This implementation serves as a proof-of-concept, demonstrating that while the integration is technically demanding and requires bespoke C++ extensions, it is the key to breaking through the performance limitations of traditional mesh instancing.
+
+Ultimately, the introduction of the \texttt{NiagaraDataChannelSubsystem} in Unreal Engine 5.7 represents a promising shift in the framework’s maturity; by standardizing the communication between the ECS and the VFX pipeline, it transforms what was once a complex optimization into a viable pathway for future large-scale crowd simulations.
+The \texttt{UNiagaraDataChannelSubsystem} acts as a centralized broker that allows the Mass ECS to publish data to a named channel, which any Niagara System can then consume as a data interface. In this architecture, a specialized Mass Processor iterates through entity chunks and writes fragment data (such as \texttt{FTransformFragment} or custom animation states) into the Data Channel's producer buffer via the subsystem.
+The Niagara GPU emitter then binds to this same channel, allowing its simulation stages to read the buffered Mass data at the start of the frame. This effectively replaces the need for a low-level C++ memory pull with a thread-safe, engine-managed stream, significantly simplifying the synchronization of particle lifecycles with Mass entity states.
+
+\section{Performance Analysis}
+
+%boh, va fatta build e guardata con insight?

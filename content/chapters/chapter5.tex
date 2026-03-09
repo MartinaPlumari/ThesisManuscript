@@ -1,0 +1,40 @@
+\chapter{Decision Logic and State Management}
+\label{sec:StateManagement}
+
+While previous chapters focused on the spatial and visual aspects of the simulation, this chapter examines the logic layer that drives agent behavior. A significant challenge in ECS-based architectures is implementing complex, branching behavior without sacrificing the performance gains of data-orientation.
+
+Throughout this project, the implementation of agent intelligence evolved from a rigid, code-driven approach to a modular, hierarchical system. This evolution was documented through two distinct strategies: a direct Tag-based logic for high-performance state changes like entity death, and a hierarchical decision system utilizing StateTree for autonomous roaming and hostility logic.
+
+The goal of this chapter is to detail how these state management strategies function within the Mass ecosystem. It provides a technical analysis of how the framework handles structural changes, such as promoting an entity to an Actor Proxy during a death sequence, and how it integrates with the StateTree system to provide designers with a node-based interface for complex AI, all while maintaining the simulation’s ability to scale.
+
+\section{Tag-Driven State Alteration}
+
+%spiegare come funziona il flusso della morte dell'entità
+
+\section{StateTree}
+
+To address the limitations of traditional Behavior Trees, which often struggle with state transitions and scalability, the project utilizes StateTree. While it functions as a Hierarchical State Machine (HSM), its integration with Mass transforms it into a highly optimized logic processor that avoids the overhead of per-actor ticking.
+
+In order to be able to understand what changes in StateTree when used with Mass, we will first analyse its functionalities outside the framework's integration context.
+
+The StateTree is a hierarchical transition system that functions as a hybrid between a Finite State Machine (FSM) and a Behavior Tree (BT). It borrows the structured, decision-making selectors of a Behavior Tree and integrates them with the explicit state-to-state transitions found in traditional FSMs.
+
+Unlike a standard state machine where states are often flat, a StateTree organizes logic into a nested hierarchy:
+
+\begin{itemize}
+    \item \textbf{Root and States:} The tree begins at a Root node. Logic is branched into States, which can contain further child states
+    \item \textbf{Selectors:} If a state has children, it acts as a Selector. It does not execute logic itself but evaluates which of its children should be activated
+    \item \textbf{Leaf States:} These are the terminal nodes of a branch. When a leaf state is selected, the entire path from the Root to that Leaf becomes Active
+\end{itemize}
+
+In a StateTree, "Selection" is the mechanism used to navigate the hierarchy and determine which logic should be currently executing. Unlike a flat State Machine, where you move directly from Point A to Point B, a StateTree treats selection as a conditional descent.
+
+The process begins at a defined entry point, typically the Root, where the system evaluates Enter Conditions. These act as gatekeepers: if a state’s conditions are met, the system steps into that branch and begins looking at its children. If the conditions fail, the system doesn't give up, it simply moves horizontally to the next sibling state at the same level to see if it’s a better fit.
+
+This descent continues until the system reaches a Leaf State. At this precise moment, the selection is committed, and the system activates the entire path: the Leaf State and every one of its parent states back to the Root become active simultaneously. This lineage activation is what allows a child state to handle specific details while the parent state handles the broader context.
+
+The most significant architectural departure from traditional Behavior Trees lies in when this selection happens.
+
+In a standard Behavior Tree, the system typically ticks from the root on every frame, constantly re-evaluating the entire tree to ensure the agent is still doing the best possible thing. While robust, this creates a massive performance tax as the number of agents or the complexity of the tree grows.
+
+The StateTree, by contrast, operates on an event-driven basis. Once a state is selected, the system stays there. It only re-runs the selection logic when an explicit transition is triggered, such as a task finishing or a specific game event occurring. By moving the heavy lifting of tree traversal from a constant per-tick requirement to an occasional reactive event, the StateTree achieves the high-level organization of a BT with a performance profile much closer to a lightweight State Machine.

@@ -12,3 +12,5 @@
 \contentsline {figure}{\numberline {3.5}{\ignorespaces Example of Assorted Fragment trait use.}}{15}{figure.caption.10}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {4.1}{\ignorespaces CPU performance tanking when a grid of actors is instanced in an empty scene. The Game Thread took 44ms to process this frame, hence lowering the FPS.}}{25}{figure.caption.15}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Different entity representation based on the distance from the viewer. The red entities are Static Mesh Instances, the yellow ones are LowResSpawnedActors and the white ones are HighResSpawnedActors}}{31}{figure.caption.16}%
+\addvspace {10\p@ }
