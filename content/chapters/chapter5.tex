@@ -11,30 +11,241 @@ The goal of this chapter is to detail how these state management strategies func
 
 %spiegare come funziona il flusso della morte dell'entità
 
-\section{StateTree}
+\section{State Tree}
 
-To address the limitations of traditional Behavior Trees, which often struggle with state transitions and scalability, the project utilizes StateTree. While it functions as a Hierarchical State Machine (HSM), its integration with Mass transforms it into a highly optimized logic processor that avoids the overhead of per-actor ticking.
+This section provides a technical overview of the State Tree asset and its execution model, analyzing first its funcionalities outside the framework's integration context. 
 
-In order to be able to understand what changes in StateTree when used with Mass, we will first analyse its functionalities outside the framework's integration context.
+While often associated with AI, the State Tree is a general-purpose, hierarchical state machine (HSM) designed to handle any stateful logic within Unreal Engine. Its architecture is specifically optimized for high-performance scenarios, such as the Mass Framework, by decoupling static logic from runtime instance data.
 
-The StateTree is a hierarchical transition system that functions as a hybrid between a Finite State Machine (FSM) and a Behavior Tree (BT). It borrows the structured, decision-making selectors of a Behavior Tree and integrates them with the explicit state-to-state transitions found in traditional FSMs.
+%immagine: esempio state tree editor
 
-Unlike a standard state machine where states are often flat, a StateTree organizes logic into a nested hierarchy:
+\subsection{Architecture}
+
+At its core, a State Tree is a hierarchical organization of states where logic is encapsulated into modular, reusable blocks. Unlike traditional Finite State Machines (FSMs), where transitions can become a "spaghetti" of connections, the State Tree uses its hierarchy to organize data and define fallback behaviors.
+%riscrivere frase per togliere spaghetti
+
+%\subsubsection{States}
+At the apex of the hierarchy is the Root State, which serves as the mandatory entry point for the tree's execution flow. It is the first state evaluated during initialization and remains implicitly active as the ultimate ancestor of any selected leaf.
+
+Other than the Root State, State Tree consists of two primary types of states: intermediate states and leaf states. Intermediate states act as organizational nodes or decision points. They do not contain actions, but instead define how to select a child state. Leaf states are the terminal nodes of a branch. When a leaf state is selected, the state itself and all its parent states in the hierarchy become active.
+
+%immagine ravvicinata stati con sottotitolo che spiega l'esempio specificando quali sono leaf states, quali intermediate
+%subsubsection{Tasks}
+States contain tasks, the functional building blocks of a State Tree. Tasks contain the actual logic to be executed when a state is active. Each state can host multiple tasks and when a state is activated all of them run concurrently. Typically, intermediate states host configuration tasks, such as setting gameplay tags, while leaf state host behavior tasks, such as MoveTo or PlayAnimation.
+
+Other than regular tasks that can be defined in relation to states, State Tree gives the develoepr the possibility to define global tasks. These run for the entire duration of the tree's execution, providing a persistent layer for event listening or data exposure. They are ideal for persistent logic, such as managing a high-level state timer or providing a continuous stream of data from an external subsystem that every state in the tree might need to access.
+
+State Tree architecture also gives the possibility to use Evaluators: specialized, stateless nodes designed to pre-process information before the selection phase begins. Unlike tasks, which execute behavior, evaluators run at the start of the tree’s tick to query the environment, perform complex calculations, and expose the results as output properties. By centralizing data preparation into these nodes, the State Tree ensures that conditions and tasks have access to up-to-date information (such as the distance to the nearest threat or a weighted utility score) without needing to redundantly recalculate that data across multiple states.
+
+In Unreal Engine 5.6 Tasks and Evaluators can be defined in blueprint by extending respectively \texttt{StateTreeTaskBlueprintBase} and \newline\texttt{StateTreeEvaluatorBlueprintBase}. 
+
+\subsection{Selection and Transition Flow}
+
+%he execution of a State Tree differs significantly from standard state machines. It follows a Selection-First approach, more akin to Behavior Trees, where the entire path to a leaf must be validated before any state changes occur.
+The execution of a State Tree is defined by a continuous cycle of State Persistence and Evaluation Phases. Unlike traditional state machines that might transition blindly into a connected node, the State Tree utilizes a Selection-First logic. This means the system must validate the entire path from the root down to a specific leaf before any state changes are officially committed.
+
+The evaluation process begins whenever the tree is initialized or an active transition is triggered. At this point, the \texttt{FStateTreeExecutionContext} enters a pre-emptive evaluation pass to determine the next valid branch.
+
+\subsubsection{Enter Conditions}
+
+Before any state can be considered for activation, it must first satisfy its enter conditions. These act as logical gates: if a state’s conditions evaluate to false, that entire branch of the hierarchy is instantly discarded. This pruning allows the system to bypass invalid behaviors with minimal computational overhead.
+
+\subsubsection{Selection Behavior}
+Once a state passes its initial conditions, the context determines how to tunnel deeper into the hierarchy. In Unreal Engine 5.6, this selection logic offers a suite of strategies for different architectural needs:
 
 \begin{itemize}
-    \item \textbf{Root and States:} The tree begins at a Root node. Logic is branched into States, which can contain further child states
-    \item \textbf{Selectors:} If a state has children, it acts as a Selector. It does not execute logic itself but evaluates which of its children should be activated
-    \item \textbf{Leaf States:} These are the terminal nodes of a branch. When a leaf state is selected, the entire path from the Root to that Leaf becomes Active
+    \item \textbf{None and Try Enter:} serve as the most direct behaviors, typically used for leaf states or states where the focus is on the state's own tasks rather than its descendants.
+    \item \textbf{Try Select Children in Order:} provides a predictable, priority-based approach, evaluating children from top to bottom until the first valid candidate is found.
+    \item \textbf{Try Select Children at Random:} introduces stochastic variety, picking a child based on either uniform or weighted probabilities. Ideal for breaking the repetition in ambient behaviors.
+    \item \textbf{Try Select Children with Highest Utility and Try Select Children at Random Weighted by Utility:} they offer the most dynamic, data-driven approaches. These behaviors use a scoring system to evaluate potential child states, either selecting the absolute best performer or using those scores to influence a weighted random choice.
+    \item \textbf{Try Follow Transitions:} allows a state to act as a reusable logic bundle, where the selection of a child state is determined by the transition rules defined within that state itself.
 \end{itemize}
 
-In a StateTree, "Selection" is the mechanism used to navigate the hierarchy and determine which logic should be currently executing. Unlike a flat State Machine, where you move directly from Point A to Point B, a StateTree treats selection as a conditional descent.
+This evaluation is recursive. The system continues to tunnel deeper into the hierarchy, applying these selection rules at every level until it successfully identifies a leaf state. The selection is only finalized once this terminal node is reached. If the evaluation encounters a dead end, where no child states satisfy their conditions, the selection fails, and the system typically falls back to the Root State to restart the search, ensuring the entity never remains in an undefined or stuck logical state.
 
-The process begins at a defined entry point, typically the Root, where the system evaluates Enter Conditions. These act as gatekeepers: if a state’s conditions are met, the system steps into that branch and begins looking at its children. If the conditions fail, the system doesn't give up, it simply moves horizontally to the next sibling state at the same level to see if it’s a better fit.
+\subsubsection{Transition Lifecycle}
 
-This descent continues until the system reaches a Leaf State. At this precise moment, the selection is committed, and the system activates the entire path: the Leaf State and every one of its parent states back to the Root become active simultaneously. This lineage activation is what allows a child state to handle specific details while the parent state handles the broader context.
+Transitions define the specific conditional logic that drives the system to pivot from its current active branch to a new destination. Unlike the transitions in Finite State Machines, transitions in a State Tree are governed by the same hierarchical principles as the states themselves.
 
-The most significant architectural departure from traditional Behavior Trees lies in when this selection happens.
+A defining characteristic of this execution model is its hierarchical evaluation order. When a transition is triggered, the engine does not perform a broad search across the entire asset. Instead, it evaluates potential transitions starting from the current leaf state and goes upward through each parent toward the Root. This type of flow ensures that the behavior closest to the current action is given the first opportunity to determine the next state.
 
-In a standard Behavior Tree, the system typically ticks from the root on every frame, constantly re-evaluating the entire tree to ensure the agent is still doing the best possible thing. While robust, this creates a massive performance tax as the number of agents or the complexity of the tree grows.
+In its current state, the triggers available for defining the transitions have been refined to support more granular control over the entity's lifecycle:
 
-The StateTree, by contrast, operates on an event-driven basis. Once a state is selected, the system stays there. It only re-runs the selection logic when an explicit transition is triggered, such as a task finishing or a specific game event occurring. By moving the heavy lifting of tree traversal from a constant per-tick requirement to an occasional reactive event, the StateTree achieves the high-level organization of a BT with a performance profile much closer to a lightweight State Machine.
+\begin{itemize}
+    \item \textbf{On State Succeeded / Failed / Completed:} These are outcome-based triggers. While "Succeeded" and "Failed" handle specific logic, like a pathfinding task failing, "Completed" acts as a catch-all for whenever the tasks in a state finish their work, regardless of the result.
+    \item \textbf{On Event:} This provides a reactive interface for the State Tree. By utilizing Gameplay Tags or custom Data Structs as payloads, external systems can "ping" the tree, allowing it to respond dynamically to world changes without waiting for a task to finish.
+    \item \textbf{On Tick:} This trigger allows for continuous polling of conditions. While more computationally expensive than event-driven logic, it is essential for behaviors that must react to environmental variables that do not send discrete events.
+    \item \textbf{On Delegate:} This specialized trigger allows the State Tree to bind directly to C++ or Blueprint delegates. It is particularly useful for decoupling the tree from external systems, allowing a state change to be fired the moment a specific delegate is broadcasted.
+\end{itemize}
+
+Beyond the transitions explicitly defined by the developer, the State Tree incorporates Implicit Transitions to ensure the execution flow never enters an invalid state. These act as a built-in safety net for the tree’s lifecycle. For instance, upon the initial start of the tree, the system performs an implicit transition to the Root State to begin the first evaluation. During runtime, if a leaf state completes but provides no explicit transition for its outcome, the system automatically goes up to the parent to check for a completion transition there.
+
+If this search reaches the top of the hierarchy without finding a valid path, either because no transitions were configured or because all potential target states failed their Enter Conditions, the system triggers a final fallback by transitioning back to the Root State. This recursive search for a valid state ensures that the entity remains logically active, though it highlights a critical design principle: developers should structure their state hierarchies so that a valid selection is always available, preventing the entity from perpetually rebounding to the root in a logic loop.
+
+To manage the complexity of these overlapping rules, the State Tree utilizes a Priority system that can modify the standard evaluation flow. While the default behavior favors the leaf, a developer can assign a higher priority to a transition in a parent state. This allows for global interrupts, critical logic that must take precedence over any local behavior. A classic example is a "Damage Taken" event hosted in a high-level parent state; by setting this to a higher priority, the system can ensure that a "Flee" behavior immediately overrides a specific leaf, regardless of where the entity was in its local task lifecycle.
+
+A critical aspect of the State Tree execution model is that all tasks within an active state and its active parents run concurrently. However, the lifecycle of the state is often dictated by the first task to reach a conclusion. When any single task signals a "Succeeded" or "Failed" state, it immediately triggers the transition evaluation process for the entire tree. This means that a state is effectively as long as its fastest-completing task. For instance, if a state contains a long-running "Patrol" task and a shorter "Wait" task, the completion of the "Wait" task will initiate a transition, potentially interrupting the "Patrol" logic before it finishes. This behavior requires developers to be intentional about task composition, ensuring that auxiliary tasks do not accidentally signal completion and prematurely terminate the primary behavior of the state.
+
+\subsection{State Tree Schemas}
+
+A State Tree Schema defines the specific use case for a tree by establishing the execution environment and the data contract required for it to run. By selecting a schema, the developer informs the engine of what external data will be available and which types of nodes can be used to build the logic.
+
+In practice, the schema serves three primary functions: it specifies the Context Data, the external objects or structs (such as an \texttt{AActor}, \texttt{AIController}, or \texttt{FMassEntityHandle}), that must be provided by the owner for the tree to tick; it restricts which Tasks, Evaluators, and Conditions are visible in the editor; it defines how the tree is ticked and who owns the instance data.
+
+Unreal Engine 5.6 provides several built-in schemas tailored for different systems:
+
+\begin{itemize}
+    \item \textbf{State Tree Component Schema:} The default choice for actor-based logic, assuming a single actor owner and a standard \texttt{UStateTreeComponent}.
+    \item \textbf{State Tree AI Component Schema:} A specialized version of the above that guarantees access to an AAIController, making it the standard for traditional NPC behavior.
+    \item \textbf{Mass Behavior:} the critical schema for high-performance ECS logic. It allows the State Tree to run on Mass Entities rather than Actors, providing direct access to Mass Fragments and allowing the \texttt{MassStateTreeProcessor} to manage execution across thousands of entities.
+    \item \textbf{Camera Director:} A highly specialized schema used for camera logic and transitions. It provides a context tailored for managing camera states, blending, and framing.
+\end{itemize}
+
+\subsection{Data Management}
+
+In contrast to the decoupled Blackboard architecture used in traditional Behavior Trees, where data is stored in a general-purpose key-value map, the State Tree employs a strictly typed Property Binding system. This approach creates a direct pipeline between data providers and data consumers, significantly reducing the memory overhead and string-key lookups that can weight on large-scale AI systems.
+
+The foundation of the State Tree’s data awareness is Context Data. While most tasks need data to function, they do not own that data. Instead, the State Tree Schema defines a set of required external objects or structs that must be provided at runtime.
+
+%Mass stuff
+%Contextual Casting: In a Mass Framework context, the context data is typically the FMassEntityHandle or specific Mass Fragments.
+%Consistency: By defining these in the Schema, the engine ensures that a State Tree designed for a "Pedestrian" entity cannot be accidentally assigned to a "Vehicle" entity if the required fragments (like FMassCharacterFragment) are missing. This makes the tree highly specialized and "aware" of its owner's capabilities from the moment it is instantiated.
+
+In practice, developers define the data flow within C++ structs or Blueprint classes by using specific metadata or visibility settings. When you create a State Tree Task or Evaluator, the engine inspects the properties to determine how they can be linked:
+
+\begin{itemize}
+    \item \textbf{Inputs:} In the State Tree editor, the Value UI for these properties is hidden, forcing the developer to bind them to a source. They are assumed to be valid by the time the task's \texttt{EnterState} is called.
+    \item \textbf{Outputs:} Once a task performs a calculation (e.g., a "FindTarget" task identifying an enemy), it stores the result in an output property. This data then becomes available for any subsequent tasks or child states in the hierarchy.
+    \item \textbf{Context:} These properties automatically attempt to bind to the Context Data defined in the Schema. For instance, if your Task has a context property of type \texttt{AActor*}, the State Tree will automatically pipe in the owner of the tree without any manual wiring.
+\end{itemize}
+
+One of the most powerful features for high-performance systems is the Property Reference (\texttt{FStateTreePropertyRef}). In many state machines, data must be copied from the source into the task’s local instance, modified, and then copied back out. When scaled to thousands of entities, this constant cycle becomes a significant CPU bottleneck. State Tree property references allow a binding to return a direct pointer to the original data source rather than a copy. It is important to note that this feature is exclusively available via C++. By using the \texttt{FStateTreePropertyRef<T>} type in a Task or Evaluator’s definition, developers can bypass the standard property copying mechanism.
+
+\section{Mass and State Tree}
+
+\subsection{Mass State Tree Schema}
+
+In a standard Unreal Engine environment, state logic is typically bound to an \texttt{AActor} via a component. However, the Mass Framework necessitates a complete decoupling of logic from the \texttt{UObject} lifecycle. This is achieved through the \texttt{UMassStateTreeSchema}.
+
+The most fundamental shift when moving to Mass is the abandonment of \texttt{UStateTreeTaskBlueprintBase} in favor of \texttt{FMassStateTreeTaskBase} and \newline\texttt{FMassStateTreeEvaluatorBase}. Because Mass aims for high entity density, it cannot afford the memory overhead or the pointer-chasing inherent in ticking thousands of \texttt{UObject} instances. Instead, logic is encapsulated in \texttt{USTRUCTs}. These structs are not ticked by the engine's standard actor-ticking loop; rather, they are executed by the \texttt{UMassStateTreeProcessor}. This processor utilizes a \texttt{FMassStateTreeExecutionContext}, which acts as a lightweight bridge, providing the Task with access to the entity's fragments and the global subsystems without the need for a persistent actor owner.
+
+In a Mass context, the \texttt{Tick} function of a task is effectively a data-transformation step. It receives the execution context, performs a calculation based on the provided fragment data, and returns a status. This is executed within the Mass Task Graph, allowing for massive parallelization that traditional state machines cannot achieve.
+
+\subsubsection{The Tick function}
+
+In a standard \texttt{UStateTreeComponent}, the tree is ticked every frame by the actor. In Mass, the \texttt{UMassStateTreeProcessor} is responsible for executing the logic, and its efficiency comes from not ticking every entity every frame.
+
+Instead of how would you normally expect it to work, the \texttt{Tick} function in a Mass Task acts as a response to a wake-up call: when a task returns \texttt{EStateTreeRunStatus::Running}, the entity is essentially frozen in that state. The processor will stop looking at that specific entity in subsequent frames to save CPU cycles. The entity only wakes up when a signal is sent to it via the \texttt{UMassSignalSubsystem}. This could be a Delay Signal (e.g., set by the task itself to wake up in 2 seconds) or an external signal (like a "Target Perceived" event).
+When the signal is received, the \texttt{UMassStateTreeProcessor} marks that entity as dirty, gathers it into a chunk with other signaled entities, and then calls the Tick() function. To learn more about this behavior, inspect the file \texttt{MassStateTreeProcessors.cpp}.
+
+The following implementation exemplifies how this asynchronous communication works. This processor performs spatial queries and only dispatches the \texttt{UE::Mass::Signals::StateTreeActivate} signal when a specific gameplay threshold is met. 
+
+\begin{lstlisting}
+// Inside the Execute function of a Mass Processor
+EntityView.ForEachEntityChunk([&](FMassExecutionContext& Context)
+{
+    const int32 NumEntities = Context.GetNumEntities();
+    const TArrayView<FNPCEntityStateFragment> StateList = Context.GetMutableFragmentView<FNPCEntityStateFragment>();
+    const TArrayView<FTransformFragment> TransformList = Context.GetFragmentView<FTransformFragment>();
+
+    for (int32 i = 0; i < NumEntities; ++i)
+    {
+        const float DistanceSqr = FVector::DistSquared(TransformList[i].GetTransform().GetLocation(), PlayerLocation);
+
+        if (DistanceSqr < 16900.f) 
+        {
+            if (StateList[i].State != ENPCStates::Attacking)
+            {
+                StateList[i].State = ENPCStates::Attacking;
+                SignalSubsystem.SignalEntity(UE::Mass::Signals::StateTreeActivate, Context.GetEntity(i));
+            }
+        }
+        else if (DistanceSqr > 1000000.f) 
+        {
+            if (StateList[i].State != ENPCStates::Roaming)
+            {
+                StateList[i].State = ENPCStates::Roaming;
+                SignalSubsystem.SignalEntity(UE::Mass::Signals::StateTreeActivate, Context.GetEntity(i));
+            }
+        }
+    }
+});
+\end{lstlisting}
+
+\subsection{Data Handling and Memory Locality}
+
+As previously stated, Mass performance relies on Cache Coherency, meaning data must be stored contiguously. To maintain this, State Trees in Mass distinguish strictly between where data lives and how it is accessed.
+
+Understanding the residency of data is critical for a stable simulation. In the context of Mass, Fragments should be used to store data that must survive across different states. Instance data, defined via \texttt{FInstanceDataType} struct, lives within the \texttt{FMassStateTreeInstanceFragment}. It is used for variables that only matter for the duration of a specific state.
+
+A practical example of this distinction is found in the FMassClaimSmartObjectTask, which uses the following instance data:
+
+\begin{lstlisting}
+USTRUCT()
+struct FMassClaimSmartObjectTaskInstanceData
+{
+	GENERATED_BODY()
+
+	/** Result of the candidates search request (Input) */
+	UPROPERTY(VisibleAnywhere, Category = Input, meta = (BaseStruct = "/Script/MassSmartObjects.MassSmartObjectCandidateSlots"))
+	FStateTreeStructRef CandidateSlots;
+
+	UPROPERTY(VisibleAnywhere, Category = Output)
+	FSmartObjectClaimHandle ClaimedSlot;
+};
+\end{lstlisting}
+
+%In this context, the CandidateSlots (Input) and the ClaimedSlot (Output) are transient. The NPC needs the list of candidates only long enough to pick one, and it needs the ClaimedSlot handle to finalize the transition. Once the NPC successfully moves to the Smart Object and begins the interaction, the list of other candidates is discarded. By keeping this data in the FInstanceDataType, the developer ensures that the persistent FMassEntity memory (the Fragments) remains uncluttered by the "internal thoughts" of the state machine.
+
+To bridge the gap between the State Tree and the Mass memory layout, we use \texttt{TStateTreeExternalDataHandle<T>}.
+In practice, this follows a linking pattern: during the \texttt{Link} phase (initialization), the task requests access to specific fragments or subsystems. The State Tree Linker resolves these requests into handles. At runtime, the task uses these handles to retrieve direct pointers to the fragment data within the current chunk, ensuring zero-copy overhead.
+
+A clear implementation of this pattern is found in the \texttt{FMassClaimSmartObjectTask}:
+
+\begin{lstlisting}
+//MassClaimSmartObjectTask.h
+USTRUCT(meta = (DisplayName = "Claim SmartObject"))
+struct FMassClaimSmartObjectTask : public FMassStateTreeTaskBase
+{
+	GENERATED_BODY()
+
+	using FInstanceDataType = FMassClaimSmartObjectTaskInstanceData;
+
+	MASSAIBEHAVIOR_API FMassClaimSmartObjectTask();
+
+protected:
+    MASSAIBEHAVIOR_API virtual bool Link(FStateTreeLinker& Linker) override;
+    //...
+
+    //External data handles definition
+	TStateTreeExternalDataHandle<FMassSmartObjectUserFragment> SmartObjectUserHandle;
+	TStateTreeExternalDataHandle<USmartObjectSubsystem> SmartObjectSubsystemHandle;
+	TStateTreeExternalDataHandle<UMassSignalSubsystem> MassSignalSubsystemHandle;
+};
+
+
+//MassClaimSmartObjectTask.cpp
+bool FMassClaimSmartObjectTask::Link(FStateTreeLinker& Linker)
+{
+	Linker.LinkExternalData(SmartObjectUserHandle);
+	Linker.LinkExternalData(SmartObjectSubsystemHandle);
+	Linker.LinkExternalData(MassSignalSubsystemHandle);
+
+	return true;
+}
+\end{lstlisting}
+
+By requiring tasks to explicitly link their data, the Mass State Tree achieves two major goals:
+
+\begin{itemize}
+    \item \textbf{Performance:} It bypasses the standard Unreal \texttt{GetComponentByClass} or \texttt{GetSubsystem} calls during the simulation loop, which are too slow for thousands of entities.
+    \item \textbf{Safety:} If a required fragment (like \texttt{FMassSmartObjectUserFragment}) is missing from the entity’s archetype, the Link phase will fail early, preventing null-pointer crashes during the high-speed simulation tick.
+\end{itemize}
+
+\subsection{Transition Handling and Logic Flow}
+
+Transitions in Mass are outcome-driven. Because the \texttt{UMassStateTreeProcessor} only updates entities when necessary, the status returned by a task's \texttt{Tick} or \texttt{EnterState} is the primary driver of the simulation's flow.
+
+A common pitfall is attempting to perform complex polling logic inside a task. In Mass, if a task is waiting for something to happen (like reaching a destination), it should return \texttt{EStateTreeRunStatus::Running}. If the goal is reached, it returns Succeeded. This immediate return signals the State Tree to evaluate transitions instantly, moving the entity to the next state without waiting for the next frame's tick. This ensures that the entity's decision logic is as reactive as possible while keeping the action logic separate.
+
+In fact, A critical design pattern in Mass-integrated State Trees is the strict separation between Decision Logic and Execution Logic. Tasks should be treated as lightweight state mutators: their role is to reconfigure fragment values or toggle gameplay tags to signal a change in intent. The computational heavy lifting, such as pathfollowing, avoidance, or complex sensory filtering, should be delegated to specialized Mass Processors. This ensures that the State Tree remains a reactive brain that only consumes CPU cycles when a high-level transition occurs, while the Mass Task Graph provides the muscle for continuous, high-performance simulation.
