@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.1) (preloaded format=pdflatex 2026.2.8)  11 MAR 2026 18:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.1) (preloaded format=pdflatex 2026.2.8)  12 MAR 2026 18:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1459,7 +1459,7 @@ Package translations Info: loading dictionary `translations-basic-dictionary' fo
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<images/logo/polito_logo_2021_blu-2-2.jpg, id=178, 845.3181pt x 326.4195pt>
+<images/logo/polito_logo_2021_blu-2-2.jpg, id=210, 845.3181pt x 326.4195pt>
 File: images/logo/polito_logo_2021_blu-2-2.jpg Graphic file (type jpg)
 <use images/logo/polito_logo_2021_blu-2-2.jpg>
 Package pdftex.def Info: images/logo/polito_logo_2021_blu-2-2.jpg  used on input line 6.
@@ -1576,12 +1576,12 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<images/ArchetypeSchema.png, id=306, 1404.24625pt x 458.71375pt>
+<images/ArchetypeSchema.png, id=346, 1404.24625pt x 458.71375pt>
 File: images/ArchetypeSchema.png Graphic file (type png)
 <use images/ArchetypeSchema.png>
 Package pdftex.def Info: images/ArchetypeSchema.png  used on input line 36.
 (pdftex.def)             Requested size: 334.60422pt x 109.30261pt.
-<images/ChunkSchema.png, id=307, 1353.055pt x 690.58pt>
+<images/ChunkSchema.png, id=347, 1353.055pt x 690.58pt>
 File: images/ChunkSchema.png Graphic file (type png)
 <use images/ChunkSchema.png>
 Package pdftex.def Info: images/ChunkSchema.png  used on input line 44.
@@ -1591,7 +1591,7 @@ Package pdftex.def Info: images/ChunkSchema.png  used on input line 44.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [7 <./images/ArchetypeSchema.png (PNG copy)>]
-<images/ChunkMemorySchema.png, id=313, 1567.8575pt x 570.13pt>
+<images/ChunkMemorySchema.png, id=353, 1567.8575pt x 570.13pt>
 File: images/ChunkMemorySchema.png Graphic file (type png)
 <use images/ChunkMemorySchema.png>
 Package pdftex.def Info: images/ChunkMemorySchema.png  used on input line 58.
@@ -1624,12 +1624,12 @@ Overfull \hbox (6.76169pt too wide) in paragraph at lines 193--194
  []
 
 [14]
-<images/MassEntityConfig.png, id=426, 1443.14156pt x 487.8225pt>
+<images/MassEntityConfig.png, id=466, 1443.14156pt x 487.8225pt>
 File: images/MassEntityConfig.png Graphic file (type png)
 <use images/MassEntityConfig.png>
 Package pdftex.def Info: images/MassEntityConfig.png  used on input line 214.
 (pdftex.def)             Requested size: 418.25368pt x 141.37558pt.
-<images/AssortedFragments.png, id=428, 1060.71281pt x 109.1578pt>
+<images/AssortedFragments.png, id=468, 1060.71281pt x 109.1578pt>
 File: images/AssortedFragments.png Graphic file (type png)
 <use images/AssortedFragments.png>
 Package pdftex.def Info: images/AssortedFragments.png  used on input line 222.
@@ -1672,38 +1672,59 @@ Overfull \hbox (27.16847pt too wide) in paragraph at lines 361--372
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[20] [21] [22]) (content/chapters/chapter4.tex [23]
+[20]
+Underfull \vbox (badness 1661) has occurred while \output is active []
+
+ [21] [22] [23] [24]) (content/chapters/chapter4.tex [25]
 Chapter 4.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [24
+ [26
 
 ]
-<images/ActorPerformanceFPSGrid.png, id=534, 1437.87187pt x 707.64375pt>
+<images/ActorPerformanceFPSGrid.png, id=582, 1437.87187pt x 707.64375pt>
 File: images/ActorPerformanceFPSGrid.png Graphic file (type png)
 <use images/ActorPerformanceFPSGrid.png>
 Package pdftex.def Info: images/ActorPerformanceFPSGrid.png  used on input line 22.
 (pdftex.def)             Requested size: 418.25368pt x 205.83769pt.
- [25 <./images/ActorPerformanceFPSGrid.png>]
+ [27 <./images/ActorPerformanceFPSGrid.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [26] [27] [28] [29] [30]
-<images/LODLevels.png, id=594, 1313.6578pt x 737.75626pt>
-File: images/LODLevels.png Graphic file (type png)
-<use images/LODLevels.png>
-Package pdftex.def Info: images/LODLevels.png  used on input line 144.
-(pdftex.def)             Requested size: 418.25368pt x 234.89355pt.
- [31 <./images/LODLevels.png>] [32]) (content/chapters/chapter5.tex [33]
-Chapter 5.
-[34
+ [28]
+Underfull \hbox (badness 10000) in paragraph at lines 47--48
 
-] [35] [36] [37] [38] [39] [40] [41] [42]
-Overfull \hbox (16.25139pt too wide) in paragraph at lines 203--204
-[]\T1/lmr/m/n/12 (-20) A clear im-ple-men-ta-tion of this pat-tern is found in the \T1/lmtt/m/n/12 FMassClaimSmartObjectTask\T1/lmr/m/n/12 (-20) : |
  []
 
-[43]) [44]
+[29] [30] [31] [32]
+<images/LODLevels.png, id=650, 1313.6578pt x 737.75626pt>
+File: images/LODLevels.png Graphic file (type png)
+<use images/LODLevels.png>
+Package pdftex.def Info: images/LODLevels.png  used on input line 164.
+(pdftex.def)             Requested size: 418.25368pt x 234.89355pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[33] [34 <./images/LODLevels.png>] [35]) (content/chapters/chapter5.tex [36]
+Chapter 5.
+[37
+
+] [38] [39] [40] [41] [42] [43] [44] [45]
+Overfull \hbox (40.23558pt too wide) in paragraph at lines 207--208
+[]\T1/lmr/m/n/12 (-20) A clear im-ple-men-ta-tion of this pat-tern can be found in the \T1/lmtt/m/n/12 FMassClaimSmartObjectTask\T1/lmr/m/n/12 (-20) : |
+ []
+
+[46]) (content/chapters/chapter6.tex [47]
+Chapter 6.
+[48
+
+] [49]
+Underfull \hbox (badness 10000) in paragraph at lines 36--37
+
+ []
+
+) [50]
 
 LaTeX Warning: Empty bibliography on input line 125.
 
@@ -1722,23 +1743,23 @@ L3 programming layer <2026-01-19>
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 8C531D64E75835F8AE1E9B2BA7F2026C;7115.
+(rerunfilecheck)             Checksum: 47766A551AA10D5BC6BC640D4FEC4A0B;8198.
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 47031 strings out of 467866
- 943203 string characters out of 5418326
- 2223489 words of memory out of 5000000
- 74624 multiletter control sequences out of 15000+600000
- 750504 words of font info for 247 fonts, out of 8000000 for 9000
+ 47088 strings out of 467866
+ 944254 string characters out of 5418326
+ 2223578 words of memory out of 5000000
+ 74652 multiletter control sequences out of 15000+600000
+ 750601 words of font info for 248 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  138i,11n,135p,2618b,2942s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmro10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtk10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtti10.pfb>
-Output written on thesis.pdf (51 pages, 8195764 bytes).
+Output written on thesis.pdf (57 pages, 8266359 bytes).
 PDF statistics:
- 857 PDF objects out of 1000 (max. 8388607)
- 348 named destinations out of 1000 (max. 500000)
- 72077 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 937 PDF objects out of 1000 (max. 8388607)
+ 372 named destinations out of 1000 (max. 500000)
+ 72141 words of extra memory for PDF output out of 74296 (max. 10000000)
 

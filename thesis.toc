@@ -26,32 +26,41 @@
 \contentsline {subsection}{\numberline {3.1.7}Processors and Queries}{15}{subsection.3.1.7}%
 \contentsline {subsubsection}{Mass Entity Queries}{18}{section*.12}%
 \contentsline {subsubsection}{Observer Processor}{21}{section*.14}%
-\contentsline {section}{\numberline {3.2}Additional Mass Plugins}{21}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}MassGameplay}{22}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}MassAI}{22}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}MassCrowd}{23}{subsection.3.2.3}%
-\contentsline {chapter}{\numberline {4}Large-Scale Entity Representation}{24}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Actor-based Representation Limitations}{25}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}The Mass Solution}{26}{subsection.4.1.1}%
-\contentsline {section}{\numberline {4.2}Mass Level Of Detail}{27}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Mass LOD Overview}{27}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Mass LOD Subsystem}{27}{subsection.4.2.2}%
-\contentsline {section}{\numberline {4.3}Mass Representation}{30}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Vertex Animated ISM}{31}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Niagara-Based Representation}{32}{subsection.4.3.2}%
-\contentsline {section}{\numberline {4.4}Performance Analysis}{33}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Decision Logic and State Management}{34}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Tag-Driven State Alteration}{34}{section.5.1}%
-\contentsline {section}{\numberline {5.2}State Tree}{34}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Architecture}{35}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Selection and Transition Flow}{36}{subsection.5.2.2}%
-\contentsline {subsubsection}{Enter Conditions}{36}{section*.17}%
-\contentsline {subsubsection}{Selection Behavior}{36}{section*.18}%
-\contentsline {subsubsection}{Transition Lifecycle}{37}{section*.19}%
-\contentsline {subsection}{\numberline {5.2.3}State Tree Schemas}{38}{subsection.5.2.3}%
-\contentsline {subsection}{\numberline {5.2.4}Data Management}{39}{subsection.5.2.4}%
-\contentsline {section}{\numberline {5.3}Mass and State Tree}{40}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Mass State Tree Schema}{40}{subsection.5.3.1}%
-\contentsline {subsubsection}{The Tick function}{40}{section*.20}%
-\contentsline {subsection}{\numberline {5.3.2}Data Handling and Memory Locality}{42}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Transition Handling and Logic Flow}{44}{subsection.5.3.3}%
+\contentsline {section}{\numberline {3.2}Bridging the ECS and OOP Architectures}{22}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Data Synchronization Modes}{22}{subsection.3.2.1}%
+\contentsline {section}{\numberline {3.3}Additional Mass Plugins}{23}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}MassGameplay}{23}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}MassAI}{24}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}MassCrowd}{24}{subsection.3.3.3}%
+\contentsline {chapter}{\numberline {4}Large-Scale Entity Representation}{26}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Actor-based Representation Limitations}{27}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}The Mass Solution}{28}{subsection.4.1.1}%
+\contentsline {subsubsection}{Processor Registration}{29}{section*.16}%
+\contentsline {section}{\numberline {4.2}Mass Level Of Detail}{29}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Mass LOD Overview}{29}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Mass LOD Subsystem}{30}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}Mass Representation}{33}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Vertex Animated ISM}{34}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Niagara-Based Representation}{35}{subsection.4.3.2}%
+\contentsline {section}{\numberline {4.4}Performance Analysis}{36}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Decision Logic and State Management}{37}{chapter.5}%
+\contentsline {section}{\numberline {5.1}State Tree}{37}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Architecture}{38}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Selection and Transition Flow}{38}{subsection.5.1.2}%
+\contentsline {subsubsection}{Enter Conditions}{39}{section*.18}%
+\contentsline {subsubsection}{Selection Behavior}{39}{section*.19}%
+\contentsline {subsubsection}{Transition Lifecycle}{40}{section*.20}%
+\contentsline {subsection}{\numberline {5.1.3}State Tree Schemas}{41}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Data Management}{42}{subsection.5.1.4}%
+\contentsline {section}{\numberline {5.2}Mass and State Tree}{43}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Mass State Tree Schema}{43}{subsection.5.2.1}%
+\contentsline {subsubsection}{The Tick function}{43}{section*.21}%
+\contentsline {subsection}{\numberline {5.2.2}Data Handling and Memory Locality}{45}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Transition Handling and Logic Flow}{47}{subsection.5.2.3}%
+\contentsline {chapter}{\numberline {6}Navigation in the Mass Framework}{48}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Overview}{48}{section.6.1}%
+\contentsline {section}{\numberline {6.2}ZoneGraph}{49}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Zones}{49}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Lanes}{49}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Intersections}{49}{subsection.6.2.3}%
+\contentsline {subsection}{\numberline {6.2.4}Connections}{50}{subsection.6.2.4}%

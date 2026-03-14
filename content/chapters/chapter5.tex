@@ -1,13 +1,17 @@
 \chapter{Decision Logic and State Management}
 \label{sec:StateManagement}
 
-While previous chapters focused on the spatial and visual aspects of the simulation, this chapter examines the logic layer that drives agent behavior. A significant challenge in ECS-based architectures is implementing complex, branching behavior without sacrificing the performance gains of data-orientation.
+While previous chapters focused on the spatial and visual aspects of the simulation, this chapter examines the logic layer that drives agent behavior. A significant challenge in ECS-based architectures is implementing complex, branching behavior without sacrificing the performance gains of data-orientation. In a system where data is stripped of its traditional object-oriented context, the mechanism for decision-making must be as lean and cache-coherent as the data it manipulates.
 
-Throughout this project, the implementation of agent intelligence evolved from a rigid, code-driven approach to a modular, hierarchical system. This evolution was documented through two distinct strategies: a direct Tag-based logic for high-performance state changes like entity death, and a hierarchical decision system utilizing StateTree for autonomous roaming and hostility logic.
+Throughout this project, the implementation of agent intelligence evolved into a modular, hierarchical system utilizing the Unreal Engine State Tree. The goal of this chapter is to detail how the State Tree functions as a high-performance brain within the Mass ecosystem. It provides a technical analysis of how the \texttt{UMassStateTreeSchema} decouples stateful logic from the \texttt{UObject} lifecycle, allowing designers to utilize a node-based interface for complex AI while maintaining the simulation’s ability to scale. By analyzing the transition from a traditional polling model to a reactive, signal-driven architecture, this chapter demonstrates how the State Tree coordinates high-level intent while delegating computational muscle to specialized Mass Processors.
 
-The goal of this chapter is to detail how these state management strategies function within the Mass ecosystem. It provides a technical analysis of how the framework handles structural changes, such as promoting an entity to an Actor Proxy during a death sequence, and how it integrates with the StateTree system to provide designers with a node-based interface for complex AI, all while maintaining the simulation’s ability to scale.
+%versione se includo la spiegazione del flusso da stato (tag) a animazione
 
-\section{Tag-Driven State Alteration}
+%Throughout this project, the implementation of agent intelligence evolved from a rigid, code-driven approach to a modular, hierarchical system. This evolution was documented through two distinct strategies: a direct Tag-based logic for high-performance state changes like entity death, and a hierarchical decision system utilizing StateTree for autonomous roaming and hostility logic.
+
+%The goal of this chapter is to detail how these state management strategies function within the Mass ecosystem. It provides a technical analysis of how the framework handles structural changes, such as promoting an entity to an Actor Proxy during a death sequence, and how it integrates with the StateTree system to provide designers with a node-based interface for complex AI, all while maintaining the simulation’s ability to scale.
+
+%\section{Tag-Driven State Alteration}
 
 %spiegare come funziona il flusso della morte dell'entità
 
@@ -200,7 +204,7 @@ struct FMassClaimSmartObjectTaskInstanceData
 To bridge the gap between the State Tree and the Mass memory layout, we use \texttt{TStateTreeExternalDataHandle<T>}.
 In practice, this follows a linking pattern: during the \texttt{Link} phase (initialization), the task requests access to specific fragments or subsystems. The State Tree Linker resolves these requests into handles. At runtime, the task uses these handles to retrieve direct pointers to the fragment data within the current chunk, ensuring zero-copy overhead.
 
-A clear implementation of this pattern is found in the \texttt{FMassClaimSmartObjectTask}:
+A clear implementation of this pattern can be found in the \texttt{FMassClaimSmartObjectTask}:
 
 \begin{lstlisting}
 //MassClaimSmartObjectTask.h
@@ -249,3 +253,9 @@ Transitions in Mass are outcome-driven. Because the \texttt{UMassStateTreeProces
 A common pitfall is attempting to perform complex polling logic inside a task. In Mass, if a task is waiting for something to happen (like reaching a destination), it should return \texttt{EStateTreeRunStatus::Running}. If the goal is reached, it returns Succeeded. This immediate return signals the State Tree to evaluate transitions instantly, moving the entity to the next state without waiting for the next frame's tick. This ensures that the entity's decision logic is as reactive as possible while keeping the action logic separate.
 
 In fact, A critical design pattern in Mass-integrated State Trees is the strict separation between Decision Logic and Execution Logic. Tasks should be treated as lightweight state mutators: their role is to reconfigure fragment values or toggle gameplay tags to signal a change in intent. The computational heavy lifting, such as pathfollowing, avoidance, or complex sensory filtering, should be delegated to specialized Mass Processors. This ensures that the State Tree remains a reactive brain that only consumes CPU cycles when a high-level transition occurs, while the Mass Task Graph provides the muscle for continuous, high-performance simulation.
+
+% Mass x State Tree setup
+
+%To configure an entity to use a StateTree: Create a new State Tree data asset (a UStateTree), Choose schema: MassStateTreeSchema (aka “Mass Behavior”), Example name: ST_MassEntity, Add a UMassStateTreeTrait to the entity config data asset, Select asset: ST_MassEntity (the one you created for this entity)
+
+% State Tree Debugger -> maybe add section if there is time

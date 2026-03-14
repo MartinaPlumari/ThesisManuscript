@@ -7,7 +7,7 @@ In traditional game developement, the visual presence of an object is inextricab
 
 This chapter explores this architectural shift by treating representation as a dynamic state rather than a static component property. We begin by diagnosing the inherent limitations of the Actor-centric model, specifically analyzing how \texttt{UObject} overhead and individual draw calls create a performance ceiling that traditional architectures cannot breach.
 
-Once these bottlenecks are established, the discourse moves to the Mass LOD system, which serves as the simulation’s brain for visibility and performance throttling, orchestrating agent fidelity based on spatial relevance. This leads into a technical examination of standard representation strategies, where we analyze the mechanics of Instanced Static Meshes (ISM) and the AnimToTexture pipeline, the dual frameworks that enable high-fidelity crowd visualization at scale. Finally, we explore alternative and non-standard approaches, such as Niagara-based representation and hybrid solutions.
+Once these bottlenecks are established, the discourse moves to the Mass LOD system, which serves as the simulation’s brain for visibility and performance throttling, orchestrating agent fidelity based on spatial relevance. This leads into a technical examination of standard representation strategies, where we analyze the mechanics of Instanced Static Meshes (ISM) and the AnimToTexture pipeline, the dual frameworks that enable high-fidelity crowd visualization at scale. Finally, we explore alternative and non-standard approaches, such as Niagara-based representation.
 
 
 % use [] to set name for ToC
@@ -39,6 +39,26 @@ The primary tool for this large-scale visualization is the Instanced Static Mesh
 
 Through the Mass Representation Subsystem, these entities are not merely rendered, but managed through a transactional phase. Instead of individual updates, the system pushes contiguous arrays of transforms and Per-Instance Custom Data (PICD), such as animation indices or color variations, to the GPU buffers in a single, streamlined operation. This system does not apply a uniform representation to all entities; instead, it utilizes a multi-tiered Level of Detail (LOD) logic to determine whether an entity should be rendered as a high-fidelity Actor, a high-performance HISM instance, or culled entirely based on its spatial relevance to the viewer.
 
+\subsubsection{Processor Registration}
+
+A critical practical consideration when implementing this architecture is processor registration. In a default Unreal Engine 5.6 project, the specific processors responsible for translating entity data into visual proxies and managing spatial relevance are not always active out-of-the-box.
+%aggiungi cit a 60 minutes with mass
+
+For the representation and LOD pipelines to function, their respective processors must be explicitly told to run during the simulation tick. This is achieved by enabling \texttt{bAutoRegisterWithProcessingPhases} either through the Editor's Project Settings or directly within the \texttt{DefaultMass.ini} configuration file. Specifically, the framework requires the activation of the core Representation Processor, the Visualization LOD Processor, and the LOD Collector Processor:\newline
+
+\begin{lstlisting}
+[/Script/MassRepresentation.MassRepresentationProcessor]
+bAutoRegisterWithProcessingPhases=True
+
+[/Script/MassRepresentation.MassVisualizationLODProcessor]
+bAutoRegisterWithProcessingPhases=True
+
+[/Script/MassLOD.MassLODCollectorProcessor]
+bAutoRegisterWithProcessingPhases=True
+\end{lstlisting}
+
+Without these explicit registrations, entities may simulate correctly in the ECS memory space, but the framework will fail to gather viewer data or push spatial transforms to the GPU buffers, resulting in an invisible simulation.
+
 \section[Mass Level Of Detail]{Mass Level Of Detail}
 
 The Mass LOD system serves as the central decision-making engine for entity relevance. Unlike traditional LOD systems that only swap mesh resolutions, Mass uses LOD to drive a multi-system load balancing strategy. By categorizing entities into four distinct states (High, Medium, Low, and Off) the framework can dynamically throttle everything from rendering fidelity to the frequency of C++ logic updates.
@@ -60,7 +80,7 @@ The \texttt{UMassLODSubsystem} acts as the global state provider for spatial rel
 Technically, the subsystem is hooked into the \texttt{PrePhysics} phase of the \newline\texttt{UMassSimulationSubsystem}. At the start of this phase, it iterates through all active controllers, camera components, and World Partition streaming sources to populate a internal temporary array of \texttt{FViewerInfo} structures. Each entry in this array serves as a lightweight snapshot of an observer's perspective, encapsulating the following properties: 
 
 \begin{itemize}
-    \item \textbf{Location and Rotation}: he world-space origin and orientation of the viewer
+    \item \textbf{Location and Rotation}: the world-space origin and orientation of the viewer
     \item \textbf{Field of View (FOV) and Aspect Ratio}: critical parameters used to derive the frustum planes for visibility culling
 \end{itemize}
 
@@ -172,9 +192,9 @@ This approach represents the massive tier of simulation, moving from a CPU-side 
 Despite the clear performance benefits for very large scale crowds (100,000+ entities), the current state of Niagara integration is non-trivial. Because the standard Unreal Engine 5.6 toolset lacks a native bridge between Mass and Niagara, a developer must bridge the gap manually. This requires:
 
 \begin{itemize}
-    \item Custom C++ Middleware: creating a specialized Niagara Data Interface (NDI) to map ECS memory chunks to Niagara parameters
-    \item Manual Lifecycle Management: Synchronizing the birth and death of Mass entities with the spawning and reaping of Niagara particles
-    \item Shader Complexity: Re-implementing the VAT (Vertex Animation Texture) logic within the Niagara material graph to ensure visual consistency with the HISM-based agents
+    \item \textbf{Custom C++ Middleware}: creating a specialized Niagara Data Interface (NDI) to map ECS memory chunks to Niagara parameters
+    \item \textbf{Manual Lifecycle Management}: Synchronizing the birth and death of Mass entities with the spawning and reaping of Niagara particles
+    \item \textbf{Shader Complexity}: Re-implementing the VAT (Vertex Animation Texture) logic within the Niagara material graph to ensure visual consistency with the HISM-based agents
 \end{itemize}
 
 The primary precedent for this hybrid architecture is found in Unreal Engine’s City Sample (The Matrix Awakens Demo). To populate the vast streets of the city without overwhelming the CPU, the developers utilized a tiered representation strategy.

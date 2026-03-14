@@ -392,6 +392,30 @@ This is critical for initialization and cleanup logic. For example, an observer 
 
 %aggiungere codice?
 
+\section{Bridging the ECS and OOP Architectures}
+
+%While the MassEntity core operates entirely independently of standard Actors, practical game development requires a bridge between these two worlds. Epic Games facilitates this through the MassActors module (packaged within the MassGameplay plugin), specifically utilizing the \texttt{UMassAgentComponent}.
+
+While the Mass framework thrives in a purely data-oriented environment, game development practically requires continuous interaction with Unreal Engine's traditional Object-Oriented paradigm. Characters, player controllers, and complex interactive objects are still fundamentally rooted in the \texttt{AActor} and \texttt{UObject} ecosystem. To solve this architectural divide, Epic Games provides the \texttt{UMassAgentComponent}.
+
+The \texttt{UMassAgentComponent} acts as a direct bridge between the standard Actor-based world and the Mass Entity Component System. When this component is attached to an Actor, it effectively grants the object a dual existence: it remains a fully functional Actor in the \texttt{UWorld}, but it is also registered as a unique Entity within the UMassEntitySubsystem.
+
+Rather than relying entirely on a separate \texttt{UMassEntityConfigAsset} to define the entity, the MassAgent component allows developers to add Mass Traits directly to the Actor via the Unreal Editor's details panel. When the Actor initializes (typically during BeginPlay), the component dynamically bakes an \texttt{FMassEntityTemplate} based on these selected traits and spawns the corresponding Entity in the ECS backend, maintaining a continuous link between the two via an \texttt{FMassEntityHandle}.
+
+%immagine MassAgent Component editor's panel
+
+\subsection{Data Synchronization Modes}
+
+Because the Actor and the Entity exist in parallel, data such as world transforms, health, or state variables must be continuously synchronized between the OOP properties and the DOD fragments to prevent state desynchronization. The MassAgent handles this by allowing developers to define explicit synchronization directions for its attached traits.
+
+This synchronization is typically categorized into three distinct modes, determining which architecture holds the authoritative state:
+
+\begin{itemize}
+    \item \textbf{Actor to Mass:} In this mode, the traditional \texttt{AActor} is the strict authority. The Actor's components (such as a CharacterMovementComponent or player input) drive the logic. The Mass Entity acts merely as a downstream reflection of the Actor, with specific processors copying data from the UObject properties into the Entity's fragments every frame. This is commonly used for the player character, allowing the ECS to see the player and react to them without Mass actually controlling the player's movement.
+    \item \textbf{Mass to Actor:} Here, the ECS simulation is the authority. The highly optimized Mass processors calculate the entity's logic, and the resulting fragment data is pushed outward to update the \texttt{AActor}'s properties. This is frequently used for complex AI agents that require the computational speed of Mass for their decision-making and movement, but still need an Actor shell to trigger standard Unreal Engine features like audio, collision events, or complex animation blueprints.
+    \item \textbf{Both Ways:} This bidirectional mode allows both architectures to mutate the data depending on the execution phase or specific game events. While this offers the highest flexibility, allowing an agent to be simulated by Mass most of the time, but temporarily overridden by an Actor-based sequence or physics event, it is also the most complex to manage, requiring careful configuration of Processor execution groups to avoid race conditions and frame-delay artifacts.
+\end{itemize}
+
 \section{Additional Mass Plugins}
 
 While MassEntity provides the foundational memory architecture and processing pipeline, Unreal Engine extends its capabilities through a suite of specialized plugins. These modules, developed and tested during the creation of the City Sample technical demo, provide the high-level logic required to transform raw entities into complex, autonomous agents. As of Unreal Engine 5.6, these systems remain marked as Experimental, signaling that while they are architecturally robust, their APIs continue to evolve to meet the needs of large-scale open-world simulations, constituing a production risk.
