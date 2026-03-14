@@ -1,11 +1,16 @@
 \chapter{Introduction}
 \label{sec:introduction}
 
+The demand for increasingly immersive and densely populated virtual worlds has pushed modern game engines to their computational limits. In traditional software architecture, simulating thousands of autonomous agents, each requiring physics, logic, rendering, and navigation updates, quickly saturates the CPU, resulting in severe performance bottlenecks. To bypass these limitations, the game development industry is undergoing a structural paradigm shift, moving away from familiar Object-Oriented Programming (OOP) in favor of Data-Oriented Design (DOD).
+
+This thesis explores this architectural transition through the lens of Unreal Engine’s Mass framework, a specialized Entity Component System (ECS) designed to handle massive-scale simulations.
 
 % use [] to set name for ToC
 \section[Goal]{Goal} % ok with fontsize=12pt
 
-The primary objective of this thesis is to design and implement a highly scalable NPC simulation using the Unreal Engine Mass Framework, targeting a performance threshold of thousands of concurrent entities on mid-to-high-range consumer hardware. To achieve this, the study focuses on developing a robust architectural pipeline that moves beyond passive background elements, ensuring that agents remain interactable and visually convincing through dynamic animation state management. A core technical challenge involves the implementation of a hybrid navigation system capable of reconciling global path-following with local, reactive steering for moving targets across non-planar terrain. Furthermore, the project serves as a critical feasibility study to evaluate the production readiness of Mass’s ECS-based ecosystem. By identifying the current limitations in out-of-the-box avoidance, documentation accessibility, and the technical barrier for non-programming disciplines, this thesis aims to provide a definitive recommendation for the framework's adoption within a professional game development pipeline.
+The primary objective of this work is to dissect and evaluate the Mass framework as a viable solution for large-scale agent simulations in commercial game development. While the theoretical performance benefits of an ECS architecture are well-documented, applying these concepts within an engine historically rooted in object-oriented design presents unique software engineering challenges.
+
+This thesis aims to demystify the Mass ecosystem. By providing a comprehensive technical analysis of how the framework operates under the hood, from its low-level memory allocation to high-level artificial intelligence and rendering, this work seeks to bridge the gap between Epic Games' experimental features and practical, production-ready implementation. Ultimately, it assesses the framework's viability, highlighting both its unprecedented performance capabilities and the steep learning curve required for a development team to adopt it.
 
 \section[Target Platform Definition]{Target Platform Definition}
 
@@ -17,3 +22,13 @@ The target used for performance considerations is a laptop with the following ha
 \end{itemize}
 
 \section[Thesis Structure]{Thesis Structure} % ok with fontsize=12pt
+
+To comprehensively analyze the implementation and impact of the Mass framework, this thesis progresses logically from theoretical foundations to practical, systemic execution.
+
+The exploration begins by establishing the theoretical baseline of Entity Component Systems (ECS). The first chapter contrasts traditional Object-Oriented Design with Data-Oriented Design, detailing the three core pillars of the ECS pattern and analyzing the inherent trade-offs of adopting this methodology. Building on this foundation, the second chapter dives directly into Unreal Engine's specific ECS implementation. It examines the core architecture of Mass, illustrating how memory is managed through Archetypes and Chunks, how processors execute logic in parallel, and how the framework successfully bridges the gap between raw data entities and traditional Unreal Engine Actors.
+
+Once the underlying simulation architecture is established, the thesis tackles the inevitable rendering bottlenecks associated with large-scale crowds. The third chapter explores how Mass decouples logical simulation from visual representation, utilizing Level of Detail (LOD) systems, Instanced Static Meshes (ISM), and Vertex Animation Textures to render thousands of characters without overwhelming the graphics pipeline.
+
+With the entities efficiently simulated and rendered, the focus then shifts to their behavior. The fourth chapter delves into artificial intelligence, providing a technical breakdown of how Unreal Engine's hierarchical State Tree system integrates with Mass. This integration allows for complex, node-based decision-making that scales efficiently through signal-driven, asynchronous execution. Following the decision-making process, the fifth chapter explores how these intelligent entities physically traverse their environment. It details the data-oriented wrappers for standard open-world pathfinding via NavMesh and strict spline-based routing through ZoneGraph, concluding with an analysis of low-level steering and crowd avoidance processors.
+
+Finally, the Conclusion synthesizes these findings to evaluate the framework's current state. It grounds the technical achievements in reality by discussing the practical production risks, the current deficit in editor tooling, and the remaining bottlenecks in navigation. Ultimately, it reflects on the significant shift in development methodology required for a team to successfully leverage Mass in a commercial production pipeline.

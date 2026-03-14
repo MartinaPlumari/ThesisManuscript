@@ -1,0 +1,36 @@
+\chapter{Conclusions}
+\label{sec:Conclusions}
+
+Unreal Engine’s Mass framework represents a definitive leap forward for large-scale simulations. As demonstrated throughout this thesis, by fundamentally restructuring how data is stored and processed, shifting from an Actor-centric Object-Oriented paradigm to a Data-Oriented Design, Mass effectively shatters the performance ceilings that have historically limited crowd density and agent autonomy. It stands as the most viable, native tool for creating massive agent simulations within the Unreal Engine ecosystem.
+
+However, viability in theory does not seamlessly translate to readiness in production. While the foundational MassEntity architecture is robust and integrated into the core engine, utilizing the framework to build complex, interactive worlds currently requires a massive software engineering investment to overcome significant integration, documentation, and scalability hurdles.
+
+\section{Production Risks and Tooling Deficits}
+
+At its current stage of maturity, one of the most pressing limitations of the Mass framework is its lack of accessible Editor integration. Traditional game development workflows heavily rely on empowering non-technical staff, such as game designers, level artists, and animators, to iterate on entity behavior via intuitive interfaces like Blueprints and Actor Details panels. Mass, by contrast, is distinctly code-heavy and structurally abstract. To implement Mass in a production environment, a studio must dedicate consistent engineering time to develop custom tooling, bridging the gap between the C++ data-oriented backend and the editor-facing front end. Without this custom infrastructure, designer iteration is heavily bottlenecked.
+
+Furthermore, the higher-level plugins that make Mass usable for gameplay, namely MassGameplay, MassAI, and MassCrowd, remain firmly labeled as Experimental features by Epic Games as of Unreal 5.7. For a commercial studio, adopting experimental technology for core gameplay loops constitutes a severe production risk. The APIs governing these systems are subject to undocumented, breaking changes in future engine updates, potentially requiring costly and time-consuming code refactors mid-development.
+
+\section{Scaling Bottlenecks: Navigation and Avoidance}
+
+While Mass excels at iterating over contiguous memory, integrating it with standard Unreal Engine systems can reintroduce the very bottlenecks the framework was designed to bypass. This is most evident in complex spatial pathfinding.
+
+If a project aims to simulate tens of thousands of free-roaming agents, the default NavMesh integration simply does not scale. The traditional Recast Navigation Mesh is an inherently Object-Oriented construct. Querying a path requires synchronous A* searches across complex polygonal networks, resulting in heavy pointer-chasing and inevitable cache misses. While the Mass State Tree attempts to hide this latency by caching short paths and putting entities to sleep, the initial generation of the path remains a massive CPU burden. When thousands of agents request NavMesh paths simultaneously, the Game Thread will stall.
+
+Similarly, while the built-in Mass avoidance systems utilize spatial hashing to improve performance, calculating dynamic repulsive forces across a massive, dense crowd remains a computationally heavy operation.
+
+To truly reach the upper limits of entity density, a development team must either:
+
+\begin{itemize}
+    \item \textbf{Develop Custom Navigation Solutions:} Completely replace the NavMesh dependency with a custom, data-oriented spatial grid or flow-field navigation system tailored specifically for ECS processing.
+    \item \textbf{Implement Aggressive Throttling:} If sticking to the built-in NavMesh and avoidance, engineers must design smart, localized time-slicing systems. This involves strictly limiting the number of concurrent pathfinding requests per frame and heavily relying on the UMassLODSubsystem to disable avoidance and navigation queries for entities outside the player's immediate proximity.
+    \item %aggiungi Avoidance basata su NN
+\end{itemize}
+
+\section{The Paradigm Shift}
+
+Beyond the technical challenges, integrating Mass into a production pipeline involves a significant shift in development methodology. Transitioning from familiar Object-Oriented Programming (OOP) principles to Data-Oriented Design (DOD) presents a notable learning curve. Developers accustomed to relying on inheritance and standard object lifecycles will need to adapt their workflows to prioritize memory layouts, cache coherency, and data transformations. Onboarding a team to this new architecture requires time and careful code-review practices to ensure that traditional OOP patterns, like monolithic data structures or heavy pointer use, do not inadvertently compromise the performance benefits of the ECS environment.
+
+\section{Final Outlook}
+
+Despite these profound implementation challenges, Unreal Engine Mass remains a highly promising technology. For studios with the engineering bandwidth to build custom tooling and navigate its experimental edges, it offers unparalleled performance. Furthermore, the principles and infrastructure of MassEntity are not limited strictly to crowd simulations; the framework can be leveraged as a generic optimization tool for any system requiring the high-speed processing of massive datasets, such as large-scale traffic management or backend systemic calculations. As the framework matures and Epic Games standardizes the APIs in future engine releases, Mass is poised to become the definitive standard for high-performance simulation in interactive media.
