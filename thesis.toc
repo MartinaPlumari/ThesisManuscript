@@ -59,8 +59,21 @@
 \contentsline {subsection}{\numberline {5.2.3}Transition Handling and Logic Flow}{47}{subsection.5.2.3}%
 \contentsline {chapter}{\numberline {6}Navigation in the Mass Framework}{48}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Overview}{48}{section.6.1}%
-\contentsline {section}{\numberline {6.2}ZoneGraph}{49}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Zones}{49}{subsection.6.2.1}%
-\contentsline {subsection}{\numberline {6.2.2}Lanes}{49}{subsection.6.2.2}%
-\contentsline {subsection}{\numberline {6.2.3}Intersections}{49}{subsection.6.2.3}%
-\contentsline {subsection}{\numberline {6.2.4}Connections}{50}{subsection.6.2.4}%
+\contentsline {section}{\numberline {6.2}NavMesh Navigation}{49}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}The NavMesh Trait}{49}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}The StateTree Task}{49}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}The Path Following Processor}{50}{subsection.6.2.3}%
+\contentsline {section}{\numberline {6.3}ZoneGraph}{50}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Zones}{51}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Lanes}{51}{subsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.3.3}Intersections}{51}{subsection.6.3.3}%
+\contentsline {subsection}{\numberline {6.3.4}Connections}{52}{subsection.6.3.4}%
+\contentsline {subsection}{\numberline {6.3.5}The ZoneGraph Trait}{52}{subsection.6.3.5}%
+\contentsline {subsection}{\numberline {6.3.6}The StateTree Task}{52}{subsection.6.3.6}%
+\contentsline {subsection}{\numberline {6.3.7}The Path Following Processor}{53}{subsection.6.3.7}%
+\contentsline {section}{\numberline {6.4}Additional Movement Traits and Processors}{54}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Steering}{54}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}Smooth Orientation}{54}{subsection.6.4.2}%
+\contentsline {subsection}{\numberline {6.4.3}Avoidance}{55}{subsection.6.4.3}%
+\contentsline {subsubsection}{Moving Avoidance}{55}{section*.22}%
+\contentsline {subsubsection}{Standing Avoidance}{55}{section*.23}%
