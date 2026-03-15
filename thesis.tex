@@ -1,5 +1,7 @@
 % !TEX encoding = UTF-8 Unicode
 % !TEX TS-program = pdflatex
+% !BIB program = biber
+% !TEX encoding = UTF-8 Unicode
 
 % toptesti document class
 \documentclass[%
@@ -75,10 +77,7 @@
 %\thispagestyle{empty}
 % end summary
 
-\ringraziamenti % acknowledgements
-\input{content/acknowledgements}
-
-\paginavuota
+%\paginavuota
 \tableofcontents
 
 %\listoftables % ToC for tables
@@ -123,6 +122,13 @@
 
 \phantom{0}
 \cleardoublepage
-\printbibliography[heading=bibintoc] % heading required to show it in ToC
+\addcontentsline{toc}{chapter}{Bibliography}
+\nocite{*}
+%\printbibliography[heading=bibintoc] % heading required to show it in ToC
+\chapter*{Bibliography}
+\printbibliography[keyword=chapter2, heading=subbibliography, title={References for Chapter 2}]
+
+%\ringraziamenti % acknowledgements
+%\input{content/acknowledgements}
 
 \end{document}

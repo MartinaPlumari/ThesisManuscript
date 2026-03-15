@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.1) (preloaded format=pdflatex 2026.2.8)  14 MAR 2026 22:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.1) (preloaded format=pdflatex 2026.2.8)  15 MAR 2026 21:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1256,16 +1256,16 @@ File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
 \glo@main@file=\write7
 \openout7 = `thesis.glo'.
 
-Package glossaries Info: Writing glossary file thesis.glo on input line 34.
+Package glossaries Info: Writing glossary file thesis.glo on input line 36.
 \glo@abbreviations@file=\write8
 \openout8 = `thesis.glo-abr'.
 
-Package glossaries Info: Writing glossary file thesis.glo-abr on input line 34.
+Package glossaries Info: Writing glossary file thesis.glo-abr on input line 36.
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'italian'.
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 35.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 37.
  (C:\Users\marti\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1276,26 +1276,26 @@ LaTeX Warning: Unused global option(s):
 (thesis.aux)
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 35.
-LaTeX Font Info:    ... okay on input line 35.
-LaTeX Info: Redefining \it@ocap on input line 35.
-LaTeX Info: Redefining \it@ccap on input line 35.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 37.
+LaTeX Font Info:    ... okay on input line 37.
+LaTeX Info: Redefining \it@ocap on input line 37.
+LaTeX Info: Redefining \it@ccap on input line 37.
  (C:\Users\marti\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count564
@@ -1315,17 +1315,17 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (C:\Users\marti\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package TOPtesi Info: Margin width recalculation on input line 35.
+Package TOPtesi Info: Margin width recalculation on input line 37.
 Package TOPtesi Info: Before:
 (TOPtesi)             oddsidemargin  17.3571pt
-(TOPtesi)             evensidemargin 17.3571pt on input line 35.
+(TOPtesi)             evensidemargin 17.3571pt on input line 37.
 Package TOPtesi Info: After:
 (TOPtesi)             oddsidemargin  37.27402pt
-(TOPtesi)             evensidemargin -2.55981pt on input line 35.
+(TOPtesi)             evensidemargin -2.55981pt on input line 37.
  (C:\Users\marti\AppData\Local\Programs\MiKTeX\tex/latex/toptesi\topcoman.sty
 Package: topcoman 2025-01-15 v.6.4.07 Additional commands for the TOPtesi bundle
 )
-Package hyperref Info: Link coloring ON on input line 35.
+Package hyperref Info: Link coloring ON on input line 37.
  (thesis.out) (thesis.out)
 \@outlinefile=\write9
 \openout9 = `thesis.out'.
@@ -1346,16 +1346,15 @@ Package biblatex Info: Automatic encoding selection.
 \openout4 = `thesis.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'thesis.bbl' not found.
-
-No file thesis.bbl.
-Package biblatex Info: Reference section=0 on input line 35.
-Package biblatex Info: Reference segment=0 on input line 35.
+Package biblatex Info: ... file 'thesis.bbl' found.
+ (thesis.bbl)
+Package biblatex Info: Reference section=0 on input line 37.
+Package biblatex Info: Reference segment=0 on input line 37.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: longtable package is loaded.
-(C:\Users\marti\AppData\Local\Programs\MiKTeX\tex/latex/caption\ltcaption.sty
+ (C:\Users\marti\AppData\Local\Programs\MiKTeX\tex/latex/caption\ltcaption.sty
 Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 )
 Package caption Info: supertabular package is loaded.
@@ -1399,15 +1398,15 @@ Package caption Info: End \AtBeginDocument code.
 Package microtype Info: Patching varwidth to enable character protrusion.
 \MT@vwid@leftmargin=\dimen339
 \MT@vwid@rightmargin=\dimen340
-LaTeX Info: Redefining \microtypecontext on input line 35.
-Package microtype Info: Applying patch `item' on input line 35.
-Package microtype Info: Applying patch `toc' on input line 35.
-Package microtype Info: Applying patch `eqnum' on input line 35.
+LaTeX Info: Redefining \microtypecontext on input line 37.
+Package microtype Info: Applying patch `item' on input line 37.
+Package microtype Info: Applying patch `toc' on input line 37.
+Package microtype Info: Applying patch `eqnum' on input line 37.
 
-Package microtype Warning: Unable to apply patch `footnote' on input line 35.
+Package microtype Warning: Unable to apply patch `footnote' on input line 37.
 
-Package microtype Info: Applying patch `verbatim' on input line 35.
-LaTeX Info: Redefining \microtypesetup on input line 35.
+Package microtype Info: Applying patch `verbatim' on input line 37.
+LaTeX Info: Redefining \microtypesetup on input line 37.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1421,11 +1420,11 @@ Package microtype Info: No adjustment of character kerning.
 (C:\Users\marti\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
 )
-Package translations Info: no dictionary file `translations-basic-dictionary-italian.trsl' found. on input line 35.
+Package translations Info: no dictionary file `translations-basic-dictionary-italian.trsl' found. on input line 37.
  (C:\Users\marti\AppData\Local\Programs\MiKTeX\tex/latex/translations/dicts\translations-basic-dictionary-english.trsl
 File: translations-basic-dictionary-english.trsl (english translation file `translations-basic-dictionary')
 )
-Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 35.
+Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 37.
  (common/config.tex) (common/toptesi_config.tex) (common/frontpage.tex
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
@@ -1459,7 +1458,7 @@ Package translations Info: loading dictionary `translations-basic-dictionary' fo
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<images/logo/polito_logo_2021_blu-2-2.jpg, id=274, 845.3181pt x 326.4195pt>
+<images/logo/polito_logo_2021_blu-2-2.jpg, id=305, 845.3181pt x 326.4195pt>
 File: images/logo/polito_logo_2021_blu-2-2.jpg Graphic file (type jpg)
 <use images/logo/polito_logo_2021_blu-2-2.jpg>
 Package pdftex.def Info: images/logo/polito_logo_2021_blu-2-2.jpg  used on input line 6.
@@ -1522,32 +1521,27 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.67 \paginavuota
+l.69 \paginavuota
                   % to manually create a blank page [1
 
 
 
-] (content/acknowledgements.tex)
+] (thesis.toc
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/lmr/m/sc/12'.
 (microtype)             Ignoring protrusion settings for this character.
  [2
 
 
-] [3
-
-] (thesis.toc [4
-
-
-] [5])
+] [3])
 \tf@toc=\write10
 \openout10 = `thesis.toc'.
 
- [6] (thesis.lof)
+ [4] (thesis.lof)
 \tf@lof=\write11
 \openout11 = `thesis.lof'.
 
- [7
+ [5
 
 
 ] (common/post_summary_config.tex) (content/chapters/chapter1.tex
@@ -1567,12 +1561,18 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 Chapter 2.
 [4
 
-] [5]) (content/chapters/chapter3.tex [6]
-Chapter 3.
-[7
+] [5]
+<images/wwzHorde.png, id=462, 1927.2pt x 1084.05pt>
+File: images/wwzHorde.png Graphic file (type png)
+<use images/wwzHorde.png>
+Package pdftex.def Info: images/wwzHorde.png  used on input line 49.
+(pdftex.def)             Requested size: 418.25368pt x 235.26619pt.
 
-]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 28.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[6]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 56.
  (C:\Users\marti\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1580,12 +1580,23 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<images/ArchetypeSchema.png, id=434, 1404.24625pt x 458.71375pt>
+ [7 <./images/wwzHorde.png>]
+<images/CitySkylinesPedestrian.png, id=475, 2569.6pt x 1606.0pt>
+File: images/CitySkylinesPedestrian.png Graphic file (type png)
+<use images/CitySkylinesPedestrian.png>
+Package pdftex.def Info: images/CitySkylinesPedestrian.png  used on input line 64.
+(pdftex.def)             Requested size: 418.25368pt x 261.40076pt.
+ [8 <./images/CitySkylinesPedestrian.png>]) (content/chapters/chapter3.tex [9]
+Chapter 3.
+[10
+
+]
+<images/ArchetypeSchema.png, id=489, 1404.24625pt x 458.71375pt>
 File: images/ArchetypeSchema.png Graphic file (type png)
 <use images/ArchetypeSchema.png>
 Package pdftex.def Info: images/ArchetypeSchema.png  used on input line 36.
 (pdftex.def)             Requested size: 334.60422pt x 109.30261pt.
-<images/ChunkSchema.png, id=435, 1353.055pt x 690.58pt>
+<images/ChunkSchema.png, id=490, 1353.055pt x 690.58pt>
 File: images/ChunkSchema.png Graphic file (type png)
 <use images/ChunkSchema.png>
 Package pdftex.def Info: images/ChunkSchema.png  used on input line 44.
@@ -1594,8 +1605,8 @@ Package pdftex.def Info: images/ChunkSchema.png  used on input line 44.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[8 <./images/ArchetypeSchema.png (PNG copy)>]
-<images/ChunkMemorySchema.png, id=441, 1567.8575pt x 570.13pt>
+[11 <./images/ArchetypeSchema.png (PNG copy)>]
+<images/ChunkMemorySchema.png, id=495, 1567.8575pt x 570.13pt>
 File: images/ChunkMemorySchema.png Graphic file (type png)
 <use images/ChunkMemorySchema.png>
 Package pdftex.def Info: images/ChunkMemorySchema.png  used on input line 58.
@@ -1604,7 +1615,7 @@ Package pdftex.def Info: images/ChunkMemorySchema.png  used on input line 58.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[9 <./images/ChunkSchema.png (PNG copy)>]
+[12 <./images/ChunkSchema.png (PNG copy)>]
 Overfull \hbox (11.47284pt too wide) in paragraph at lines 68--69
 \T1/lmr/m/n/12 (-20) Mass uti-lizes a cen-tral-ized man-age-ment layer con-sist-ing of the \T1/lmtt/m/n/12 UMassEntitySubsystem|
  []
@@ -1619,26 +1630,26 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 
 Underfull \vbox (badness 1867) has occurred while \output is active []
 
- [10 <./images/ChunkMemorySchema.png (PNG copy)>] [11] [12] [13]
+ [13 <./images/ChunkMemorySchema.png (PNG copy)>] [14] [15] [16]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.00012> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 168.
- [14]
+ [17]
 Overfull \hbox (6.76169pt too wide) in paragraph at lines 193--194
 []\T1/lmr/m/n/12 (-20) When the \T1/lmtt/m/n/12 MassEntitySubsystem \T1/lmr/m/n/12 (-20) pro-cesses a trait, it ex-e-cutes the \T1/lmtt/m/n/12 BuildTemplate|
  []
 
-[15]
-<images/MassEntityConfig.png, id=554, 1443.14156pt x 487.8225pt>
+[18]
+<images/MassEntityConfig.png, id=608, 1443.14156pt x 487.8225pt>
 File: images/MassEntityConfig.png Graphic file (type png)
 <use images/MassEntityConfig.png>
 Package pdftex.def Info: images/MassEntityConfig.png  used on input line 214.
 (pdftex.def)             Requested size: 418.25368pt x 141.37558pt.
-<images/AssortedFragments.png, id=556, 1060.71281pt x 109.1578pt>
+<images/AssortedFragments.png, id=610, 1060.71281pt x 109.1578pt>
 File: images/AssortedFragments.png Graphic file (type png)
 <use images/AssortedFragments.png>
 Package pdftex.def Info: images/AssortedFragments.png  used on input line 222.
 (pdftex.def)             Requested size: 418.25368pt x 43.04272pt.
- [16 <./images/MassEntityConfig.png> <./images/AssortedFragments.png>]
+ [19 <./images/MassEntityConfig.png> <./images/AssortedFragments.png>]
 Underfull \hbox (badness 1033) in paragraph at lines 247--247
 []|\T1/lmr/m/n/12 (+20) Logic that runs con-cur-rently
  []
@@ -1648,17 +1659,17 @@ Underfull \hbox (badness 2608) in paragraph at lines 247--247
 \T1/lmr/m/n/12 (+20) with the physics sim-u-la-tion,
  []
 
-[17]
+[20]
 Underfull \hbox (badness 10000) in paragraph at lines 277--280
 
  []
 
-[18] [19]
+[21] [22]
 Overfull \hbox (26.70016pt too wide) in paragraph at lines 312--313
 []\T1/lmr/m/n/12 (-20) To ap-ply these fil-ters and ac-cess rules, pro-ces-sors must over-ride the \T1/lmtt/m/n/12 ConfigureQueries|
  []
 
-[20]
+[23]
 Underfull \hbox (badness 10000) in paragraph at lines 364--364
 []|\T1/lmr/m/n/12 (+20) Returns a
  []
@@ -1676,32 +1687,32 @@ Overfull \hbox (27.16847pt too wide) in paragraph at lines 361--372
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[21]
+[24]
 Underfull \vbox (badness 1661) has occurred while \output is active []
 
- [22] [23] [24] [25]) (content/chapters/chapter4.tex [26]
+ [25] [26] [27] [28]) (content/chapters/chapter4.tex [29]
 Chapter 4.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [27
+ [30
 
 ]
-<images/ActorPerformanceFPSGrid.png, id=670, 1437.87187pt x 707.64375pt>
+<images/ActorPerformanceFPSGrid.png, id=724, 1437.87187pt x 707.64375pt>
 File: images/ActorPerformanceFPSGrid.png Graphic file (type png)
 <use images/ActorPerformanceFPSGrid.png>
 Package pdftex.def Info: images/ActorPerformanceFPSGrid.png  used on input line 22.
 (pdftex.def)             Requested size: 418.25368pt x 205.83769pt.
- [28 <./images/ActorPerformanceFPSGrid.png>]
+ [31 <./images/ActorPerformanceFPSGrid.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [29]
+ [32]
 Underfull \hbox (badness 10000) in paragraph at lines 47--48
 
  []
 
-[30] [31] [32] [33]
-<images/LODLevels.png, id=738, 1313.6578pt x 737.75626pt>
+[33] [34] [35] [36]
+<images/LODLevels.png, id=792, 1313.6578pt x 737.75626pt>
 File: images/LODLevels.png Graphic file (type png)
 <use images/LODLevels.png>
 Package pdftex.def Info: images/LODLevels.png  used on input line 164.
@@ -1710,41 +1721,41 @@ Package pdftex.def Info: images/LODLevels.png  used on input line 164.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[34] [35 <./images/LODLevels.png>] [36]) (content/chapters/chapter5.tex [37]
+[37] [38 <./images/LODLevels.png>] [39]) (content/chapters/chapter5.tex [40]
 Chapter 5.
-[38
+[41
 
-] [39] [40] [41] [42] [43] [44] [45] [46]
+] [42] [43] [44] [45] [46] [47] [48] [49]
 Overfull \hbox (40.23558pt too wide) in paragraph at lines 207--208
 []\T1/lmr/m/n/12 (-20) A clear im-ple-men-ta-tion of this pat-tern can be found in the \T1/lmtt/m/n/12 FMassClaimSmartObjectTask\T1/lmr/m/n/12 (-20) : |
  []
 
-[47]) (content/chapters/chapter6.tex [48]
+[50]) (content/chapters/chapter6.tex [51]
 Chapter 6.
-[49
+[52
 
-] [50] [51]
+] [53] [54]
 Underfull \hbox (badness 10000) in paragraph at lines 61--62
 
  []
 
-[52] [53] [54] [55]) (content/chapters/chapter7.tex [56{C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}]
+[55] [56] [57] [58]) (content/chapters/chapter7.tex [59{C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}]
 Chapter 7.
-[57
+[60
 
 ]
 Underfull \vbox (badness 2521) has occurred while \output is active []
 
- [58]) [59]
-
-LaTeX Warning: Empty bibliography on input line 126.
-
+ [61]) [62]
 
 Package glossaries Warning: No \printglossary or \printglossaries found. 
 (Remove \makeglossaries if you don't want any glossaries.) 
 This document will not have a glossary.
 
-(thesis.aux)
+[63
+
+
+] (thesis.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -1753,27 +1764,24 @@ L3 programming layer <2026-01-19>
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: AC2B2985B04954C751C64DF5C08445DD;10937.
+(rerunfilecheck)             Checksum: E86D25658D27E96C3637EDC5C48371C4;12157.
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 47149 strings out of 467866
- 945208 string characters out of 5418326
- 2223630 words of memory out of 5000000
- 74674 multiletter control sequences out of 15000+600000
- 750892 words of font info for 251 fonts, out of 8000000 for 9000
+ 47463 strings out of 467866
+ 952439 string characters out of 5418326
+ 2224192 words of memory out of 5000000
+ 74950 multiletter control sequences out of 15000+600000
+ 756356 words of font info for 262 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  138i,11n,135p,2618b,2942s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmro10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtk10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtti10.pfb>
-Output written on thesis.pdf (67 pages, 8411513 bytes).
+<C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr7.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmro10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtk10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb><C:/Users/marti/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtti10.pfb>
+Output written on thesis.pdf (69 pages, 15626055 bytes).
 PDF statistics:
- 1080 PDF objects out of 1200 (max. 8388607)
- 400 named destinations out of 1000 (max. 500000)
- 72269 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 1162 PDF objects out of 1200 (max. 8388607)
+ 419 named destinations out of 1000 (max. 500000)
+ 74391 words of extra memory for PDF output out of 89155 (max. 10000000)
 
