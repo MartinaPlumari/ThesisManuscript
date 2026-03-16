@@ -24,7 +24,6 @@ To truly reach the upper limits of entity density, a development team must eithe
 \begin{itemize}
     \item \textbf{Develop Custom Navigation Solutions:} Completely replace the NavMesh dependency with a custom, data-oriented spatial grid or flow-field navigation system tailored specifically for ECS processing.
     \item \textbf{Implement Aggressive Throttling:} If sticking to the built-in NavMesh and avoidance, engineers must design smart, localized time-slicing systems. This involves strictly limiting the number of concurrent pathfinding requests per frame and heavily relying on the UMassLODSubsystem to disable avoidance and navigation queries for entities outside the player's immediate proximity.
-    \item %aggiungi Avoidance basata su NN
 \end{itemize}
 
 \section{The Paradigm Shift}

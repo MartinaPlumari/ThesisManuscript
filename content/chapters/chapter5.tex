@@ -45,15 +45,20 @@ States contain tasks, the functional building blocks of a State Tree. Tasks cont
 \caption{When clicking on a State it is possible to add and configure Tasks in this section of the detail panel.}
 \end{figure}
 
-Other than regular tasks that can be defined in relation to states, State Tree gives the develoepr the possibility to define global tasks. These run for the entire duration of the tree's execution, providing a persistent layer for event listening or data exposure. They are ideal for persistent logic, such as managing a high-level state timer or providing a continuous stream of data from an external subsystem that every state in the tree might need to access.
+Other than regular tasks that can be defined in relation to states, State Tree gives the developer the possibility to define global tasks. These run for the entire duration of the tree's execution, providing a persistent layer for event listening or data exposure. They are ideal for persistent logic, such as managing a high-level state timer or providing a continuous stream of data from an external subsystem that every state in the tree might need to access.
 
 State Tree architecture also gives the possibility to use Evaluators: specialized, stateless nodes designed to pre-process information before the selection phase begins. Unlike tasks, which execute behavior, evaluators run at the start of the tree’s tick to query the environment, perform complex calculations, and expose the results as output properties. By centralizing data preparation into these nodes, the State Tree ensures that conditions and tasks have access to up-to-date information (such as the distance to the nearest threat or a weighted utility score) without needing to redundantly recalculate that data across multiple states.
 
 In Unreal Engine 5.6 Tasks and Evaluators can be defined in blueprint by extending respectively \texttt{StateTreeTaskBlueprintBase} and \newline\texttt{StateTreeEvaluatorBlueprintBase}. 
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{images/StateTreeEvaluatorExample.png}
+\caption{A simple evaluator defined in Blueprint that returns the current location of the player.}
+\end{figure}
+
 \subsection{Selection and Transition Flow}
 
-%he execution of a State Tree differs significantly from standard state machines. It follows a Selection-First approach, more akin to Behavior Trees, where the entire path to a leaf must be validated before any state changes occur.
 The execution of a State Tree is defined by a continuous cycle of State Persistence and Evaluation Phases. Unlike traditional state machines that might transition blindly into a connected node, the State Tree utilizes a Selection-First logic. This means the system must validate the entire path from the root down to a specific leaf before any state changes are officially committed.
 
 The evaluation process begins whenever the tree is initialized or an active transition is triggered. At this point, the \texttt{FStateTreeExecutionContext} enters a pre-emptive evaluation pass to determine the next valid branch.
@@ -89,6 +94,12 @@ In its current state, the triggers available for defining the transitions have b
     \item \textbf{On Tick:} This trigger allows for continuous polling of conditions. While more computationally expensive than event-driven logic, it is essential for behaviors that must react to environmental variables that do not send discrete events.
     \item \textbf{On Delegate:} This specialized trigger allows the State Tree to bind directly to C++ or Blueprint delegates. It is particularly useful for decoupling the tree from external systems, allowing a state change to be fired the moment a specific delegate is broadcasted.
 \end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{images/TransitionExample.png}
+\caption{Example of transition definition. The next state in this case will be different based on the state outcome.}
+\end{figure}
 
 Beyond the transitions explicitly defined by the developer, the State Tree incorporates Implicit Transitions to ensure the execution flow never enters an invalid state. These act as a built-in safety net for the tree’s lifecycle. For instance, upon the initial start of the tree, the system performs an implicit transition to the Root State to begin the first evaluation. During runtime, if a leaf state completes but provides no explicit transition for its outcome, the system automatically goes up to the parent to check for a completion transition there.
 
@@ -212,7 +223,7 @@ struct FMassClaimSmartObjectTaskInstanceData
 To bridge the gap between the State Tree and the Mass memory layout, we use \texttt{TStateTreeExternalDataHandle<T>}.
 In practice, this follows a linking pattern: during the \texttt{Link} phase (initialization), the task requests access to specific fragments or subsystems. The State Tree Linker resolves these requests into handles. At runtime, the task uses these handles to retrieve direct pointers to the fragment data within the current chunk, ensuring zero-copy overhead.
 
-A clear implementation of this pattern can be found in the \texttt{FMassClaimSmartObjectTask}:
+A clear implementation of this pattern can be found in the \newline\texttt{FMassClaimSmartObjectTask}:
 
 \begin{lstlisting}
 //MassClaimSmartObjectTask.h

@@ -24,5 +24,9 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {5.1}{\ignorespaces An example of StateTree editor visualization.}}{44}{figure.caption.26}%
 \contentsline {figure}{\numberline {5.2}{\ignorespaces When clicking on a State it is possible to add and configure Tasks in this section of the detail panel.}}{45}{figure.caption.29}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces A simple evaluator defined in Blueprint that returns the current location of the player.}}{46}{figure.caption.30}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Example of transition definition. The next state in this case will be different based on the state outcome.}}{48}{figure.caption.34}%
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces In green the active NavMesh created from the level geometry.}}{57}{figure.caption.36}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces An example of ZoneGraph lanes, with an intersection that merges them.}}{60}{figure.caption.37}%
 \addvspace {10\p@ }

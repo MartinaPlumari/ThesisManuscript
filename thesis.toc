@@ -55,39 +55,39 @@
 \contentsline {subsubsection}{States}{44}{section*.27}%
 \contentsline {subsubsection}{Tasks}{44}{section*.28}%
 \contentsline {subsection}{\numberline {5.1.2}Selection and Transition Flow}{46}{subsection.5.1.2}%
-\contentsline {subsubsection}{Enter Conditions}{46}{section*.30}%
-\contentsline {subsubsection}{Selection Behavior}{46}{section*.31}%
-\contentsline {subsubsection}{Transition Lifecycle}{47}{section*.32}%
-\contentsline {subsection}{\numberline {5.1.3}State Tree Schemas}{48}{subsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.1.4}Data Management}{49}{subsection.5.1.4}%
-\contentsline {section}{\numberline {5.2}Mass and State Tree}{50}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Mass State Tree Schema}{50}{subsection.5.2.1}%
-\contentsline {subsubsection}{The Tick function}{50}{section*.33}%
-\contentsline {subsection}{\numberline {5.2.2}Data Handling and Memory Locality}{52}{subsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.2.3}Transition Handling and Logic Flow}{54}{subsection.5.2.3}%
-\contentsline {chapter}{\numberline {6}Navigation in the Mass Framework}{55}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Overview}{55}{section.6.1}%
-\contentsline {section}{\numberline {6.2}NavMesh Navigation}{56}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}The NavMesh Trait}{56}{subsection.6.2.1}%
-\contentsline {subsection}{\numberline {6.2.2}The StateTree Task}{56}{subsection.6.2.2}%
-\contentsline {subsection}{\numberline {6.2.3}The Path Following Processor}{57}{subsection.6.2.3}%
-\contentsline {section}{\numberline {6.3}ZoneGraph}{57}{section.6.3}%
-\contentsline {subsection}{\numberline {6.3.1}Zones}{58}{subsection.6.3.1}%
-\contentsline {subsection}{\numberline {6.3.2}Lanes}{58}{subsection.6.3.2}%
-\contentsline {subsection}{\numberline {6.3.3}Intersections}{58}{subsection.6.3.3}%
-\contentsline {subsection}{\numberline {6.3.4}Connections}{59}{subsection.6.3.4}%
-\contentsline {subsection}{\numberline {6.3.5}The ZoneGraph Trait}{59}{subsection.6.3.5}%
-\contentsline {subsection}{\numberline {6.3.6}The StateTree Task}{59}{subsection.6.3.6}%
-\contentsline {subsection}{\numberline {6.3.7}The Path Following Processor}{60}{subsection.6.3.7}%
-\contentsline {section}{\numberline {6.4}Additional Movement Traits and Processors}{61}{section.6.4}%
-\contentsline {subsection}{\numberline {6.4.1}Steering}{61}{subsection.6.4.1}%
-\contentsline {subsection}{\numberline {6.4.2}Smooth Orientation}{61}{subsection.6.4.2}%
-\contentsline {subsection}{\numberline {6.4.3}Avoidance}{62}{subsection.6.4.3}%
-\contentsline {subsubsection}{Moving Avoidance}{62}{section*.34}%
-\contentsline {subsubsection}{Standing Avoidance}{62}{section*.35}%
-\contentsline {chapter}{\numberline {7}Conclusions}{63}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Production Risks and Tooling Deficits}{63}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Scaling Bottlenecks: Navigation and Avoidance}{64}{section.7.2}%
-\contentsline {section}{\numberline {7.3}The Paradigm Shift}{65}{section.7.3}%
-\contentsline {section}{\numberline {7.4}Final Outlook}{65}{section.7.4}%
-\contentsline {chapter}{Bibliography}{66}{section.7.4}%
+\contentsline {subsubsection}{Enter Conditions}{46}{section*.31}%
+\contentsline {subsubsection}{Selection Behavior}{46}{section*.32}%
+\contentsline {subsubsection}{Transition Lifecycle}{47}{section*.33}%
+\contentsline {subsection}{\numberline {5.1.3}State Tree Schemas}{49}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Data Management}{50}{subsection.5.1.4}%
+\contentsline {section}{\numberline {5.2}Mass and State Tree}{51}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Mass State Tree Schema}{51}{subsection.5.2.1}%
+\contentsline {subsubsection}{The Tick function}{51}{section*.35}%
+\contentsline {subsection}{\numberline {5.2.2}Data Handling and Memory Locality}{53}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Transition Handling and Logic Flow}{55}{subsection.5.2.3}%
+\contentsline {chapter}{\numberline {6}Navigation in the Mass Framework}{56}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Overview}{56}{section.6.1}%
+\contentsline {section}{\numberline {6.2}NavMesh Navigation}{57}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}The NavMesh Trait}{57}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}The StateTree Task}{58}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}The Path Following Processor}{58}{subsection.6.2.3}%
+\contentsline {section}{\numberline {6.3}ZoneGraph}{59}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Zones}{59}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Lanes}{60}{subsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.3.3}Intersections}{60}{subsection.6.3.3}%
+\contentsline {subsection}{\numberline {6.3.4}Connections}{61}{subsection.6.3.4}%
+\contentsline {subsection}{\numberline {6.3.5}The ZoneGraph Trait}{61}{subsection.6.3.5}%
+\contentsline {subsection}{\numberline {6.3.6}The StateTree Task}{62}{subsection.6.3.6}%
+\contentsline {subsection}{\numberline {6.3.7}The Path Following Processor}{62}{subsection.6.3.7}%
+\contentsline {section}{\numberline {6.4}Additional Movement Traits and Processors}{63}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Steering}{63}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}Smooth Orientation}{63}{subsection.6.4.2}%
+\contentsline {subsection}{\numberline {6.4.3}Avoidance}{64}{subsection.6.4.3}%
+\contentsline {subsubsection}{Moving Avoidance}{64}{section*.38}%
+\contentsline {subsubsection}{Standing Avoidance}{64}{section*.39}%
+\contentsline {chapter}{\numberline {7}Conclusions}{65}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Production Risks and Tooling Deficits}{65}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Scaling Bottlenecks: Navigation and Avoidance}{66}{section.7.2}%
+\contentsline {section}{\numberline {7.3}The Paradigm Shift}{66}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Final Outlook}{67}{section.7.4}%
+\contentsline {chapter}{Bibliography}{68}{section.7.4}%

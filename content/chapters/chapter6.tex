@@ -14,8 +14,13 @@ Regardless of the chosen pathfinding method, the ultimate goal of the Mass navig
 
 \section{NavMesh Navigation}
 
-%RIPARTI DA QUI, L'HA SCRITTO GEMINI
 For open-world environments, unstructured terrain, and dynamic spatial queries, Mass provides a data-oriented wrapper around the standard Unreal Engine Recast Navigation Mesh. Because querying the underlying NavMesh octree is a heavy, object-oriented operation, it cannot be safely executed within a high-speed, parallelized processor loop. To bridge this architectural divide, Mass strictly separates the initial path calculation from the continuous path execution, offloading the heavy synchronous queries to the AI's StateTree while the ECS processors handle the frame-by-frame locomotion.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{images/NavMesh.png}
+\caption{In green the active NavMesh created from the level geometry.}
+\end{figure}
 
 \subsection{The NavMesh Trait}
 To utilize NavMesh routing, an entity's archetype must be configured with a specific movement trait via the editor, such as \texttt{UMassNavMeshNavigationTrait}. This trait acts as the structural blueprint, ensuring the entity is initialized with the required memory containers. Most notably, it appends two critical fragments to manage the path data. The first is the \texttt{FMassNavMeshCachedPathFragment}, which holds the long-term references to the standard Unreal navigation path and corridor. The second is the \texttt{FMassNavMeshShortPathFragment}, a lightweight data structure designed to store a static array of up to eight immediate spatial waypoints and tangent directions. By splitting the data, the architecture allows high-frequency processors to calculate immediate movement along the short path without parsing the entire macroscopic navigation corridor every frame.
@@ -40,7 +45,11 @@ By continuously dragging this target point just ahead of the entity, the process
 
 While NavMesh is highly versatile for open-world traversal, computing routes across thousands of interconnected polygons is computationally expensive. For simulations like the City Sample, where thousands of pedestrians and vehicles follow strict traffic laws, Epic Games introduced ZoneGraph.
 
-%immagine ZoneGraph
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{images/ZoneGraphLanes.png}
+\caption{An example of ZoneGraph lanes, with an intersection that merges them.}
+\end{figure}
 
 ZoneGraph is a spline-based routing system completely detached from the NavMesh. Instead of a walkable surface area, ZoneGraph defines explicit lanes, intersections, and connections. It operates on a conceptual level similar to a rail network, built upon four foundational structural elements that we will now analyse.
 
@@ -49,7 +58,6 @@ ZoneGraph is a spline-based routing system completely detached from the NavMesh.
 Zones are the high-level containers that define the overall trajectory of a route. In the Unreal Editor, a Zone is the primary authoring unit, typically represented by a spline curve. However, it does not exist as an Actor at runtime. During the environment baking process, these splines are compiled into flattened data structures (such as \texttt{FZoneGraphStorage}). A Zone does not dictate specific agent movement. Instead, it provides the geometric foundation for grouping multiple parallel tracks. This grouping helps Mass spatial partitioning systems efficiently manage entity Level of Detail (LOD) logic based on the agent's current sector.
 
 \subsection{Lanes}
-
 Lanes are the specific, functional tracks within a Zone that dictate the exact path an entity follows. A single Zone can contain multiple parallel lanes, each with distinct semantic profiles, tags, and traversal rules (e.g., separating a forward vehicle lane from a pedestrian sidewalk). At runtime, an entity's position on a lane is tracked using lightweight data fragments, specifically the \texttt{FMassZoneGraphLaneLocationFragment}. This fragment stores the current lane index and the distance along its curve. By reducing movement to a 1D distance value along a track, Mass processors can advance the entity's position through simple scalar addition, bypassing the need for continuous 3D surface projections or complex path smoothing.
 
 \subsection{Intersections} 

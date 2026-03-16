@@ -83,7 +83,7 @@
       \endverb
       \keyw{chapter2}
     \endentry
-    \entry{CitySampleDoc}{online}{}{}
+    \entry{BasicNavigation}{online}{}{}
       \name{author}{1}{}{%
         {{hash=458bc88bbe8feb870616791eae79a483}{%
            family={Games},
@@ -104,6 +104,38 @@
       \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
+      \field{title}{Basic Navigation}
+      \field{year}{2025}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://dev.epicgames.com/documentation/en-us/unreal-engine/basic-navigation-in-unreal-engine
+      \endverb
+      \verb{url}
+      \verb https://dev.epicgames.com/documentation/en-us/unreal-engine/basic-navigation-in-unreal-engine
+      \endverb
+      \keyw{chapter6}
+    \endentry
+    \entry{CitySampleDoc}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=458bc88bbe8feb870616791eae79a483}{%
+           family={Games},
+           familyi={G\bibinitperiod},
+           given={Epic},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{458bc88bbe8feb870616791eae79a483}
+      \strng{fullhash}{458bc88bbe8feb870616791eae79a483}
+      \strng{fullhashraw}{458bc88bbe8feb870616791eae79a483}
+      \strng{bibnamehash}{458bc88bbe8feb870616791eae79a483}
+      \strng{authorbibnamehash}{458bc88bbe8feb870616791eae79a483}
+      \strng{authornamehash}{458bc88bbe8feb870616791eae79a483}
+      \strng{authorfullhash}{458bc88bbe8feb870616791eae79a483}
+      \strng{authorfullhashraw}{458bc88bbe8feb870616791eae79a483}
+      \field{extraname}{2}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
       \field{title}{City Sample}
       \field{year}{2021}
       \verb{urlraw}
@@ -113,6 +145,38 @@
       \verb https://dev.epicgames.com/documentation/en-us/unreal-engine/city-sample-project-unreal-engine-demonstration
       \endverb
       \keyw{chapter3}
+    \endentry
+    \entry{MassAvoidanceOverview}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=458bc88bbe8feb870616791eae79a483}{%
+           family={Games},
+           familyi={G\bibinitperiod},
+           given={Epic},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{458bc88bbe8feb870616791eae79a483}
+      \strng{fullhash}{458bc88bbe8feb870616791eae79a483}
+      \strng{fullhashraw}{458bc88bbe8feb870616791eae79a483}
+      \strng{bibnamehash}{458bc88bbe8feb870616791eae79a483}
+      \strng{authorbibnamehash}{458bc88bbe8feb870616791eae79a483}
+      \strng{authornamehash}{458bc88bbe8feb870616791eae79a483}
+      \strng{authorfullhash}{458bc88bbe8feb870616791eae79a483}
+      \strng{authorfullhashraw}{458bc88bbe8feb870616791eae79a483}
+      \field{extraname}{3}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Mass Avoidance Overview}
+      \field{year}{2025}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://dev.epicgames.com/documentation/en-us/unreal-engine/mass-avoidance-overview-in-unreal-engine
+      \endverb
+      \verb{url}
+      \verb https://dev.epicgames.com/documentation/en-us/unreal-engine/mass-avoidance-overview-in-unreal-engine
+      \endverb
+      \keyw{chapter6}
     \endentry
     \entry{MassEntityOverview}{online}{}{}
       \name{author}{1}{}{%
@@ -130,7 +194,7 @@
       \strng{authornamehash}{458bc88bbe8feb870616791eae79a483}
       \strng{authorfullhash}{458bc88bbe8feb870616791eae79a483}
       \strng{authorfullhashraw}{458bc88bbe8feb870616791eae79a483}
-      \field{extraname}{2}
+      \field{extraname}{4}
       \field{sortinit}{G}
       \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
       \field{labelnamesource}{author}
@@ -162,7 +226,7 @@
       \strng{authornamehash}{458bc88bbe8feb870616791eae79a483}
       \strng{authorfullhash}{458bc88bbe8feb870616791eae79a483}
       \strng{authorfullhashraw}{458bc88bbe8feb870616791eae79a483}
-      \field{extraname}{3}
+      \field{extraname}{5}
       \field{sortinit}{G}
       \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
       \field{labelnamesource}{author}
@@ -194,7 +258,7 @@
       \strng{authornamehash}{458bc88bbe8feb870616791eae79a483}
       \strng{authorfullhash}{458bc88bbe8feb870616791eae79a483}
       \strng{authorfullhashraw}{458bc88bbe8feb870616791eae79a483}
-      \field{extraname}{4}
+      \field{extraname}{6}
       \field{sortinit}{G}
       \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
       \field{labelnamesource}{author}
@@ -373,6 +437,41 @@
       \endverb
       \keyw{chapter3}
     \endentry
+    \entry{ZoneGraphQuickStart}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=869313d37be1eb12b5190669e381ec57}{%
+           family={Keeling},
+           familyi={K\bibinitperiod},
+           given={James},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {Epic Games}%
+      }
+      \strng{namehash}{869313d37be1eb12b5190669e381ec57}
+      \strng{fullhash}{869313d37be1eb12b5190669e381ec57}
+      \strng{fullhashraw}{869313d37be1eb12b5190669e381ec57}
+      \strng{bibnamehash}{869313d37be1eb12b5190669e381ec57}
+      \strng{authorbibnamehash}{869313d37be1eb12b5190669e381ec57}
+      \strng{authornamehash}{869313d37be1eb12b5190669e381ec57}
+      \strng{authorfullhash}{869313d37be1eb12b5190669e381ec57}
+      \strng{authorfullhashraw}{869313d37be1eb12b5190669e381ec57}
+      \field{extraname}{3}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{ZoneGraph Quick Start Guide}
+      \field{year}{2022}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://dev.epicgames.com/community/learning/tutorials/qz6r/unreal-engine-zonegraph-quick-start-guide
+      \endverb
+      \verb{url}
+      \verb https://dev.epicgames.com/community/learning/tutorials/qz6r/unreal-engine-zonegraph-quick-start-guide
+      \endverb
+      \keyw{chapter6}
+    \endentry
     \entry{MassSample}{software}{}{}
       \name{author}{2}{}{%
         {{hash=45f527113a5f095f1993d547d4c55b41}{%
@@ -509,6 +608,40 @@
       \endverb
       \keyw{chapter2}
     \endentry
+    \entry{FLANN}{software}{}{}
+      \name{author}{1}{}{%
+        {{hash=1c681cacac39026e0f4d9938d5ef34f3}{%
+           family={Muja},
+           familyi={M\bibinitperiod},
+           given={Marius},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {GitHub}%
+      }
+      \strng{namehash}{1c681cacac39026e0f4d9938d5ef34f3}
+      \strng{fullhash}{1c681cacac39026e0f4d9938d5ef34f3}
+      \strng{fullhashraw}{1c681cacac39026e0f4d9938d5ef34f3}
+      \strng{bibnamehash}{1c681cacac39026e0f4d9938d5ef34f3}
+      \strng{authorbibnamehash}{1c681cacac39026e0f4d9938d5ef34f3}
+      \strng{authornamehash}{1c681cacac39026e0f4d9938d5ef34f3}
+      \strng{authorfullhash}{1c681cacac39026e0f4d9938d5ef34f3}
+      \strng{authorfullhashraw}{1c681cacac39026e0f4d9938d5ef34f3}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{FLANN - Fast Library for Approximate Nearest Neighbors}
+      \field{year}{2012}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://github.com/flann-lib/flann
+      \endverb
+      \verb{url}
+      \verb https://github.com/flann-lib/flann
+      \endverb
+      \keyw{chapter6}
+    \endentry
     \entry{MassFrameworkBlog}{online}{}{}
       \name{author}{1}{}{%
         {{hash=d0717424f6dcf05931f78fc9d15e5938}{%
@@ -539,6 +672,50 @@
       \verb https://vrealmatic.com/unreal-engine/mass
       \endverb
       \keyw{chapter3}
+    \endentry
+    \entry{CrowdSimulation}{software}{}{}
+      \name{author}{3}{}{%
+        {{hash=967d152f7c84750aa4c8d4cbee8c7732}{%
+           family={Picarella},
+           familyi={P\bibinitperiod},
+           given={Gianmarco},
+           giveni={G\bibinitperiod}}}%
+        {{hash=f29008d256a80206586137a35fac28c4}{%
+           family={Brieger},
+           familyi={B\bibinitperiod},
+           given={Joel},
+           giveni={J\bibinitperiod}}}%
+        {{hash=98f1bc23bb74c465210d5b71abbbf74d}{%
+           family={Giakoumoglou},
+           familyi={G\bibinitperiod},
+           given={Nikos},
+           giveni={N\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {GitHub}%
+      }
+      \strng{namehash}{b8fc52954ad7b8e74c45dee23592f316}
+      \strng{fullhash}{5435d65dad4b261815f7150e2b52d08e}
+      \strng{fullhashraw}{5435d65dad4b261815f7150e2b52d08e}
+      \strng{bibnamehash}{5435d65dad4b261815f7150e2b52d08e}
+      \strng{authorbibnamehash}{5435d65dad4b261815f7150e2b52d08e}
+      \strng{authornamehash}{b8fc52954ad7b8e74c45dee23592f316}
+      \strng{authorfullhash}{5435d65dad4b261815f7150e2b52d08e}
+      \strng{authorfullhashraw}{5435d65dad4b261815f7150e2b52d08e}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Crowd Simulation Project Report}
+      \field{year}{2024}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://github.com/gianmarcopicarella/crowd-simulation/blob/main/Assignment_Deliverables/Crowd_Simulation_Game_Report.pdf
+      \endverb
+      \verb{url}
+      \verb https://github.com/gianmarcopicarella/crowd-simulation/blob/main/Assignment_Deliverables/Crowd_Simulation_Game_Report.pdf
+      \endverb
+      \keyw{chapter6}
     \endentry
     \entry{romeo2016ecs}{thesis}{}{}
       \name{author}{1}{}{%
@@ -637,6 +814,36 @@
       \verb https://x157.github.io/UE5/Mass/LOD
       \endverb
       \keyw{chapter4}
+    \endentry
+    \entry{x157MassNotesNavigation}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=17a2e67ef56aae4ac0c9900e8724a664}{%
+           family={X157},
+           familyi={X\bibinitperiod}}}%
+      }
+      \strng{namehash}{17a2e67ef56aae4ac0c9900e8724a664}
+      \strng{fullhash}{17a2e67ef56aae4ac0c9900e8724a664}
+      \strng{fullhashraw}{17a2e67ef56aae4ac0c9900e8724a664}
+      \strng{bibnamehash}{17a2e67ef56aae4ac0c9900e8724a664}
+      \strng{authorbibnamehash}{17a2e67ef56aae4ac0c9900e8724a664}
+      \strng{authornamehash}{17a2e67ef56aae4ac0c9900e8724a664}
+      \strng{authorfullhash}{17a2e67ef56aae4ac0c9900e8724a664}
+      \strng{authorfullhashraw}{17a2e67ef56aae4ac0c9900e8724a664}
+      \field{extraname}{3}
+      \field{sortinit}{X}
+      \field{sortinithash}{1965c258adceecf23ce3d67b05113442}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Mass Navigation}
+      \field{year}{2025}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://x157.github.io/UE5/Mass/Navigation
+      \endverb
+      \verb{url}
+      \verb https://x157.github.io/UE5/Mass/Navigation
+      \endverb
+      \keyw{chapter6}
     \endentry
   \enddatalist
 \endrefsection

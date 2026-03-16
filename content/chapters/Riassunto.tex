@@ -1,0 +1,78 @@
+\documentclass[%
+    a4paper, % not needed, by default it is a4paper, or also b5paper can be used
+    corpo=12pt, % dimension of basic font
+    % oneside is generally the way to go
+    oneside, % two side optimizes for two-face printing, having chapters open on the right (aka odd numbers), if you don't want blank pages put oneside here
+    stile=standard,
+    %evenboxes, % not needed, to put supervisors and candidate at the same level
+    tipotesi=magistrale,
+    numerazioneromana, % roman numbering for appendixes and preambles, up to Table of Contents
+    openright, % to force opening on the right for double-sided printing
+    cucitura=7mm, % for printing, 7mm should be enough
+    %dvipsnames, % for compatibility with xcolor, it does not work
+]{toptesi}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+%\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Interactive High-Density Agent Simulation in Unreal Engine: An Evaluation of the Mass Entity Framework}
+\author{Thesis Summary}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+Modern interactive applications demand increasingly dense, reactive, and persistent populations of autonomous agents. Traditional Object-Oriented (OO) architectures, such as Unreal Engine’s Actor model, struggle to scale efficiently due to memory fragmentation, heavy object lifecycles, and CPU cache misses when updating thousands of entities per frame. This thesis investigates a scalable solution using Unreal Engine 5’s Mass Framework, a Data-Oriented Design (DOD) ecosystem based on Entity Component System (ECS) principles. The thesis has two primary goals: the engineering of a \textbf{high-density simulation} managing thousands of agents on mid-range hardware, and a critical evaluation of the \textbf{framework's viability} for professional production pipelines.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{NPCHorde.png}
+    \caption{Simulation of 1000 entities handled by Unreal Engine's Mass}
+    \label{fig:simulation_overview}
+\end{figure}
+
+\section{Architectural Methodology}
+
+The core of this work leverages the structural transition from monolithic Actors to lightweight Entities. By utilizing the \textit{MassEntity} module, simulation elements are decoupled into logic-less \textbf{Fragments} (data) and \textbf{Tags} (metadata). To maximize cache coherency, entities sharing the same composition are grouped into Archetypes and packed into contiguous 128 KB memory Chunks. This strict data alignment allows stateless \textbf{Processors} to perform multithreaded batch operations, significantly increasing CPU throughput.
+
+To bridge the gap between ECS and standard gameplay, this implementation employs a hybrid representation strategy driven by the Mass LOD and Representation Subsystems. A centralized viewer tracks proximity, triggering seamless state changes between a lightweight ECS proxy and a fully-featured Actor via the \texttt{UMassAgentComponent}. This "On-Demand Actor" approach allows Game Designers to utilize familiar object-oriented tools (Blueprints, Smart Objects) for localized, high-fidelity interactions, while Mass manages the global simulation state for the broader population at virtually zero overhead.
+
+\section{Implementation}
+
+The NPC horde satisfies complex spatial and behavioral requirements through a multi-tiered logic stack:
+\begin{itemize}
+    \item \textbf{State Management}: Integration with the Mass StateTree schema provides hierarchical, signal-driven logic. By replacing per-frame polling with asynchronous, event-based awakenings, the system ensures CPU cycles are spent only on agents undergoing active state transitions.
+    \item \textbf{Navigation}: A hybrid routing system utilizes \textit{ZoneGraph} for ultra-efficient, 1D spline-based lane following across structured environments, combined with \textit{NavMesh} queries for localized, dynamic obstacle traversal and open-world pathfinding.
+    \item \textbf{Visualization}: Scalability is achieved by decoupling logic from rendering. The framework dynamically scales from fully skinned Actors (High LOD) to batched Hierarchical Instanced Static Meshes (HISM) using Vertex Animation Textures (VAT) for distant entities, completely bypassing CPU skeletal skinning bottlenecks.
+\end{itemize}
+
+\section{Evaluation and Results}
+
+Preliminary benchmarks confirm that the Mass-based logic layer scales effectively to several thousand agents, effectively mitigating traditional memory latency. However, as entity counts rise, the primary performance ceilings shift from raw logic calculation to GPU draw calls and complex spatial queries.
+
+On target mid-to-high-range hardware (Intel i7-12700H, RTX 3050 Ti), the system stabilizes at approximately 800 fully-interactive NPCs when dynamic spatial avoidance and synchronous Actor-swapping are at their peak execution. By strictly enforcing LOD policies and offloading distant entities to simplified background logic (low-tick rates and simplified steering), the simulation successfully maintains thousands of concurrent agents without frame-rate collapse.
+
+\section{Production Viability}
+
+A significant portion of this research evaluates Mass as a commercial-grade tool. While the raw performance gains are unprecedented, the study identifies a substantial technical ownership gap:
+
+\begin{itemize}
+    \item \textbf{Tooling Deficits and Workflow Friction}: Mass lacks accessible Editor integration. The framework relies heavily on C++ data structures, creating a steep learning curve and a high barrier to entry for non-technical disciplines like game design, requiring dedicated engineering time to build custom front-end tools.
+    \item \textbf{Experimental Risk}: Critical gameplay modules (\textit{MassCrowd, MassAI, MassGameplay}) remain labeled as Experimental, subjecting professional projects to the risk of undocumented, breaking API changes.
+\end{itemize}
+
+The thesis concludes that while Mass represents the definitive future of large-scale agent simulations in Unreal Engine, its immediate adoption in a professional studio must be handled via a hybrid approach. Teams should reserve Mass for macroscopic crowd simulation while retaining the traditional Actor ecosystem for high-impact, player-centric interactions, thereby balancing unprecedented performance with necessary development velocity.
+
+\end{document}
