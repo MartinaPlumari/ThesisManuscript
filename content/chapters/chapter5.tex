@@ -21,21 +21,29 @@ This section provides a technical overview of the State Tree asset and its execu
 
 While often associated with AI, the State Tree is a general-purpose, hierarchical state machine (HSM) designed to handle any stateful logic within Unreal Engine. Its architecture is specifically optimized for high-performance scenarios, such as the Mass Framework, by decoupling static logic from runtime instance data.
 
-%immagine: esempio state tree editor
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{images/StateTreeEditor.png}
+\caption{An example of StateTree editor visualization.}
+\end{figure}
 
 \subsection{Architecture}
 
 At its core, a State Tree is a hierarchical organization of states where logic is encapsulated into modular, reusable blocks. Unlike traditional Finite State Machines (FSMs), where transitions can become a "spaghetti" of connections, the State Tree uses its hierarchy to organize data and define fallback behaviors.
-%riscrivere frase per togliere spaghetti
 
-%\subsubsection{States}
+\subsubsection{States}
 At the apex of the hierarchy is the Root State, which serves as the mandatory entry point for the tree's execution flow. It is the first state evaluated during initialization and remains implicitly active as the ultimate ancestor of any selected leaf.
 
 Other than the Root State, State Tree consists of two primary types of states: intermediate states and leaf states. Intermediate states act as organizational nodes or decision points. They do not contain actions, but instead define how to select a child state. Leaf states are the terminal nodes of a branch. When a leaf state is selected, the state itself and all its parent states in the hierarchy become active.
 
-%immagine ravvicinata stati con sottotitolo che spiega l'esempio specificando quali sono leaf states, quali intermediate
-%subsubsection{Tasks}
+\subsubsection{Tasks}
 States contain tasks, the functional building blocks of a State Tree. Tasks contain the actual logic to be executed when a state is active. Each state can host multiple tasks and when a state is activated all of them run concurrently. Typically, intermediate states host configuration tasks, such as setting gameplay tags, while leaf state host behavior tasks, such as MoveTo or PlayAnimation.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{images/TasksExample.png}
+\caption{When clicking on a State it is possible to add and configure Tasks in this section of the detail panel.}
+\end{figure}
 
 Other than regular tasks that can be defined in relation to states, State Tree gives the develoepr the possibility to define global tasks. These run for the entire duration of the tree's execution, providing a persistent layer for event listening or data exposure. They are ideal for persistent logic, such as managing a high-level state timer or providing a continuous stream of data from an external subsystem that every state in the tree might need to access.
 

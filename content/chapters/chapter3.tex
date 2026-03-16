@@ -299,6 +299,12 @@ Even if it may appear that a processor iterates over every entity simultaneously
 
 The \texttt{FMassEntityQuery} is the mechanism used to filter and fetch data based on the presence or absence of fragments and tags. Queries are highly optimized to perform bitwise comparisons against archetype bitsets, ensuring that the processor only touches relevant memory.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{images/QueryFlow.png}
+\caption{Entity Queries filter entities by archetype and pass data to Processors.}
+\end{figure}
+
 To maximize parallelization and cache efficiency, queries define precisely how they intend to interact with data. These rules are categorized into Access and Presence requirements.
 Access requirements define the lock type on the data:
 
@@ -395,9 +401,17 @@ Observers are tied to specific operations on fragments or tags:
     \item \textbf{OnRemoved}: Triggered when a component is removed.
 \end{itemize}
 
-This is critical for initialization and cleanup logic. For example, an observer might listen for the addition of a \texttt{FTransformFragment} to register the entity with a spatial grid, or listen for the removal of a \texttt{FHealthFragment} to trigger a death animation or VFX. By using observers, the system avoids polling and instead reacts only when the change occurs.
+This is critical for initialization and cleanup logic. For example, an observer might listen for the addition of a \texttt{FTransformFragment} to register the entity with a spatial grid, or listen for the removal of a \texttt{FHealthFragment} to trigger a death animation or VFX. By using observers, the system avoids polling and instead reacts only when the change occurs. 
 
-%aggiungere codice?
+In the following code snippet, it is possible to see how this kind of processor is linked to a specific fragment and an operation in its constructor:
+
+\begin{lstlisting}
+UNPCMovementInitializerProcessor::UNPCMovementInitializerProcessor() : EntityQuery(*this)
+{
+	ObservedType = FMassMoveTargetFragment::StaticStruct();
+	Operation = EMassObservedOperation::Add;
+}
+\end{lstlisting}
 
 \section{Bridging the ECS and OOP Architectures}
 
@@ -409,7 +423,11 @@ The \texttt{UMassAgentComponent} acts as a direct bridge between the standard Ac
 
 Rather than relying entirely on a separate \texttt{UMassEntityConfigAsset} to define the entity, the MassAgent component allows developers to add Mass Traits directly to the Actor via the Unreal Editor's details panel. When the Actor initializes (typically during BeginPlay), the component dynamically bakes an \texttt{FMassEntityTemplate} based on these selected traits and spawns the corresponding Entity in the ECS backend, maintaining a continuous link between the two via an \texttt{FMassEntityHandle}.
 
-%immagine MassAgent Component editor's panel
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{images/MassAgent.png}
+\caption{Example of Mass Agent Component added to an Actor. On the right side the section of the Details Panel where it is possible to define the entity configuration.}
+\end{figure}
 
 \subsection{Data Synchronization Modes}
 
@@ -425,9 +443,13 @@ This synchronization is typically categorized into three distinct modes, determi
 
 \section{Additional Mass Plugins}
 
-While MassEntity provides the foundational memory architecture and processing pipeline, Unreal Engine extends its capabilities through a suite of specialized plugins. These modules, developed and tested during the creation of the City Sample technical demo, provide the high-level logic required to transform raw entities into complex, autonomous agents. As of Unreal Engine 5.6, these systems remain marked as Experimental, signaling that while they are architecturally robust, their APIs continue to evolve to meet the needs of large-scale open-world simulations, constituing a production risk.
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{images/MassPlugins.png}
+\caption{Plugin window showing the Mass Plugins listed. While MassEntity plugin is deprecated and now integrated in the engine codebase, MassAI, MassCrowd and MassGameplay are still marked as experimental and can be enabled from this panel.}
+\end{figure}
 
-%immagine project properties in cui si vedono i plugin
+While MassEntity provides the foundational memory architecture and processing pipeline, Unreal Engine extends its capabilities through a suite of specialized plugins. These modules, developed and tested during the creation of the City Sample technical demo \cite{CitySampleDoc}, provide the high-level logic required to transform raw entities into complex, autonomous agents. As of Unreal Engine 5.6, these systems remain marked as Experimental, signaling that while they are architecturally robust, their APIs continue to evolve to meet the needs of large-scale open-world simulations, constituing a production risk.
 
 \subsection{MassGameplay}
 

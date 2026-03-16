@@ -37,15 +37,19 @@ The efficiency of this solution is rooted in the way the Mass Representation Pro
 
 The primary tool for this large-scale visualization is the Instanced Static Mesh (ISM), or more specifically, the Hierarchical Instanced Static Mesh (HISM). By batching these gathered transforms into a single component, Mass collapses what would traditionally be thousands of individual draw calls into a handful of GPU-optimized operations. This is critical because every draw call represents a significant communication overhead from the CPU to the GPU. In a non-instanced scenario 30000 entities, each with a mesh and unique material attributes, would generate upwards of 60000 draw calls, overwhelming the CPU’s command buffer and leading to a complete collapse in frame rate.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{images/ISMRepresentation.png}
+\caption{ISM based representation managed by Mass. As we can see in the top-right corner, this type of representation significantly reduces the computational weight on the Game Thread we noticed in the case of the Actor representation.}
+\end{figure}
+
 Through the Mass Representation Subsystem, these entities are not merely rendered, but managed through a transactional phase. Instead of individual updates, the system pushes contiguous arrays of transforms and Per-Instance Custom Data (PICD), such as animation indices or color variations, to the GPU buffers in a single, streamlined operation. This system does not apply a uniform representation to all entities; instead, it utilizes a multi-tiered Level of Detail (LOD) logic to determine whether an entity should be rendered as a high-fidelity Actor, a high-performance HISM instance, or culled entirely based on its spatial relevance to the viewer.
 
 \subsubsection{Processor Registration}
 
-A critical practical consideration when implementing this architecture is processor registration. In a default Unreal Engine 5.6 project, the specific processors responsible for translating entity data into visual proxies and managing spatial relevance are not always active out-of-the-box.
-%aggiungi cit a 60 minutes with mass
+A critical practical consideration when implementing this architecture is processor registration. In a default Unreal Engine 5.6 project, the specific processors responsible for translating entity data into visual proxies and managing spatial relevance are not always active out-of-the-box.\cite{60MinutesWithMass}
 
-For the representation and LOD pipelines to function, their respective processors must be explicitly told to run during the simulation tick. This is achieved by enabling \texttt{bAutoRegisterWithProcessingPhases} either through the Editor's Project Settings or directly within the \texttt{DefaultMass.ini} configuration file. Specifically, the framework requires the activation of the core Representation Processor, the Visualization LOD Processor, and the LOD Collector Processor:\newline
-
+For the representation and LOD pipelines to function, their respective processors must be explicitly told to run during the simulation tick. This is achieved by enabling \texttt{bAutoRegisterWithProcessingPhases} either through the Editor's Project Settings or directly within the \texttt{DefaultMass.ini} configuration file. Specifically, the framework requires the activation of the core Representation Processor, the Visualization LOD Processor, and the LOD Collector Processor:
 \begin{lstlisting}
 [/Script/MassRepresentation.MassRepresentationProcessor]
 bAutoRegisterWithProcessingPhases=True
@@ -181,8 +185,6 @@ Since UE 5.4, VAT supports Nanite-enabled static meshes. While Nanite provides e
 
 The practical application of this vertex-driven animation pipeline is most notably demonstrated in Unreal Engine’s City Sample project, where the \newline\texttt{UMassCrowdAnimationProcessor} serves as a specialized extension of the core Mass framework to orchestrate the movement of thousands of simulated pedestrians.
 
-%aggiungere spiegazione su possibili ottimizzazioni delle animazioni per i normali actor?
-
 \subsection{Niagara-Based Representation}
 
 While Hierarchical Instanced Static Meshes (HISMs) are the standard for Mass visualization, the framework is architecturally decoupled enough to allow for a total shift in the rendering pipeline. By setting aside the standard representation processors, a developer can treat Mass entities as a raw data source for Niagara Particle Systems.
@@ -204,7 +206,3 @@ While closer pedestrians use Actors and HISMs, the background crowd, the thousan
 Ultimately, the introduction of the \texttt{NiagaraDataChannelSubsystem} in Unreal Engine 5.7 represents a promising shift in the framework’s maturity; by standardizing the communication between the ECS and the VFX pipeline, it transforms what was once a complex optimization into a viable pathway for future large-scale crowd simulations.
 The \texttt{UNiagaraDataChannelSubsystem} acts as a centralized broker that allows the Mass ECS to publish data to a named channel, which any Niagara System can then consume as a data interface. In this architecture, a specialized Mass Processor iterates through entity chunks and writes fragment data (such as \texttt{FTransformFragment} or custom animation states) into the Data Channel's producer buffer via the subsystem.
 The Niagara GPU emitter then binds to this same channel, allowing its simulation stages to read the buffered Mass data at the start of the frame. This effectively replaces the need for a low-level C++ memory pull with a thread-safe, engine-managed stream, significantly simplifying the synchronization of particle lifecycles with Mass entity states.
-
-\section{Performance Analysis}
-
-%boh, va fatta build e guardata con insight?

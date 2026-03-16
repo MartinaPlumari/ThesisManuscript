@@ -77,89 +77,112 @@
 \@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Unreal Engine 5 Mass Processing Phases and Tick Groups}}{21}{table.caption.15}\protected@file@percent }
 \newlabel{tab:ue5_tick_groups}{{3.1}{21}{Unreal Engine 5 Mass Processing Phases and Tick Groups}{table.caption.15}{}}
 \@writefile{toc}{\contentsline {subsubsection}{Mass Entity Queries}{23}{section*.16}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Mass Execution Context Access Functions}}{25}{table.caption.17}\protected@file@percent }
-\newlabel{tab:AccessFunctions}{{3.2}{25}{Mass Execution Context Access Functions}{table.caption.17}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Observer Processor}{26}{section*.18}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}Bridging the ECS and OOP Architectures}{26}{section.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.7}{\ignorespaces Entity Queries filter entities by archetype and pass data to Processors.}}{23}{figure.caption.17}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Mass Execution Context Access Functions}}{25}{table.caption.18}\protected@file@percent }
+\newlabel{tab:AccessFunctions}{{3.2}{25}{Mass Execution Context Access Functions}{table.caption.18}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Observer Processor}{26}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Bridging the ECS and OOP Architectures}{27}{section.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.8}{\ignorespaces Example of Mass Agent Component added to an Actor. On the right side the section of the Details Panel where it is possible to define the entity configuration.}}{27}{figure.caption.20}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Data Synchronization Modes}{27}{subsection.3.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Additional Mass Plugins}{27}{section.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}MassGameplay}{28}{subsection.3.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}MassAI}{28}{subsection.3.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}MassCrowd}{29}{subsection.3.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Large-Scale Entity Representation}{30}{chapter.4}\protected@file@percent }
+\abx@aux@cite{0}{CitySampleDoc}
+\abx@aux@segm{0}{0}{CitySampleDoc}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Additional Mass Plugins}{28}{section.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.9}{\ignorespaces Plugin window showing the Mass Plugins listed. While MassEntity plugin is deprecated and now integrated in the engine codebase, MassAI, MassCrowd and MassGameplay are still marked as experimental and can be enabled from this panel.}}{29}{figure.caption.21}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}MassGameplay}{29}{subsection.3.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}MassAI}{30}{subsection.3.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}MassCrowd}{30}{subsection.3.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Large-Scale Entity Representation}{32}{chapter.4}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{sec:EntityRepresentation}{{4}{30}{MassCrowd}{chapter.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Actor-based Representation Limitations}{31}{section.4.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces CPU performance tanking when a grid of actors is instanced in an empty scene. The Game Thread took 44ms to process this frame, hence lowering the FPS.}}{31}{figure.caption.19}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}The Mass Solution}{32}{subsection.4.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Processor Registration}{33}{section*.20}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Mass Level Of Detail}{33}{section.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Mass LOD Overview}{33}{subsection.4.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Mass LOD Subsystem}{34}{subsection.4.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}Mass Representation}{37}{section.4.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Different entity representation based on the distance from the viewer. The red entities are Static Mesh Instances, the yellow ones are LowResSpawnedActors and the white ones are HighResSpawnedActors}}{38}{figure.caption.21}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Vertex Animated ISM}{38}{subsection.4.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Niagara-Based Representation}{39}{subsection.4.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Performance Analysis}{40}{section.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Decision Logic and State Management}{41}{chapter.5}\protected@file@percent }
+\newlabel{sec:EntityRepresentation}{{4}{32}{MassCrowd}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Actor-based Representation Limitations}{33}{section.4.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces CPU performance tanking when a grid of actors is instanced in an empty scene. The Game Thread took 44ms to process this frame, hence lowering the FPS.}}{33}{figure.caption.22}\protected@file@percent }
+\abx@aux@cite{0}{60MinutesWithMass}
+\abx@aux@segm{0}{0}{60MinutesWithMass}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}The Mass Solution}{34}{subsection.4.1.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces ISM based representation managed by Mass. As we can see in the top-right corner, this type of representation significantly reduces the computational weight on the Game Thread we noticed in the case of the Actor representation.}}{35}{figure.caption.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Processor Registration}{35}{section*.24}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Mass Level Of Detail}{36}{section.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Mass LOD Overview}{36}{subsection.4.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Mass LOD Subsystem}{36}{subsection.4.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Mass Representation}{39}{section.4.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Different entity representation based on the distance from the viewer. The red entities are Static Mesh Instances, the yellow ones are LowResSpawnedActors and the white ones are HighResSpawnedActors}}{40}{figure.caption.25}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Vertex Animated ISM}{40}{subsection.4.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Niagara-Based Representation}{41}{subsection.4.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Decision Logic and State Management}{43}{chapter.5}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{sec:StateManagement}{{5}{41}{Performance Analysis}{chapter.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}State Tree}{41}{section.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}Architecture}{42}{subsection.5.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.2}Selection and Transition Flow}{42}{subsection.5.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Enter Conditions}{43}{section*.22}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Selection Behavior}{43}{section*.23}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Transition Lifecycle}{44}{section*.24}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.3}State Tree Schemas}{45}{subsection.5.1.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.4}Data Management}{46}{subsection.5.1.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Mass and State Tree}{47}{section.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Mass State Tree Schema}{47}{subsection.5.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{The Tick function}{47}{section*.25}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Data Handling and Memory Locality}{49}{subsection.5.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.3}Transition Handling and Logic Flow}{51}{subsection.5.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Navigation in the Mass Framework}{52}{chapter.6}\protected@file@percent }
+\newlabel{sec:StateManagement}{{5}{43}{Niagara-Based Representation}{chapter.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}State Tree}{43}{section.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces An example of StateTree editor visualization.}}{44}{figure.caption.26}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}Architecture}{44}{subsection.5.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{States}{44}{section*.27}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Tasks}{44}{section*.28}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces When clicking on a State it is possible to add and configure Tasks in this section of the detail panel.}}{45}{figure.caption.29}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.2}Selection and Transition Flow}{46}{subsection.5.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Enter Conditions}{46}{section*.30}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Selection Behavior}{46}{section*.31}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Transition Lifecycle}{47}{section*.32}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.3}State Tree Schemas}{48}{subsection.5.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.4}Data Management}{49}{subsection.5.1.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Mass and State Tree}{50}{section.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Mass State Tree Schema}{50}{subsection.5.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{The Tick function}{50}{section*.33}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Data Handling and Memory Locality}{52}{subsection.5.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.3}Transition Handling and Logic Flow}{54}{subsection.5.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Navigation in the Mass Framework}{55}{chapter.6}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{sec:Navigation}{{6}{52}{Transition Handling and Logic Flow}{chapter.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}Overview}{52}{section.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}NavMesh Navigation}{53}{section.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.1}The NavMesh Trait}{53}{subsection.6.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.2}The StateTree Task}{53}{subsection.6.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.3}The Path Following Processor}{54}{subsection.6.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.3}ZoneGraph}{54}{section.6.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.1}Zones}{55}{subsection.6.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.2}Lanes}{55}{subsection.6.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.3}Intersections}{55}{subsection.6.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.4}Connections}{56}{subsection.6.3.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.5}The ZoneGraph Trait}{56}{subsection.6.3.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.6}The StateTree Task}{56}{subsection.6.3.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.7}The Path Following Processor}{57}{subsection.6.3.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.4}Additional Movement Traits and Processors}{58}{section.6.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.1}Steering}{58}{subsection.6.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.2}Smooth Orientation}{58}{subsection.6.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.3}Avoidance}{59}{subsection.6.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Moving Avoidance}{59}{section*.26}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Standing Avoidance}{59}{section*.27}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusions}{60}{chapter.7}\protected@file@percent }
+\newlabel{sec:Navigation}{{6}{55}{Transition Handling and Logic Flow}{chapter.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Overview}{55}{section.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}NavMesh Navigation}{56}{section.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.1}The NavMesh Trait}{56}{subsection.6.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.2}The StateTree Task}{56}{subsection.6.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.3}The Path Following Processor}{57}{subsection.6.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}ZoneGraph}{57}{section.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.1}Zones}{58}{subsection.6.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.2}Lanes}{58}{subsection.6.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.3}Intersections}{58}{subsection.6.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.4}Connections}{59}{subsection.6.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.5}The ZoneGraph Trait}{59}{subsection.6.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.6}The StateTree Task}{59}{subsection.6.3.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.7}The Path Following Processor}{60}{subsection.6.3.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.4}Additional Movement Traits and Processors}{61}{section.6.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.1}Steering}{61}{subsection.6.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.2}Smooth Orientation}{61}{subsection.6.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.3}Avoidance}{62}{subsection.6.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Moving Avoidance}{62}{section*.34}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Standing Avoidance}{62}{section*.35}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusions}{63}{chapter.7}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{sec:Conclusions}{{7}{60}{Standing Avoidance}{chapter.7}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.1}Production Risks and Tooling Deficits}{60}{section.7.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7.2}Scaling Bottlenecks: Navigation and Avoidance}{61}{section.7.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7.3}The Paradigm Shift}{62}{section.7.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7.4}Final Outlook}{62}{section.7.4}\protected@file@percent }
+\newlabel{sec:Conclusions}{{7}{63}{Standing Avoidance}{chapter.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Production Risks and Tooling Deficits}{63}{section.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7.2}Scaling Bottlenecks: Navigation and Avoidance}{64}{section.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7.3}The Paradigm Shift}{65}{section.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7.4}Final Outlook}{65}{section.7.4}\protected@file@percent }
 \abx@aux@nociteall
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{63}{section.7.4}\protected@file@percent }
-\abx@aux@number{1}{SimpleECSImplementation}{0}{nty/global//global/global/global}{1}
-\abx@aux@number{2}{UnityGDC2019DOTS}{0}{nty/global//global/global/global}{2}
-\abx@aux@number{3}{ECSSSystemDesignPatterns}{0}{nty/global//global/global/global}{3}
-\abx@aux@number{4}{IngeniouslySimpleECS}{0}{nty/global//global/global/global}{4}
-\abx@aux@number{5}{ECSFAQ}{0}{nty/global//global/global/global}{5}
-\abx@aux@number{6}{CitiesSkylineIIUnite}{0}{nty/global//global/global/global}{6}
-\abx@aux@number{7}{romeo2016ecs}{0}{nty/global//global/global/global}{7}
-\abx@aux@read@bbl@mdfivesum{C00C7065BCE598062F4AC5A7C7038568}
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{66}{section.7.4}\protected@file@percent }
+\abx@aux@number{3}{SimpleECSImplementation}{0}{nty/global//global/global/global}{1}
+\abx@aux@number{4}{UnityGDC2019DOTS}{0}{nty/global//global/global/global}{2}
+\abx@aux@number{5}{ECSSSystemDesignPatterns}{0}{nty/global//global/global/global}{3}
+\abx@aux@number{6}{IngeniouslySimpleECS}{0}{nty/global//global/global/global}{4}
+\abx@aux@number{7}{ECSFAQ}{0}{nty/global//global/global/global}{5}
+\abx@aux@number{8}{CitiesSkylineIIUnite}{0}{nty/global//global/global/global}{6}
+\abx@aux@number{9}{romeo2016ecs}{0}{nty/global//global/global/global}{7}
+\abx@aux@number{10}{CitySampleDoc}{0}{nty/global//global/global/global}{8}
+\abx@aux@number{11}{MassEntityOverview}{0}{nty/global//global/global/global}{9}
+\abx@aux@number{12}{MassGameplayOverview}{0}{nty/global//global/global/global}{10}
+\abx@aux@number{13}{60MinutesWithMass}{0}{nty/global//global/global/global}{11}
+\abx@aux@number{14}{MassSample}{0}{nty/global//global/global/global}{12}
+\abx@aux@number{15}{MassFrameworkBlog}{0}{nty/global//global/global/global}{13}
+\abx@aux@number{16}{x157MassNotes}{0}{nty/global//global/global/global}{14}
+\abx@aux@number{17}{x157MassNotesLOD}{0}{nty/global//global/global/global}{15}
+\abx@aux@number{18}{StateTreeOverview}{0}{nty/global//global/global/global}{16}
+\abx@aux@number{19}{StateTreeNotes}{0}{nty/global//global/global/global}{17}
+\abx@aux@number{20}{60MinutesWithStateTree}{0}{nty/global//global/global/global}{18}
+\abx@aux@number{21}{StateTreeDeepDive}{0}{nty/global//global/global/global}{19}
+\abx@aux@read@bbl@mdfivesum{6887BEAE0177A764F6C21D4372C94962}
 \abx@aux@defaultrefcontext{0}{SimpleECSImplementation}{nty/global//global/global/global}
 \abx@aux@defaultrefcontext{0}{UnityGDC2019DOTS}{nty/global//global/global/global}
 \abx@aux@defaultrefcontext{0}{ECSSSystemDesignPatterns}{nty/global//global/global/global}
@@ -167,5 +190,17 @@
 \abx@aux@defaultrefcontext{0}{ECSFAQ}{nty/global//global/global/global}
 \abx@aux@defaultrefcontext{0}{CitiesSkylineIIUnite}{nty/global//global/global/global}
 \abx@aux@defaultrefcontext{0}{romeo2016ecs}{nty/global//global/global/global}
+\abx@aux@defaultrefcontext{0}{CitySampleDoc}{nty/global//global/global/global}
+\abx@aux@defaultrefcontext{0}{MassEntityOverview}{nty/global//global/global/global}
+\abx@aux@defaultrefcontext{0}{MassGameplayOverview}{nty/global//global/global/global}
+\abx@aux@defaultrefcontext{0}{60MinutesWithMass}{nty/global//global/global/global}
+\abx@aux@defaultrefcontext{0}{MassSample}{nty/global//global/global/global}
+\abx@aux@defaultrefcontext{0}{MassFrameworkBlog}{nty/global//global/global/global}
+\abx@aux@defaultrefcontext{0}{x157MassNotes}{nty/global//global/global/global}
+\abx@aux@defaultrefcontext{0}{x157MassNotesLOD}{nty/global//global/global/global}
+\abx@aux@defaultrefcontext{0}{StateTreeOverview}{nty/global//global/global/global}
+\abx@aux@defaultrefcontext{0}{StateTreeNotes}{nty/global//global/global/global}
+\abx@aux@defaultrefcontext{0}{60MinutesWithStateTree}{nty/global//global/global/global}
+\abx@aux@defaultrefcontext{0}{StateTreeDeepDive}{nty/global//global/global/global}
 \gdef\svg@ink@ver@settings{{\m@ne }{inkscape}{\m@ne }}
-\gdef \@abspage@last{70}
+\gdef \@abspage@last{74}
