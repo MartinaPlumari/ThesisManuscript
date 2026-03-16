@@ -4,17 +4,19 @@
 \babel@toc {english}{}\relax 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces High-density zombie crowd in World War Z, developed using the Swarm Engine.}}{7}{figure.caption.2}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Pedestrians and traffic simulation in Cities: Skylines II. This game shows current Unity DOTS capabilities.}}{8}{figure.caption.3}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces A comparison of memory access patterns between Object-Oriented and Data-Oriented Design. On the left (OOD), data is grouped by object: fetching a single component loads unrelated data into the cache (the green box), resulting in cache pollution. On the right (DOD/ECS), components of the same type are stored contiguously. This ensures that a single cache line fetch contains multiple relevant data points, maximizing cache hits and linear processing speed.}}{5}{figure.caption.2}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces High-density zombie crowd in World War Z, developed using the Swarm Engine.}}{8}{figure.caption.3}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Pedestrians and traffic simulation in Cities: Skylines II. This game shows current Unity DOTS capabilities.}}{9}{figure.caption.4}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Logical grouping of entities into Archetypes based on fragment composition.}}{11}{figure.caption.4}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Logical organization of Archetype-related data in chunks. Different colors of rows correspond to different fragments while the numbers refer to the Entity ID}}{12}{figure.caption.5}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces The image shows why it is convenient to have chunks sized to fit the cache rather than a single array structure for the whole Archetype.}}{13}{figure.caption.6}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Example of Mass Entity Config Asset defining an Entity via editor. It is possible to create one by clicking on the "Add" button in the content drawer, selecting Data Asset and then choosing Mass Entity Config Asset.}}{19}{figure.caption.11}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Example of Assorted Fragment trait use.}}{19}{figure.caption.12}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Memory organization within a Mass Archetype. The diagram shows how a single Entity ID acts as a shared index to access different data fragments (Transform and Velocity) stored in parallel, contiguous arrays.}}{11}{figure.caption.5}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Logical organization of Archetype-related data in chunks. Different colors of rows correspond to different fragments while the numbers refer to the Entity ID.}}{12}{figure.caption.6}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces The image shows why it is convenient to have chunks sized to fit the cache rather than a single array structure for the whole Archetype.}}{13}{figure.caption.7}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Entity composition in Mass. This overview shows how individual Traits inject per-entity and shared fragments, along with filtering tags, into an entity’s archetype during configuration.}}{17}{figure.caption.12}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Example of Mass Entity Config Asset defining an Entity via editor. It is possible to create one by clicking on the "Add" button in the content drawer, selecting Data Asset and then choosing Mass Entity Config Asset.}}{19}{figure.caption.13}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Example of Assorted Fragment trait use.}}{20}{figure.caption.14}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces CPU performance tanking when a grid of actors is instanced in an empty scene. The Game Thread took 44ms to process this frame, hence lowering the FPS.}}{31}{figure.caption.17}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Different entity representation based on the distance from the viewer. The red entities are Static Mesh Instances, the yellow ones are LowResSpawnedActors and the white ones are HighResSpawnedActors}}{38}{figure.caption.19}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces CPU performance tanking when a grid of actors is instanced in an empty scene. The Game Thread took 44ms to process this frame, hence lowering the FPS.}}{31}{figure.caption.19}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Different entity representation based on the distance from the viewer. The red entities are Static Mesh Instances, the yellow ones are LowResSpawnedActors and the white ones are HighResSpawnedActors}}{38}{figure.caption.21}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

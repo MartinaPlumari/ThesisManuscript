@@ -17,7 +17,14 @@ On the other hand, DOD favors composition. In this case, rather than defining wh
 
 The primary driver for DOD is data locality. Modern CPU speeds vastly outpace memory access times; consequently, performance is often throttled by memory latency, the delay incurred when fetching data from RAM. In Object-Oriented Design, objects are frequently scattered throughout memory. Accessing them requires pointer-chasing through class hierarchies, leading to frequent cache misses and significant performance penalties in contemporary CPU architectures.
 
-Conversely, in Data-Oriented Design, components of an identical type are stored contiguously in memory. When a system processes these components, the CPU can accurately predict the next data address and pre-load it into the cache. This maximizes cache coherency, facilitating rapid, linear iteration over thousands of entities.
+Conversely, in Data-Oriented Design, components of an identical type are stored contiguously in memory. When a system processes these components, the CPU can accurately predict the next data address and pre-load it into the cache. This maximizes cache coherency, facilitating rapid, linear iteration over thousands of entities (Fig. \ref{CacheCoherency}).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{images/CacheCoherency.png}
+\caption{A comparison of memory access patterns between Object-Oriented and Data-Oriented Design. On the left (OOD), data is grouped by object: fetching a single component loads unrelated data into the cache (the green box), resulting in cache pollution. On the right (DOD/ECS), components of the same type are stored contiguously. This ensures that a single cache line fetch contains multiple relevant data points, maximizing cache hits and linear processing speed.}
+\label{CacheCoherency}
+\end{figure}
 
 \section{The Three Pillars of ECS}
 
@@ -42,12 +49,13 @@ The transition toward Data-Oriented Design is reflected in the evolution of mode
 \subsection{Modern ECS Engines}
 A prominent example of a pure ECS architecture is Bevy, an open-source engine written in Rust. In Bevy, the ECS is not an auxiliary feature but the core foundation. Every element of the engine, from the renderer to the UI, is implemented as a system operating on components. This provides a high degree of modularity and ensures that data locality is maintained across the entire software stack.
 
-In the proprietary space, Saber Interactive's Swarm Engine represents a specialized application of ECS. Developed to power the massive NPC counts in \textit{World War Z} and later utilized for the Tyranid hordes in \textit{Warhammer 40,000: Space Marine 2}, the engine utilizes ECS to manage thousands of autonomous agents simultaneously. By utilizing a custom architecture that prioritizes high-throughput data processing over traditional object-oriented hierarchies, the engine facilitates complex collective behaviors.
+In the proprietary space, Saber Interactive's Swarm Engine represents a specialized application of ECS. Developed to power the massive NPC counts in \textit{World War Z} (Fig. \ref{WwzHorde}) and later utilized for the Tyranid hordes in \textit{Warhammer 40,000: Space Marine 2}, the engine utilizes ECS to manage thousands of autonomous agents simultaneously. By utilizing a custom architecture that prioritizes high-throughput data processing over traditional object-oriented hierarchies, the engine facilitates complex collective behaviors.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=1\textwidth]{images/wwzHorde.png}
 \caption{High-density zombie crowd in World War Z, developed using the Swarm Engine.}
+\label{WwzHorde}
 \end{figure}
 
 \subsection{Hybrid Frameworks}
@@ -56,13 +64,14 @@ Many established engines have opted for a hybrid approach to maintain backward c
 Similarly, Unreal Engine's Mass framework provides a data-oriented calculation layer designed for massive-scale simulations. While Unreal remains fundamentally rooted in the \texttt{UObject} ecosystem, Mass allows for the processing of Entities that exist outside the heavy \texttt{AActor} lifecycle. This architecture enables the engine to simulate urban environments with thousands of pedestrians or complex traffic systems, bridging the gap between high-fidelity object-oriented features and high-throughput data processing.
 
 \subsection{Practical Applications}
-The efficacy of these architectures is best observed in titles where the simulation complexity is the primary gameplay driver. Beyond \textit{World War Z}, games such as \textit{Cities: Skylines II} leverage ECS to track the individual economic and navigational states of tens of thousands of citizens in real-time.\cite{CitiesSkylineIIUnite} 
+The efficacy of these architectures is best observed in titles where the simulation complexity is the primary gameplay driver. Beyond \textit{World War Z}, games such as \textit{Cities: Skylines II} (Fig. \ref{CitiesSkylines}) leverage ECS to track the individual economic and navigational states of tens of thousands of citizens in real-time.\cite{CitiesSkylineIIUnite} 
 Even the Bedrock edition of \textit{Minecraft} transitioned to an internal ECS to manage its vast array of world entities, demonstrating that the paradigm shift is not merely for niche simulations but is essential for the scalability of modern, cross-platform interactive media.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=1\textwidth]{images/CitySkylinesPedestrian.png}
 \caption{Pedestrians and traffic simulation in Cities: Skylines II. This game shows current Unity DOTS capabilities.}
+\label{CitiesSkylines}
 \end{figure}
 
 \section{Trade-offs Analysis}

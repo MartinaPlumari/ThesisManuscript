@@ -33,19 +33,24 @@
 \@writefile{lot}{\addvspace {10\p@ }}
 \newlabel{sec:secondChapter}{{2}{4}{Thesis Structure}{chapter.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.1}Object-Oriented vs Data-Oriented Design}{4}{section.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces A comparison of memory access patterns between Object-Oriented and Data-Oriented Design. On the left (OOD), data is grouped by object: fetching a single component loads unrelated data into the cache (the green box), resulting in cache pollution. On the right (DOD/ECS), components of the same type are stored contiguously. This ensures that a single cache line fetch contains multiple relevant data points, maximizing cache hits and linear processing speed.}}{5}{figure.caption.2}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{CacheCoherency}{{2.1}{5}{A comparison of memory access patterns between Object-Oriented and Data-Oriented Design. On the left (OOD), data is grouped by object: fetching a single component loads unrelated data into the cache (the green box), resulting in cache pollution. On the right (DOD/ECS), components of the same type are stored contiguously. This ensures that a single cache line fetch contains multiple relevant data points, maximizing cache hits and linear processing speed}{figure.caption.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.2}The Three Pillars of ECS}{5}{section.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Entities}{5}{subsection.2.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Components}{5}{subsection.2.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Entities}{6}{subsection.2.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Components}{6}{subsection.2.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}Systems}{6}{subsection.2.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}Industry Implementations and Case Studies}{6}{section.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Modern ECS Engines}{6}{subsection.2.3.1}\protected@file@percent }
 \abx@aux@cite{0}{CitiesSkylineIIUnite}
 \abx@aux@segm{0}{0}{CitiesSkylineIIUnite}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces High-density zombie crowd in World War Z, developed using the Swarm Engine.}}{7}{figure.caption.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Industry Implementations and Case Studies}{7}{section.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Modern ECS Engines}{7}{subsection.2.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Hybrid Frameworks}{7}{subsection.2.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}Practical Applications}{7}{subsection.2.3.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Pedestrians and traffic simulation in Cities: Skylines II. This game shows current Unity DOTS capabilities.}}{8}{figure.caption.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces High-density zombie crowd in World War Z, developed using the Swarm Engine.}}{8}{figure.caption.3}\protected@file@percent }
+\newlabel{WwzHorde}{{2.2}{8}{High-density zombie crowd in World War Z, developed using the Swarm Engine}{figure.caption.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}Practical Applications}{8}{subsection.2.3.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {2.4}Trade-offs Analysis}{8}{section.2.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces Pedestrians and traffic simulation in Cities: Skylines II. This game shows current Unity DOTS capabilities.}}{9}{figure.caption.4}\protected@file@percent }
+\newlabel{CitiesSkylines}{{2.3}{9}{Pedestrians and traffic simulation in Cities: Skylines II. This game shows current Unity DOTS capabilities}{figure.caption.4}{}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {3}Unreal Engine Mass}{10}{chapter.3}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -53,46 +58,47 @@
 \@writefile{toc}{\contentsline {section}{\numberline {3.1}MassEntity}{10}{section.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Entities}{11}{subsection.3.1.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Memory Organization: Archetypes and Chunks}{11}{subsection.3.1.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Logical grouping of entities into Archetypes based on fragment composition.}}{11}{figure.caption.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Logical organization of Archetype-related data in chunks. Different colors of rows correspond to different fragments while the numbers refer to the Entity ID}}{12}{figure.caption.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces The image shows why it is convenient to have chunks sized to fit the cache rather than a single array structure for the whole Archetype.}}{13}{figure.caption.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Memory organization within a Mass Archetype. The diagram shows how a single Entity ID acts as a shared index to access different data fragments (Transform and Velocity) stored in parallel, contiguous arrays.}}{11}{figure.caption.5}\protected@file@percent }
+\newlabel{Archetype}{{3.1}{11}{Memory organization within a Mass Archetype. The diagram shows how a single Entity ID acts as a shared index to access different data fragments (Transform and Velocity) stored in parallel, contiguous arrays}{figure.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Logical organization of Archetype-related data in chunks. Different colors of rows correspond to different fragments while the numbers refer to the Entity ID.}}{12}{figure.caption.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces The image shows why it is convenient to have chunks sized to fit the cache rather than a single array structure for the whole Archetype.}}{13}{figure.caption.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}Mass Execution Environment}{13}{subsection.3.1.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.4}Entity Processing and Interaction}{14}{subsection.3.1.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.5}Fragments and Tags}{14}{subsection.3.1.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Entity Fragments}{14}{section*.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Chunk Fragments}{16}{section*.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Shared Fragments}{16}{section*.9}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Tags}{16}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Entity Fragments}{14}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Chunk Fragments}{16}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Shared Fragments}{16}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Tags}{16}{section*.11}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.6}Traits}{17}{subsection.3.1.6}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Example of Mass Entity Config Asset defining an Entity via editor. It is possible to create one by clicking on the "Add" button in the content drawer, selecting Data Asset and then choosing Mass Entity Config Asset.}}{19}{figure.caption.11}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Example of Assorted Fragment trait use.}}{19}{figure.caption.12}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.7}Processors and Queries}{19}{subsection.3.1.7}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Unreal Engine 5 Mass Processing Phases and Tick Groups}}{20}{table.caption.13}\protected@file@percent }
-\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{tab:ue5_tick_groups}{{3.1}{20}{Unreal Engine 5 Mass Processing Phases and Tick Groups}{table.caption.13}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Mass Entity Queries}{22}{section*.14}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Mass Execution Context Access Functions}}{25}{table.caption.15}\protected@file@percent }
-\newlabel{tab:AccessFunctions}{{3.2}{25}{Mass Execution Context Access Functions}{table.caption.15}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Observer Processor}{25}{section*.16}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Entity composition in Mass. This overview shows how individual Traits inject per-entity and shared fragments, along with filtering tags, into an entity’s archetype during configuration.}}{17}{figure.caption.12}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Example of Mass Entity Config Asset defining an Entity via editor. It is possible to create one by clicking on the "Add" button in the content drawer, selecting Data Asset and then choosing Mass Entity Config Asset.}}{19}{figure.caption.13}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces Example of Assorted Fragment trait use.}}{20}{figure.caption.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.7}Processors and Queries}{20}{subsection.3.1.7}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Unreal Engine 5 Mass Processing Phases and Tick Groups}}{21}{table.caption.15}\protected@file@percent }
+\newlabel{tab:ue5_tick_groups}{{3.1}{21}{Unreal Engine 5 Mass Processing Phases and Tick Groups}{table.caption.15}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Mass Entity Queries}{23}{section*.16}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Mass Execution Context Access Functions}}{25}{table.caption.17}\protected@file@percent }
+\newlabel{tab:AccessFunctions}{{3.2}{25}{Mass Execution Context Access Functions}{table.caption.17}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Observer Processor}{26}{section*.18}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3.2}Bridging the ECS and OOP Architectures}{26}{section.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Data Synchronization Modes}{26}{subsection.3.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Data Synchronization Modes}{27}{subsection.3.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3.3}Additional Mass Plugins}{27}{section.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}MassGameplay}{27}{subsection.3.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}MassGameplay}{28}{subsection.3.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}MassAI}{28}{subsection.3.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}MassCrowd}{28}{subsection.3.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}MassCrowd}{29}{subsection.3.3.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {chapter}{\numberline {4}Large-Scale Entity Representation}{30}{chapter.4}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \newlabel{sec:EntityRepresentation}{{4}{30}{MassCrowd}{chapter.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.1}Actor-based Representation Limitations}{31}{section.4.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces CPU performance tanking when a grid of actors is instanced in an empty scene. The Game Thread took 44ms to process this frame, hence lowering the FPS.}}{31}{figure.caption.17}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces CPU performance tanking when a grid of actors is instanced in an empty scene. The Game Thread took 44ms to process this frame, hence lowering the FPS.}}{31}{figure.caption.19}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}The Mass Solution}{32}{subsection.4.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Processor Registration}{33}{section*.18}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Processor Registration}{33}{section*.20}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4.2}Mass Level Of Detail}{33}{section.4.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Mass LOD Overview}{33}{subsection.4.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Mass LOD Subsystem}{34}{subsection.4.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4.3}Mass Representation}{37}{section.4.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Different entity representation based on the distance from the viewer. The red entities are Static Mesh Instances, the yellow ones are LowResSpawnedActors and the white ones are HighResSpawnedActors}}{38}{figure.caption.19}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Different entity representation based on the distance from the viewer. The red entities are Static Mesh Instances, the yellow ones are LowResSpawnedActors and the white ones are HighResSpawnedActors}}{38}{figure.caption.21}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Vertex Animated ISM}{38}{subsection.4.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Niagara-Based Representation}{39}{subsection.4.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4.4}Performance Analysis}{40}{section.4.4}\protected@file@percent }
@@ -103,14 +109,14 @@
 \@writefile{toc}{\contentsline {section}{\numberline {5.1}State Tree}{41}{section.5.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}Architecture}{42}{subsection.5.1.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1.2}Selection and Transition Flow}{42}{subsection.5.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Enter Conditions}{43}{section*.20}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Selection Behavior}{43}{section*.21}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Transition Lifecycle}{44}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Enter Conditions}{43}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Selection Behavior}{43}{section*.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Transition Lifecycle}{44}{section*.24}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1.3}State Tree Schemas}{45}{subsection.5.1.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1.4}Data Management}{46}{subsection.5.1.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {5.2}Mass and State Tree}{47}{section.5.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Mass State Tree Schema}{47}{subsection.5.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{The Tick function}{47}{section*.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{The Tick function}{47}{section*.25}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Data Handling and Memory Locality}{49}{subsection.5.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2.3}Transition Handling and Logic Flow}{51}{subsection.5.2.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {chapter}{\numberline {6}Navigation in the Mass Framework}{52}{chapter.6}\protected@file@percent }
@@ -134,8 +140,8 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.4.1}Steering}{58}{subsection.6.4.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.4.2}Smooth Orientation}{58}{subsection.6.4.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.4.3}Avoidance}{59}{subsection.6.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Moving Avoidance}{59}{section*.24}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Standing Avoidance}{59}{section*.25}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Moving Avoidance}{59}{section*.26}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Standing Avoidance}{59}{section*.27}\protected@file@percent }
 \@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusions}{60}{chapter.7}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -162,4 +168,4 @@
 \abx@aux@defaultrefcontext{0}{CitiesSkylineIIUnite}{nty/global//global/global/global}
 \abx@aux@defaultrefcontext{0}{romeo2016ecs}{nty/global//global/global/global}
 \gdef\svg@ink@ver@settings{{\m@ne }{inkscape}{\m@ne }}
-\gdef \@abspage@last{69}
+\gdef \@abspage@last{70}
